@@ -61,6 +61,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
+    "@tanstack/react-query": "^5.56.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.1.4",
