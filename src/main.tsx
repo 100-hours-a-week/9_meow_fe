@@ -8,11 +8,12 @@ import DetailPostPage from "./app/detail/[postId]/DetailPostPage";
 import LoginPage from "./app/login/LoginPage";
 import SignupPage from "./app/signup/SignupPage";
 import { Button } from "./components/ui/button";
-
+import { Header } from "./components/common";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Router>
       <div>
+        <Header />
         <nav>
           <Link to="/">
             <Button variant="primarySolid">Home</Button>
