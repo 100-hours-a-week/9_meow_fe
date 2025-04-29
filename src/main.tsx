@@ -15,19 +15,19 @@ createRoot(document.getElementById("root")!).render(
       <div>
         <nav>
           <Link to="/">
-            <Button variant="default">Home</Button>
+            <Button variant="primarySolid">Home</Button>
           </Link>
           <Link to="/create">
-            <Button variant="secondary">게시글 작성</Button>
+            <Button variant="secondarySolid">게시글 작성</Button>
           </Link>
           <Link to="/detail/3">
-            <Button variant="outline">3번 게시물 상세보기</Button>
+            <Button variant="primaryOutline">3번 게시물 상세보기</Button>
           </Link>
           <Link to="/login">
-            <Button variant="link">로그인</Button>
+            <Button variant="secondaryOutline">로그인</Button>
           </Link>
           <Link to="/signup">
-            <Button variant="destructive">회원가입</Button>
+            <Button variant="link">회원가입</Button>
           </Link>
         </nav>
         <Routes>
