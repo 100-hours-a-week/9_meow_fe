@@ -4,7 +4,7 @@ export default function Header() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex p-1 py-2.5 items-center justify-between gap-2.5 border-b border-border/30">
+    <div className="flex p-1 py-2.5 items-center justify-between gap-2.5 border-b border-border/30 sticky top-0 w-full bg-background">
       <div
         className="flex gap-2.5 items-center cursor-pointer"
         onClick={() => navigate("/")}
