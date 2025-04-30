@@ -1,15 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ApiAnimalType } from "@/types/animal";
+import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
 
-interface IUserItem {
+export interface IUserItem {
   userId: number;
-  profileImage?: string;
+  profileImageUrl?: string;
   nickname: string;
-  animalType: "고양이" | "강아지";
+  animalType: ApiAnimalType;
 }
 
 export default function UserItem({
   userId,
-  profileImage,
+  profileImageUrl,
   nickname,
   animalType,
 }: IUserItem) {
@@ -17,17 +19,16 @@ export default function UserItem({
     console.log(userId);
   }
   return (
-    <div
-      className="flex flex-row items-center gap-2"
-      onClick={handleClick}
-    >
+    <div className="flex flex-row items-center gap-2" onClick={handleClick}>
       <Avatar>
-        <AvatarImage src={profileImage ?? "/logo.svg"} />
+        <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
         <AvatarFallback>미야옹</AvatarFallback>
       </Avatar>
       <div className="flex flex-col text-base">
         <p className="text-orange-950">{nickname}</p>
-        <p className="text-orange-950/30">{animalType}</p>
+        <p className="text-orange-950/30">
+          {convertAnimalTypeToDisplay(animalType)}
+        </p>
       </div>
     </div>
   );
