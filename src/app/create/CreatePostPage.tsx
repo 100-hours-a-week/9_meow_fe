@@ -4,6 +4,7 @@ function CreatePostPage() {
   return (
     <CreatePostForm>
       <CreatePostForm.ImageInput />
+      <CreatePostForm.PostContentInput />
     </CreatePostForm>
   );
 }
