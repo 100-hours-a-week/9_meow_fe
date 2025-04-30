@@ -6,16 +6,13 @@ export interface IPostSummaryData {
   userId: number;
   nickname: string;
   profileImageUrl: string;
-  title: string;
   transformedContent: string;
-  thumbnailUrl: string;
   emotion: ApiEmotion;
   postType: ApiAnimalType;
-  imageUrls: string[];
-  didLike: boolean;
-  likeCount: number;
+  thumbnailUrl: string;
   commentCount: number;
-  viewCount: number;
+  likeCount: number;
+  didLike: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
