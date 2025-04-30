@@ -18,9 +18,9 @@ export default function NavigationBar() {
   return (
     <div className="flex justify-between items-center border-t border-border/30 px-5 py-1 fixed bottom-0 w-full bg-background">
       {renderIconButton("/", <img src="/icon/home.svg" alt="home" />)}
-      {/* {renderIconButton("/icon/calendar.svg", "calendar", "/event")} */}
+      {/* {renderIconButton("/calendar", <img src="/icon/calendar.svg" alt="calendar" />)} */}
       {renderIconButton("/create", <img src="/icon/plus.svg" alt="plus" />)}
-      {/* {renderIconButton("/icon/chat.svg", "chat", "/chat")} */}
+      {/* {renderIconButton("/chat", <img src="/icon/chat.svg" alt="chat" />)} */}
       {renderIconButton(
         "/member",
         <Avatar>
