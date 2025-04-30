@@ -63,7 +63,7 @@ export default function ImageInput() {
 
   return (
     <div className="flex flex-col gap-0 items-center px-2 py-2">
-      <div className="flex gap-3 flex-wrap">
+      <div className="flex gap-3">
         {selectedImages.length < MAX_IMAGES && (
           <label className="flex items-center justify-center w-[100px] h-[100px] bg-orange-100 border border-foreground/30 rounded-2xl cursor-pointer">
             <div className="flex flex-col items-center gap-2">
