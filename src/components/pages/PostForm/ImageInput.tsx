@@ -1,64 +1,20 @@
-import { ChangeEvent, useState } from "react";
-import { validateFileSize } from "./validation/validateFileSize";
-import {
-  MAX_IMAGES,
-  validateFileLength,
-} from "./validation/validateFileLength";
-
-interface PreviewImage {
-  file: File;
-  preview: string;
-}
+import { ChangeEvent } from "react";
+import useCreatePostStore from "@/store/useCreatePostStore";
+import { MAX_IMAGES } from "./validation/validateFileLength";
 
 export default function ImageInput() {
-  const [selectedImages, setSelectedImages] = useState<PreviewImage[]>([]);
-  const [error, setError] = useState<{
-    isValid: boolean;
-    message: string;
-  } | null>(null);
+  const { selectedImages, error, addImages, removeImage } =
+    useCreatePostStore();
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
-    const newFiles = Array.from(files);
-    const totalImages = selectedImages.length + newFiles.length;
-
-    const { isValid, message } = validateFileLength(totalImages);
-    if (!isValid) {
-      setError({ isValid, message });
-      return;
-    }
-
-    for (const file of newFiles) {
-      const { isValid, message } = validateFileSize(file);
-      if (!isValid) {
-        setError({ isValid, message });
-        return;
-      }
-    }
-
-    setError(null);
-
-    newFiles.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (e: ProgressEvent<FileReader>) => {
-        const result = e.target?.result;
-        if (result && typeof result === "string") {
-          setSelectedImages((prev) => [...prev, { file, preview: result }]);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
+    addImages(Array.from(files));
   };
 
   const handleDeleteImage = (index: number) => {
-    setSelectedImages((prev) => {
-      const newImages = [...prev];
-      newImages.splice(index, 1);
-      return newImages;
-    });
-    setError(null);
+    removeImage(index);
   };
 
   return (
