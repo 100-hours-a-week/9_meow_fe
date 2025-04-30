@@ -19,9 +19,7 @@ export default function UserItem({
   return (
     <div className="flex flex-row items-center gap-2" onClick={handleClick}>
       <Avatar>
-        <AvatarImage
-          src={profileImageUrl === "" ? "/logo.svg" : profileImageUrl}
-        />
+        <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
         <AvatarFallback>미야옹</AvatarFallback>
       </Avatar>
       <div className="flex flex-col text-base">
