@@ -4,7 +4,8 @@ import { IPostContent } from "@/components/common/PostCard/PostContent";
 import { IUserItem } from "@/components/common/UserItem";
 import { IPostSummaryData } from "@/types/PostSummaryData";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
-function App() {
+
+export default function MainPage() {
   return (
     <div className="pt-2 pb-16 flex flex-col gap-2.5">
       {dummyPosts.map((post: IPostSummaryData) => {
@@ -41,5 +42,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
