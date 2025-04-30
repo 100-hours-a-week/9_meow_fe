@@ -6,7 +6,7 @@ import { IPostSummaryData } from "@/types/PostSummaryData";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
 function App() {
   return (
-    <div className="pb-16 flex flex-col gap-2.5">
+    <div className="pt-2 pb-16 flex flex-col gap-2.5">
       {dummyPosts.map((post: IPostSummaryData) => {
         const userInfo: IUserItem = {
           userId: post.userId,
