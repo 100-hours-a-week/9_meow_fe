@@ -1,18 +1,22 @@
-import { IUserItem } from "../UserItem";
-import PostContent from "./PostContent";
-import PostFooter, { IPostFooter } from "./PostFooter";
+import { ReactNode } from "react";
 import PostHeader from "./PostHeader";
+import PostContent from "./PostContent";
+import PostFooter from "./PostFooter";
 
 interface IPostCard {
-  userInfo: IUserItem;
-  postInfo: IPostFooter;
+  children: ReactNode;
 }
-export default function PostCard({ userInfo, postInfo }: IPostCard) {
+
+function PostCard({ children }: IPostCard) {
   return (
-    <div>
-      <PostHeader userInfo={userInfo} />
-      <PostContent />
-      <PostFooter {...postInfo} />
+    <div className="flex flex-col gap-4 rounded-2xl bg-background border border-foreground/30 pl-2.5 pr-2 pt-2 pb-3">
+      {children}
     </div>
   );
 }
+
+PostCard.Header = PostHeader;
+PostCard.Content = PostContent;
+PostCard.Footer = PostFooter;
+
+export default PostCard;
