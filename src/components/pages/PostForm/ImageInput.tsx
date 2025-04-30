@@ -1,36 +1,59 @@
 import { ChangeEvent, useState } from "react";
+import { validateFileSize } from "./validation/validateFileSize";
+import {
+  MAX_IMAGES,
+  validateFileLength,
+} from "./validation/validateFileLength";
 
 interface PreviewImage {
   file: File;
   preview: string;
 }
 
-const MAX_IMAGES = 3;
-
 export default function ImageInput() {
   const [selectedImages, setSelectedImages] = useState<PreviewImage[]>([]);
+  const [error, setError] = useState<{
+    isValid: boolean;
+    message: string;
+  } | null>(null);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      const remainingSlots = MAX_IMAGES - selectedImages.length;
-      const filesToAdd = newFiles.slice(0, remainingSlots);
+    const files = e.target.files;
+    if (!files) return;
 
-      const newImages = filesToAdd.map((file) => ({
-        file,
-        preview: URL.createObjectURL(file),
-      }));
-      setSelectedImages((prev) => [...prev, ...newImages]);
+    const newFiles = Array.from(files);
+    const totalImages = selectedImages.length + newFiles.length;
+
+    const { isValid, message } = validateFileLength(totalImages);
+    if (!isValid) {
+      setError({ isValid, message });
+      return;
     }
+
+    for (const file of newFiles) {
+      const { isValid, message } = validateFileSize(file);
+      if (!isValid) {
+        setError({ isValid, message });
+        return;
+      }
+    }
+
+    setError(null);
+    const newImages = newFiles.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+    setSelectedImages((prev) => [...prev, ...newImages]);
   };
 
   const handleDeleteImage = (index: number) => {
     setSelectedImages((prev) => {
       const newImages = [...prev];
-      URL.revokeObjectURL(newImages[index].preview); // Clean up URL object
+      URL.revokeObjectURL(newImages[index].preview);
       newImages.splice(index, 1);
       return newImages;
     });
+    setError(null);
   };
 
   return (
@@ -71,7 +94,12 @@ export default function ImageInput() {
           </div>
         ))}
       </div>
-      <p className="self-end text-xs">{selectedImages.length}/3</p>
+      <div className="w-full flex justify-end items-center gap-2">
+        {error?.isValid === false && (
+          <p className="text-xs text-destructive">{error.message}</p>
+        )}
+        <p className="text-xs">{selectedImages.length}/3</p>
+      </div>
     </div>
   );
 }
