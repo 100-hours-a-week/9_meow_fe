@@ -27,9 +27,15 @@ export default function PostContent({
       onClick={() => navigate(`/detail/${postId}`)}
       className="flex flex-col gap-1"
     >
-      <div className="flex flex-row items-center gap-2">
+      <div className="flex flex-row items-start gap-2">
         <p className="text-base">{content}</p>
-        {thumbnailUrl && <img src={thumbnailUrl} alt="썸네일" />}
+        {thumbnailUrl && (
+          <img
+            src={thumbnailUrl}
+            alt="썸네일"
+            className="w-[150px] h-[150px] rounded-lg object-cover"
+          />
+        )}
       </div>
       <div className="flex flex-row items-center gap-2 text-muted-foreground text-xs">
         <p>{convertTimestamp(timestamp)}</p>
