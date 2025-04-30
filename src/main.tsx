@@ -13,18 +13,19 @@ import { Header, NavigationBar } from "./components/common";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Router>
-      <div className="relative">
+      <div className="relative flex flex-col">
         <Header />
+        <div className="flex-1">
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/create" element={<CreatePostPage />} />
+            <Route path="/detail/:postId" element={<DetailPostPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
         <NavigationBar />
-
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/create" element={<CreatePostPage />} />
-          <Route path="/detail/:postId" element={<DetailPostPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
       </div>
     </Router>
   </StrictMode>
