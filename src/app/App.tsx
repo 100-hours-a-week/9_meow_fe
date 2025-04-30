@@ -1,19 +1,32 @@
+import { dummyPosts } from "@/assets/dummy-posts";
 import { PostCard } from "@/components/common";
-import { IUserItem } from "@/components/common/UserItem";
+import { IPostSummaryData } from "@/types/PostSummaryData";
 
 function App() {
-  const userInfo: IUserItem = {
-    userId: 1,
-    nickname: "홍길동",
-    animalType: "고양이",
-  };
-
   return (
     <div className="min-h-screen pb-16">
       <h1 className="text-3xl font-bold underline text-red-500">
         Hello world!
       </h1>
-      <PostCard userInfo={userInfo} />
+      {dummyPosts.map((post: IPostSummaryData) => {
+        return (
+          <PostCard
+            key={`post-${post.id}`}
+            userInfo={{
+              userId: post.userId,
+              nickname: post.nickname,
+              animalType: post.postType,
+              profileImage: post.profileImageUrl,
+            }}
+            postInfo={{
+              postId: post.id,
+              didLike: post.didLike,
+              likeCount: post.likeCount,
+              commentCount: post.commentCount,
+            }}
+          />
+        );
+      })}
     </div>
   );
 }
