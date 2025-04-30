@@ -16,7 +16,7 @@ function App() {
               userId: post.userId,
               nickname: post.nickname,
               animalType: post.postType,
-              profileImage: post.profileImageUrl,
+              profileImageUrl: post.profileImageUrl,
             }}
             postInfo={{
               postId: post.id,
