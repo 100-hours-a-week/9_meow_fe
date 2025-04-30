@@ -1,5 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ApiAnimalType, convertAnimalTypeToDisplay } from "@/types/animal";
+import { ApiAnimalType } from "@/types/animal";
+import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
+
 export interface IUserItem {
   userId: number;
   profileImageUrl?: string;

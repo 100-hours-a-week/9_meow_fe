@@ -1,7 +1,8 @@
-import { ApiEmotion, convertEmotionToDisplay } from "@/types/Emotion";
+import { ApiEmotion } from "@/types/Emotion";
 import { useNavigate } from "react-router-dom";
 import { convertTimestamp } from "@/utils/convertTimestamp";
 import { ApiAnimalType } from "@/types/animal";
+import { convertEmotionTypeToDisplay } from "@/utils/convertEmotion";
 
 export interface IPostContent {
   postId: number;
@@ -40,7 +41,7 @@ export default function PostContent({
       <div className="flex flex-row items-center gap-2 text-muted-foreground text-xs">
         <p>{convertTimestamp(timestamp)}</p>
         {emotion !== ApiEmotion.NONE && (
-          <p> / {convertEmotionToDisplay(emotion, animalType)}</p>
+          <p> / {convertEmotionTypeToDisplay(emotion, animalType)}</p>
         )}
       </div>
     </div>
