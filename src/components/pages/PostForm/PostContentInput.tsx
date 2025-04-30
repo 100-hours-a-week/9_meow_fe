@@ -7,7 +7,7 @@ export default function PostContentInput() {
   const [value, setValue] = useState("");
 
   return (
-    <div className="relative w-full">
+    <div className="w-full flex flex-col gap-2">
       <textarea
         className="w-full h-[150px] resize-none outline-foreground border border-foreground/30 rounded-2xl p-2"
         placeholder="글을 입력하세야옹"
@@ -16,7 +16,7 @@ export default function PostContentInput() {
       />
       <div
         className={cn(
-          "absolute bottom-2 right-2 text-sm",
+          "text-sm text-right",
           value.length > MAX_LENGTH ? "text-destructive" : "text-foreground/50"
         )}
       >
