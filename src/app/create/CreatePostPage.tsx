@@ -1,7 +1,11 @@
+import { CreatePostForm } from "@/components/pages";
+
 function CreatePostPage() {
   return (
     <div>
-      <h1>Create Post 페이지</h1>
+      <CreatePostForm>
+        <CreatePostForm.ImageInput />
+      </CreatePostForm>
     </div>
   );
 }
