@@ -8,6 +8,7 @@ export interface IPostSummaryData {
   profileImageUrl: string;
   title: string;
   transformedContent: string;
+  thumbnailUrl: string;
   emotion: ApiEmotion;
   postType: ApiAnimalType;
   imageUrls: string[];
