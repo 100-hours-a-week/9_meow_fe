@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-interface IUserItem {
+export interface IUserItem {
   userId: number;
   profileImage?: string;
   nickname: string;
@@ -17,10 +17,7 @@ export default function UserItem({
     console.log(userId);
   }
   return (
-    <div
-      className="flex flex-row items-center gap-2"
-      onClick={handleClick}
-    >
+    <div className="flex flex-row items-center gap-2" onClick={handleClick}>
       <Avatar>
         <AvatarImage src={profileImage ?? "/logo.svg"} />
         <AvatarFallback>미야옹</AvatarFallback>
