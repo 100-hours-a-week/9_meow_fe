@@ -39,17 +39,22 @@ export default function ImageInput() {
     }
 
     setError(null);
-    const newImages = newFiles.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-    setSelectedImages((prev) => [...prev, ...newImages]);
+
+    newFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const result = e.target?.result;
+        if (result && typeof result === "string") {
+          setSelectedImages((prev) => [...prev, { file, preview: result }]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleDeleteImage = (index: number) => {
     setSelectedImages((prev) => {
       const newImages = [...prev];
-      URL.revokeObjectURL(newImages[index].preview);
       newImages.splice(index, 1);
       return newImages;
     });
