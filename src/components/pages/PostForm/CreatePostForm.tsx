@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
+import SelectEmotion from "./SelectEmotion";
 
 export default function CreatePostForm({ children }: { children: ReactNode }) {
   return (
@@ -13,3 +14,4 @@ export default function CreatePostForm({ children }: { children: ReactNode }) {
 
 CreatePostForm.ImageInput = ImageInput;
 CreatePostForm.PostContentInput = PostContentInput;
+CreatePostForm.SelectEmotion = SelectEmotion;

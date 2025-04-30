@@ -5,6 +5,7 @@ function CreatePostPage() {
     <CreatePostForm>
       <CreatePostForm.ImageInput />
       <CreatePostForm.PostContentInput />
+      <CreatePostForm.SelectEmotion />
     </CreatePostForm>
   );
 }
