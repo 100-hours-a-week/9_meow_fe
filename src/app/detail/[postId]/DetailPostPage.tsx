@@ -12,10 +12,7 @@ function DetailPostPage() {
         userInfo={{
           userId: dummyPostDetail.userId,
           nickname: dummyPostDetail.nickname,
-          profileImageUrl:
-            dummyPostDetail.profileImageUrl === ""
-              ? undefined
-              : dummyPostDetail.profileImageUrl,
+          profileImageUrl: dummyPostDetail.profileImageUrl,
           animalType: dummyPostDetail.postType,
         }}
       />
@@ -28,6 +25,7 @@ function DetailPostPage() {
       />
       <PostCard.Content
         postId={Number(postId)}
+        thumbnailUrl={null}
         content={dummyPostDetail.transformedContent}
         animalType={dummyPostDetail.postType}
         timestamp={new Date(dummyPostDetail.createdAt)}
