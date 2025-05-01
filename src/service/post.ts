@@ -3,8 +3,6 @@ import defaultInstance from "./instance/defaultInstance";
 import { ApiAnimalType } from "@/types/animal";
 import formInstance from "./instance/formInstance";
 
-const baseURL = `${import.meta.env.VITE_API_URL}`;
-
 export const getPostList = async ({
   page,
   size,
@@ -12,7 +10,7 @@ export const getPostList = async ({
   page: number;
   size: number;
 }) => {
-  const response = await defaultInstance.get(`${baseURL}/posts`, {
+  const response = await defaultInstance.get(`/posts`, {
     params: {
       page,
       size,
@@ -29,6 +27,6 @@ interface IPost {
 }
 
 export const postPost = async (post: IPost) => {
-  const response = await formInstance.post(`${baseURL}/posts`, post);
+  const response = await formInstance.post(`/posts`, post);
   return response.data;
 };

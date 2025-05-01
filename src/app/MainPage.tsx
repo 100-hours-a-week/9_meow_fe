@@ -4,10 +4,18 @@ import { IUserItem } from "@/components/common/UserItem";
 import { IPostSummaryData } from "@/types/PostSummaryData";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
 import usePostListInfiniteQuery from "@/hooks/queries/usePostListInfiniteQuery";
+import { useEffect } from "react";
 
 export default function MainPage() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     usePostListInfiniteQuery();
+
+  useEffect(() => {
+    console.log(data);
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div className="pt-2 pb-16 flex flex-col gap-2.5">
