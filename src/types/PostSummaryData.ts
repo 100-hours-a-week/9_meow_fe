@@ -5,14 +5,14 @@ export interface IPostSummaryData {
   id: number;
   userId: number;
   nickname: string;
-  profileImageUrl: string;
+  profileImageUrl: string | null;
   transformedContent: string;
   emotion: ApiEmotion;
   postType: ApiAnimalType;
-  thumbnailUrl: string;
+  thumbnailUrl: string | null;
   commentCount: number;
   likeCount: number;
-  didLike: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  // didLike: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
