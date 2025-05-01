@@ -26,10 +26,10 @@ export default function PostContent({
   return (
     <div
       onClick={() => navigate(`/detail/${postId}`)}
-      className="flex flex-col gap-1"
+      className="flex flex-col gap-1 w-full"
     >
       <div className="flex flex-row items-start gap-2">
-        <p className="text-base">{content}</p>
+        <p className="text-base whitespace-pre-wrap">{content}</p>
         {thumbnailUrl && (
           <img
             src={thumbnailUrl}

@@ -16,14 +16,14 @@ export default function PostFooter({
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-row items-center gap-2">
+    <div className="flex flex-row items-center gap-2 w-full">
       <img
         src={didLike ? "/icon/cat-filled.svg" : "/icon/cat-outlined.svg"}
         alt="좋아요 후"
       />
       <p>{likeCount}</p>
       <img
-        src="icon/comment.svg"
+        src="/icon/comment.svg"
         alt="댓글"
         onClick={() => navigate(`/detail/${postId}`)}
       />
