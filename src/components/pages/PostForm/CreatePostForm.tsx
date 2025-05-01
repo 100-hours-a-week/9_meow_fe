@@ -8,8 +8,7 @@ import useCreatePostStore from "@/store/useCreatePostStore";
 
 export default function CreatePostForm({ children }: { children: ReactNode }) {
   const { mutate: postPost } = usePostMutation();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { selectedImages, content, emotion, post_type } = useCreatePostStore();
+  const { selectedImages, content } = useCreatePostStore();
 
   return (
     <div className="flex flex-col gap-4 items-center p-5">
