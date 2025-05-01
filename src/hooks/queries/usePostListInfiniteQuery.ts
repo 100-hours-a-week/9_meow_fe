@@ -1,36 +1,22 @@
-import { getPostList } from "@/service/post";
-import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { IPostSummaryData } from "@/types/PostSummaryData";
+import { getPostList } from "@/service/post";
 
-interface IPageParam {
-  pageParam: number | unknown;
-}
-
-interface IPostListPageData {
-  hasNext: boolean;
-  pageNumber: number;
-  content: IPostSummaryData[];
-}
-
-const usePostListInfiniteQuery = () => {
-  const fetchPostList = async ({ pageParam }: IPageParam) => {
-    const page = typeof pageParam === "number" ? pageParam : 0;
-    const data = await getPostList({ page, size: 10 });
-
-    return data;
-  };
-
-  return useInfiniteQuery<
-    IPostListPageData,
-    Error,
-    InfiniteData<IPostListPageData>
-  >({
-    queryKey: ["posts"],
-    queryFn: fetchPostList,
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) =>
-      lastPage.hasNext ? lastPage.pageNumber + 1 : undefined,
-  });
+const fetchPostList = async () => {
+  console.log("Fetching post list...");
+  try {
+    const response = await getPostList({ page: 0, size: 10 });
+    console.log("API Response:", response);
+    return response;
+  } catch (error) {
+    console.error("Error fetching post list:", error);
+    throw error;
+  }
 };
 
-export default usePostListInfiniteQuery;
+export const usePostListInfiniteQuery = () => {
+  return useQuery<IPostSummaryData[], Error>({
+    queryKey: ["posts"],
+    queryFn: fetchPostList,
+  });
+};

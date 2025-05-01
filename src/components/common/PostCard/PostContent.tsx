@@ -6,7 +6,7 @@ import { convertEmotionTypeToDisplay } from "@/utils/convertEmotion";
 
 export interface IPostContent {
   postId: number;
-  thumbnailUrl?: string;
+  thumbnailUrl: string | null;
   content: string;
   animalType: ApiAnimalType;
   timestamp: Date;

@@ -4,7 +4,7 @@ import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
 
 export interface IUserItem {
   userId: number;
-  profileImageUrl?: string;
+  profileImageUrl: string | null;
   nickname: string;
   animalType: ApiAnimalType;
 }
