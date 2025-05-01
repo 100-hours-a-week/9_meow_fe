@@ -3,15 +3,28 @@ import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
 import SelectEmotion from "./SelectEmotion";
 import { Button } from "@/components/ui/button";
+import usePostMutation from "@/hooks/mutations/usePostMutation";
+import useCreatePostStore from "@/store/useCreatePostStore";
 
 export default function CreatePostForm({ children }: { children: ReactNode }) {
+  const { mutate: postPost } = usePostMutation();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { selectedImages, content, emotion, post_type } = useCreatePostStore();
+
   return (
     <div className="flex flex-col gap-4 items-center p-5">
       <h1 className="text-3xl font-bold">오늘은 무슨 일이 있었냥</h1>
       {children}
       <div className="flex gap-2 w-full justify-end">
         <Button variant="primarySolid">취소냥</Button>
-        <Button variant="secondarySolid">£ 다 적으면 누르라냥!</Button>
+        <Button
+          variant="secondarySolid"
+          onClick={() =>
+            postPost({ images: selectedImages.map((img) => img.file), content })
+          }
+        >
+          £ 다 적으면 누르라냥!
+        </Button>
       </div>
     </div>
   );
