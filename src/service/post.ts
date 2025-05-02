@@ -42,3 +42,8 @@ export const postPost = async (post: IPost) => {
   const response = await formInstance.post("/posts", formData);
   return response.data;
 };
+
+export const getPostDetail = async (postId: number) => {
+  const response = await defaultInstance.get(`/posts/${postId}`);
+  return response.data;
+};
