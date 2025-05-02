@@ -1,8 +1,15 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import useCreatePostStore from "@/store/useCreatePostStore";
 import { ApiEmotion, DisplayEmotion } from "@/types/Emotion";
 
 export default function SelectEmotion() {
+  const { setEmotion } = useCreatePostStore();
+
+  const handleEmotionChange = (value: ApiEmotion) => {
+    setEmotion(value);
+  };
+
   return (
     <div className="flex flex-col gap-2 w-full">
       <p className="text-sm">오늘 기분은 어떠냥</p>
@@ -12,7 +19,11 @@ export default function SelectEmotion() {
       >
         {Object.entries(ApiEmotion).map(([key, value], index) => (
           <div key={value} className="flex items-center space-x-2">
-            <RadioGroupItem value={value} id={`r${index + 1}`} />
+            <RadioGroupItem
+              value={value}
+              id={`r${index + 1}`}
+              onClick={() => handleEmotionChange(value)}
+            />
             <Label htmlFor={`r${index + 1}`} className="text-xs">
               {key === "NONE"
                 ? // TODO: 사용자에 따라서 다르게 보이도록

@@ -1,26 +1,33 @@
-import { useState } from "react";
 import { cn } from "@/lib/utils";
+import useCreatePostStore from "@/store/useCreatePostStore";
 
 const MAX_LENGTH = 200;
 
 export default function PostContentInput() {
-  const [value, setValue] = useState("");
+  const { content, setContent } = useCreatePostStore();
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    setContent(newValue);
+  };
 
   return (
     <div className="w-full flex flex-col gap-2">
       <textarea
         className="w-full h-[150px] resize-none outline-foreground border border-foreground/30 rounded-2xl p-2"
         placeholder="글을 입력하세야옹"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
+        value={content}
+        onChange={handleChange}
       />
       <div
         className={cn(
           "text-sm text-right",
-          value.length > MAX_LENGTH ? "text-destructive" : "text-foreground/50"
+          content.length > MAX_LENGTH
+            ? "text-destructive"
+            : "text-foreground/50"
         )}
       >
-        {value.length}/{MAX_LENGTH}
+        {content.length}/{MAX_LENGTH}
       </div>
     </div>
   );
