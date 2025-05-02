@@ -1,8 +1,10 @@
+import { ValidationReturnType } from "@/types/ValidationReturnType";
+
 export const MAX_IMAGES = 3;
 
 export const validateFileLength = (
   totalImages: number
-): { isValid: boolean; message: string } => {
+): ValidationReturnType => {
   if (totalImages > MAX_IMAGES) {
     return {
       isValid: false,
