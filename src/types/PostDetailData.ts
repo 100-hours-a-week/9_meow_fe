@@ -12,7 +12,7 @@ interface IPostDetailData {
   imageUrls: string[];
   commentCount: number;
   likeCount: number;
-  didLike: boolean;
+  // didLike: boolean;
   createdAt: string;
   updatedAt: string;
 }

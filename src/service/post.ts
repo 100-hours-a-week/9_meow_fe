@@ -27,6 +27,23 @@ interface IPost {
 }
 
 export const postPost = async (post: IPost) => {
-  const response = await formInstance.post(`/posts`, post);
+  const formData = new FormData();
+
+  // 이미지 파일들 추가
+  post.images.forEach((image) => {
+    formData.append(`images`, image);
+  });
+
+  // 다른 데이터들 추가
+  formData.append("content", post.content);
+  formData.append("emotion", post.emotion);
+  formData.append("post_type", post.post_type);
+
+  const response = await formInstance.post("/posts", formData);
+  return response.data;
+};
+
+export const getPostDetail = async (postId: number) => {
+  const response = await defaultInstance.get(`/posts/${postId}`);
   return response.data;
 };

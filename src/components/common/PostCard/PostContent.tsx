@@ -34,7 +34,7 @@ export default function PostContent({
           <img
             src={thumbnailUrl}
             alt="썸네일"
-            className="w-[150px] h-[150px] rounded-lg object-cover"
+            className="w-[150px] h-[150px] rounded-lg object-cover flex-shrink-0"
           />
         )}
       </div>
