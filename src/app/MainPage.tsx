@@ -4,23 +4,23 @@ import { IUserItem } from "@/components/common/UserItem";
 import { IPostSummaryData } from "@/types/PostSummaryData";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
 import { usePostListInfiniteQuery } from "@/hooks/queries/usePostListInfiniteQuery";
-import { useEffect } from "react";
 
 export default function MainPage() {
-  const { data, isLoading } = usePostListInfiniteQuery();
+  const { data, isLoading, error } = usePostListInfiniteQuery();
 
-  useEffect(() => {
-    if (data) {
-      console.log("Posts data:", data);
-    }
-  }, [data]);
-
+  // TODO: 로딩 스켈레톤 추가
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
+  // TODO: 데이터 없음 처리
   if (!data) {
     return <div>No data available</div>;
+  }
+
+  // TODO: 에러 처리
+  if (error) {
+    return <div>Error: {error.message}</div>;
   }
 
   return (
