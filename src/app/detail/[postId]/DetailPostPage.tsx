@@ -1,36 +1,52 @@
-import { dummyPostDetail } from "@/assets/dummy-post-detail";
 import { PostCard } from "@/components/common";
 import { ImageCarousel } from "@/components/pages";
+import { usePostDetailQuery } from "@/hooks/queries/usePostDetailQuery";
 import { useParams } from "react-router-dom";
 
 function DetailPostPage() {
   const { postId } = useParams();
+  const { data, isLoading, error } = usePostDetailQuery(Number(postId));
+
+  // TODO: 로딩 스켈레톤 추가
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  // TODO: 에러 처리
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="flex flex-col gap-4 items-center pt-2 pb-16 px-3">
-      <PostCard.Header
-        userInfo={{
-          userId: dummyPostDetail.userId,
-          nickname: dummyPostDetail.nickname,
-          profileImageUrl: dummyPostDetail.profileImageUrl,
-          animalType: dummyPostDetail.postType,
-        }}
-      />
-      <ImageCarousel images={dummyPostDetail.imageUrls} />
-      <PostCard.Footer
-        postId={Number(postId)}
-        didLike={dummyPostDetail.didLike}
-        likeCount={dummyPostDetail.likeCount}
-        commentCount={dummyPostDetail.commentCount}
-      />
-      <PostCard.Content
-        postId={Number(postId)}
-        thumbnailUrl={null}
-        content={dummyPostDetail.transformedContent}
-        animalType={dummyPostDetail.postType}
-        timestamp={new Date(dummyPostDetail.createdAt)}
-        emotion={dummyPostDetail.emotion}
-      />
+      {data && (
+        <>
+          <PostCard.Header
+            userInfo={{
+              userId: data?.userId,
+              nickname: data?.nickname,
+              profileImageUrl: data?.profileImageUrl,
+              animalType: data?.postType,
+            }}
+          />
+          <ImageCarousel images={data?.imageUrls} />
+          <PostCard.Footer
+            postId={Number(postId)}
+            // TODO: 좋아요 여부 확인
+            didLike={false}
+            likeCount={data?.likeCount}
+            commentCount={data?.commentCount}
+          />
+          <PostCard.Content
+            postId={Number(postId)}
+            thumbnailUrl={null}
+            content={data?.transformedContent}
+            animalType={data?.postType}
+            timestamp={new Date(data?.createdAt)}
+            emotion={data?.emotion}
+          />
+        </>
+      )}
     </div>
   );
 }
