@@ -16,3 +16,12 @@ export interface IPostSummaryData {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface IPostSummaryDataPagination {
+  currentPage: number;
+  last: boolean;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+  content: IPostSummaryData[];
+}

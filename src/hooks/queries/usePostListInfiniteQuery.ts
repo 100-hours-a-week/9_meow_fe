@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { IPostSummaryData } from "@/types/PostSummaryData";
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
+import { IPostSummaryDataPagination } from "@/types/PostSummaryData";
 import { getPostList } from "@/service/post";
 
 const fetchPostList = async () => {
@@ -15,8 +15,16 @@ const fetchPostList = async () => {
 };
 
 export const usePostListInfiniteQuery = () => {
-  return useQuery<IPostSummaryData[], Error>({
+  return useInfiniteQuery<
+    IPostSummaryDataPagination,
+    Error,
+    InfiniteData<IPostSummaryDataPagination>
+  >({
     queryKey: ["posts"],
     queryFn: fetchPostList,
+    getNextPageParam: (lastPage) => {
+      return lastPage.last ? undefined : lastPage.currentPage + 1;
+    },
+    initialPageParam: 0,
   });
 };
