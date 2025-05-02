@@ -4,9 +4,22 @@ import { IUserItem } from "@/components/common/UserItem";
 import { IPostSummaryData } from "@/types/PostSummaryData";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
 import { usePostListInfiniteQuery } from "@/hooks/queries/usePostListInfiniteQuery";
+import { useRef } from "react";
+import { useObserver } from "@/hooks/common/useObserver";
 
 export default function MainPage() {
-  const { data, isLoading, error } = usePostListInfiniteQuery();
+  const { data, fetchNextPage, hasNextPage, isLoading, error } =
+    usePostListInfiniteQuery();
+
+  const lastElementRef = useRef<HTMLDivElement | null>(null);
+  useObserver({
+    target: lastElementRef as React.RefObject<HTMLElement>,
+    onIntersect: ([entry]) => {
+      if (entry.isIntersecting && hasNextPage) {
+        fetchNextPage();
+      }
+    },
+  });
 
   // TODO: 로딩 스켈레톤 추가
   if (isLoading) {
@@ -56,6 +69,7 @@ export default function MainPage() {
           );
         })
       )}
+      <div ref={lastElementRef} />
     </div>
   );
 }
