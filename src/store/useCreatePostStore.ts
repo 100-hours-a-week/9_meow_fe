@@ -2,6 +2,7 @@ import { validateFileLength } from "@/components/pages/PostForm/validation/valid
 import { validateFileSize } from "@/components/pages/PostForm/validation/validateFileSize";
 import { ApiAnimalType } from "@/types/animal";
 import { ApiEmotion } from "@/types/Emotion";
+import { ValidationReturnType } from "@/types/ValidationReturnType";
 import { create } from "zustand";
 
 interface PreviewImage {
@@ -47,15 +48,15 @@ const useCreatePostStore = create<ICreatePostState & ICreatePostActions>(
       const currentImages = get().selectedImages;
       const totalImages = currentImages.length + files.length;
 
-      const lengthError = validateFileLength(totalImages);
-      if (lengthError) {
+      const lengthError: ValidationReturnType = validateFileLength(totalImages);
+      if (!lengthError.isValid) {
         set({ error: lengthError });
         return;
       }
 
       for (const file of files) {
-        const sizeError = validateFileSize(file);
-        if (sizeError) {
+        const sizeError: ValidationReturnType = validateFileSize(file);
+        if (!sizeError.isValid) {
           set({ error: sizeError });
           return;
         }
