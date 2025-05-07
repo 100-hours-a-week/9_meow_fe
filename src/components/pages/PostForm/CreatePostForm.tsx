@@ -1,16 +1,22 @@
-import { ReactNode, useEffect } from "react";
+import { useEffect, useState } from "react";
 import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
 import SelectEmotion from "./SelectEmotion";
 import { Button } from "@/components/ui/button";
 import usePostMutation from "@/hooks/mutations/usePostMutation";
-import useCreatePostStore from "@/store/useCreatePostStore";
 import { useNavigate } from "react-router-dom";
+import { useImageUpload } from "@/hooks/useImageUpload";
+import { ApiEmotion } from "@/types/Emotion";
 
-export default function CreatePostForm({ children }: { children: ReactNode }) {
+export default function CreatePostForm() {
   const navigate = useNavigate();
   const { mutate: postPost, isPending, isSuccess, isError } = usePostMutation();
-  const { selectedImages, content } = useCreatePostStore();
+
+  const { selectedImages, addImages, removeImage, error } = useImageUpload();
+  const [content, setContent] = useState("");
+  const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
+    ApiEmotion.NONE
+  );
 
   useEffect(() => {
     if (isSuccess) {
@@ -24,7 +30,17 @@ export default function CreatePostForm({ children }: { children: ReactNode }) {
   return (
     <div className="flex flex-col gap-4 items-center p-5">
       <h1 className="text-3xl font-bold">오늘은 무슨 일이 있었냥</h1>
-      {children}
+      <ImageInput
+        selectedImages={selectedImages}
+        addImages={addImages}
+        removeImage={removeImage}
+        error={error}
+      />
+      <PostContentInput content={content} setContent={setContent} />
+      <SelectEmotion
+        selectedEmotion={selectedEmotion}
+        setEmotion={setSelectedEmotion}
+      />
       <div className="flex gap-2 w-full justify-end">
         <Button variant="primarySolid">취소냥</Button>
         <Button
@@ -40,7 +56,3 @@ export default function CreatePostForm({ children }: { children: ReactNode }) {
     </div>
   );
 }
-
-CreatePostForm.ImageInput = ImageInput;
-CreatePostForm.PostContentInput = PostContentInput;
-CreatePostForm.SelectEmotion = SelectEmotion;

@@ -1,11 +1,18 @@
 import { ChangeEvent } from "react";
-import useCreatePostStore from "@/store/useCreatePostStore";
 import { MAX_IMAGES } from "./validation/validateFileLength";
+import { PreviewImage } from "@/hooks/useImageUpload";
 
-export default function ImageInput() {
-  const { selectedImages, error, addImages, removeImage } =
-    useCreatePostStore();
-
+export default function ImageInput({
+  selectedImages,
+  addImages,
+  removeImage,
+  error,
+}: {
+  selectedImages: PreviewImage[];
+  addImages: (files: File[]) => void;
+  removeImage: (index: number) => void;
+  error: string | null;
+}) {
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
@@ -56,9 +63,7 @@ export default function ImageInput() {
         ))}
       </div>
       <div className="w-full flex justify-end items-center gap-2">
-        {error?.isValid === false && (
-          <p className="text-xs text-destructive">{error.message}</p>
-        )}
+        {error && <p className="text-xs text-destructive">{error}</p>}
         <p className="text-xs">{selectedImages.length}/3</p>
       </div>
     </div>
