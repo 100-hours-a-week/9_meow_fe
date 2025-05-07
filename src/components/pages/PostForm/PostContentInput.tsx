@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 
 const MAX_LENGTH = 200;
+const MIN_LENGTH = 5;
 
 interface IPostContentInput {
   content: string;
@@ -27,7 +28,7 @@ export default function PostContentInput({
       <div
         className={cn(
           "text-sm text-right",
-          content.length > MAX_LENGTH
+          content.length > MAX_LENGTH || content.length < MIN_LENGTH
             ? "text-destructive"
             : "text-foreground/50"
         )}
