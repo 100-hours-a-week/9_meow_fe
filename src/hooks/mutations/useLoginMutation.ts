@@ -1,18 +1,18 @@
-import { getLogin } from "@/service/login";
+import { getLoginId } from "@/service/login";
 import { useMutation } from "@tanstack/react-query";
-
+import { ILoginId } from "@/types/Login";
 interface ILogin {
   code: string;
 }
 
 export default function useLoginMutation() {
-  return useMutation({
-    mutationFn: ({ code }: ILogin) => getLogin(code),
-    onSuccess: () => {
-      console.log("성공!");
+  return useMutation<ILoginId, Error, ILogin>({
+    mutationFn: ({ code }: ILogin) => getLoginId(code),
+    onSuccess: (data: ILoginId) => {
+      console.log(data);
     },
-    onError: () => {
-      console.log("실패!");
+    onError: (error) => {
+      console.log(error);
     },
   });
 }
