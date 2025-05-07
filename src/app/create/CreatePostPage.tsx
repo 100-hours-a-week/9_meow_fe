@@ -1,13 +1,7 @@
 import { CreatePostForm } from "@/components/pages";
 
 function CreatePostPage() {
-  return (
-    <CreatePostForm>
-      <CreatePostForm.ImageInput />
-      <CreatePostForm.PostContentInput />
-      <CreatePostForm.SelectEmotion />
-    </CreatePostForm>
-  );
+  return <CreatePostForm />;
 }
 
 export default CreatePostPage;

@@ -1,11 +1,16 @@
 import { cn } from "@/lib/utils";
-import useCreatePostStore from "@/store/useCreatePostStore";
 
 const MAX_LENGTH = 200;
 
-export default function PostContentInput() {
-  const { content, setContent } = useCreatePostStore();
+interface IPostContentInput {
+  content: string;
+  setContent: (content: string) => void;
+}
 
+export default function PostContentInput({
+  content,
+  setContent,
+}: IPostContentInput) {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
     setContent(newValue);
