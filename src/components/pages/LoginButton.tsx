@@ -1,9 +1,16 @@
 import KakaoLoginIcon from "/loginButton/kakao_login_large_narrow.png";
+import { useKakaoUrlQuery } from "@/hooks/queries/useKakaoUrlQuery";
 
 export default function LoginButton() {
+  const { data: kakaoUrl } = useKakaoUrlQuery();
+
   return (
     <button
-      onClick={() => console.log("카카오 로그인 clicked")}
+      onClick={() => {
+        if (kakaoUrl) {
+          window.location.href = kakaoUrl;
+        }
+      }}
       className="relative"
     >
       <img src={KakaoLoginIcon} alt="카카오 로그인" />
