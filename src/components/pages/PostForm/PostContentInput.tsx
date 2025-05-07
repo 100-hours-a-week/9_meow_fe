@@ -1,11 +1,17 @@
 import { cn } from "@/lib/utils";
-import useCreatePostStore from "@/store/useCreatePostStore";
 
 const MAX_LENGTH = 200;
+const MIN_LENGTH = 5;
 
-export default function PostContentInput() {
-  const { content, setContent } = useCreatePostStore();
+interface IPostContentInput {
+  content: string;
+  setContent: (content: string) => void;
+}
 
+export default function PostContentInput({
+  content,
+  setContent,
+}: IPostContentInput) {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
     setContent(newValue);
@@ -22,7 +28,7 @@ export default function PostContentInput() {
       <div
         className={cn(
           "text-sm text-right",
-          content.length > MAX_LENGTH
+          content.length > MAX_LENGTH || content.length < MIN_LENGTH
             ? "text-destructive"
             : "text-foreground/50"
         )}
