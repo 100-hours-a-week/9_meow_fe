@@ -32,14 +32,15 @@ export default function NicknameInput({
 
   return (
     <div className="flex flex-col gap-1 w-full max-w-[400px]">
-      <Label className="text-xl text-foreground font-bold flex items-center gap-1 mb-1">
-        이름이 뭐냥 <span className="text-destructive text-lg">*</span>
+      <Label className="text-xl text-foreground font-bold flex items-center gap-1">
+        이름이 뭐냥 <span className="text-destructive">*</span>
       </Label>
       <div className="flex items-center w-full gap-3 h-10">
         <input
           className={cn(
             "flex-1 h-full rounded-xl border-2 border-foreground/30 px-4 text-foreground text-lg placeholder:text-foreground/50 placeholder:opacity-70 focus:outline-none focus:ring-primary focus:border-primary",
-            error && "border-destructive"
+            error &&
+              "border-destructive ring-destructive focus:border-destructive focus:ring-destructive"
           )}
           placeholder="닉네임을 입력하세야옹..."
           value={nicknameValue}
@@ -53,7 +54,7 @@ export default function NicknameInput({
           중복 확인
         </Button>
       </div>
-      <div>
+      <div className="w-full h-6">
         {error && (
           <span className="text-sm text-destructive font-bold">{error}</span>
         )}
