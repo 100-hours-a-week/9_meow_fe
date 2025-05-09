@@ -24,6 +24,7 @@ export default function SignupForm() {
       />
       <SelectAnimalType
         titleText="어떤 동물이냐옹"
+        animals={[ApiAnimalType.CAT, ApiAnimalType.DOG]}
         selectedAnimal={selectedAnimal}
         setAnimal={setSelectedAnimal}
       />
