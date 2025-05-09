@@ -28,9 +28,9 @@ export default function ProfileImageSelection({
   };
 
   return (
-    <div className="flex flex-col gap-0 items-center px-2 py-2">
+    <div className="flex flex-col gap-0 items-center w-full max-w-[400px]">
       {titleText && (
-        <Label className="text-xl text-foreground font-bold flex items-center gap-1">
+        <Label className="text-xl text-foreground font-bold flex items-center gap-1 self-start">
           {titleText + " "}
           {isRequired && <span className="text-destructive">*</span>}
         </Label>
