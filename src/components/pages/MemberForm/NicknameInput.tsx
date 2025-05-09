@@ -9,20 +9,24 @@ export interface INicknameInput {
   isRequired?: boolean;
   nicknameValue: string;
   setNicknameValue: (value: string) => void;
+  onDuplicateCheck?: (isDuplicate: boolean) => void;
 }
 
 export default function NicknameInput({
   isRequired = false,
   nicknameValue,
   setNicknameValue,
+  onDuplicateCheck,
 }: INicknameInput) {
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const {
     mutate: checkNickname,
     data: isDuplicate,
     isPending,
     isError,
+    isSuccess,
   } = useMutation({
     mutationFn: (nickname: string) => getDuplicateNickname(nickname),
   });
@@ -36,6 +40,8 @@ export default function NicknameInput({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setNicknameValue(value);
+    setSuccessMessage(null);
+    onDuplicateCheck?.(true); // Reset duplicate check status when nickname changes
 
     const emojiRegex = /[\p{Emoji}]/u;
     if (emojiRegex.test(value)) {
@@ -52,16 +58,24 @@ export default function NicknameInput({
   useEffect(() => {
     if (isError) {
       setError("문제 생겼다옹... 잠시 후 다시 시도해라옹");
+      setSuccessMessage(null);
+      onDuplicateCheck?.(true);
     } else {
       setError(null);
     }
 
-    if (isDuplicate) {
-      setError("중복된 닉네임이 있다옹");
-    } else {
-      setError(null);
+    if (isSuccess) {
+      if (isDuplicate) {
+        setError("중복된 닉네임이 있다옹");
+        setSuccessMessage(null);
+        onDuplicateCheck?.(true);
+      } else {
+        setError(null);
+        setSuccessMessage("사용 가능한 닉네임이다옹!");
+        onDuplicateCheck?.(false);
+      }
     }
-  }, [isError, isDuplicate]);
+  }, [isError, isDuplicate, onDuplicateCheck, isSuccess]);
 
   return (
     <div className="flex flex-col gap-1 w-full max-w-[400px]">
@@ -92,6 +106,11 @@ export default function NicknameInput({
       <div className="w-full h-6">
         {error && (
           <span className="text-sm text-destructive font-bold">{error}</span>
+        )}
+        {successMessage && (
+          <span className="text-sm text-green-500 font-bold">
+            {successMessage}
+          </span>
         )}
       </div>
     </div>

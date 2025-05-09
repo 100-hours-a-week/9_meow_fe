@@ -19,6 +19,7 @@ export default function SignupForm() {
   const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
     ApiAnimalType.CAT
   );
+  const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
 
   const handleSignup = () => {
     if (!kakaoId) {
@@ -33,6 +34,9 @@ export default function SignupForm() {
     }
   };
 
+  const isSubmitDisabled =
+    isPending || isNicknameDuplicate || !nicknameValue.trim();
+
   return (
     <div className="flex flex-col gap-4 items-center pt-8">
       <h2 className="text-4xl">환영한다냥</h2>
@@ -45,6 +49,7 @@ export default function SignupForm() {
         isRequired={true}
         nicknameValue={nicknameValue}
         setNicknameValue={setNicknameValue}
+        onDuplicateCheck={setIsNicknameDuplicate}
       />
       <SelectAnimalType
         titleText="어떤 동물이냐옹"
@@ -57,10 +62,10 @@ export default function SignupForm() {
         <Button variant="primarySolid">취소냥</Button>
         <Button
           variant="secondarySolid"
-          disabled={isPending}
+          disabled={isSubmitDisabled}
           onClick={handleSignup}
         >
-          {isPending ? "잠시만 기다려 달라옹..." : "£ 다 적으면 누르라냥!"}
+          {isPending ? "잠시만 기다려 달라옹..." : "다 적으면 누르라냥!"}
         </Button>
       </div>
       <Button variant="link">탈퇴할거냥</Button>
