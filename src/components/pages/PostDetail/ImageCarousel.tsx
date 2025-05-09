@@ -5,14 +5,30 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useState, useCallback } from "react";
 
 interface IImageCarousel {
   images: string[];
 }
 
 export default function ImageCarousel({ images }: IImageCarousel) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleSlideChange = useCallback((index: number) => {
+    setCurrentIndex(index);
+  }, []);
+
   return (
-    <Carousel className="w-full max-w-xs">
+    <Carousel
+      className="w-full max-w-xs"
+      setApi={(api) => {
+        if (api) {
+          api.on("select", () => {
+            handleSlideChange(api.selectedScrollSnap());
+          });
+        }
+      }}
+    >
       <CarouselContent>
         {images.map((image) => (
           <CarouselItem key={image}>
@@ -24,8 +40,8 @@ export default function ImageCarousel({ images }: IImageCarousel) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      {currentIndex > 0 && <CarouselPrevious />}
+      {currentIndex < images.length - 1 && <CarouselNext />}
     </Carousel>
   );
 }
