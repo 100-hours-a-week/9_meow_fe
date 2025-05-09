@@ -29,7 +29,7 @@ export default function PostContent({
       className="flex flex-col gap-1 w-full"
     >
       <div className="flex flex-row items-start gap-2">
-        <p className="text-base whitespace-pre-wrap">{content}</p>
+        <p className="text-base whitespace-pre-wrap flex-1">{content}</p>
         {thumbnailUrl && (
           <img
             src={thumbnailUrl}
