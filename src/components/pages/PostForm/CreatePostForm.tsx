@@ -18,6 +18,14 @@ export default function CreatePostForm() {
     ApiEmotion.NONE
   );
 
+  const handlePostSubmit = () => {
+    postPost({
+      images: selectedImages.map((img) => img.file),
+      content,
+      emotion: selectedEmotion,
+    });
+  };
+
   useEffect(() => {
     if (isSuccess) {
       navigate("/");
@@ -46,9 +54,7 @@ export default function CreatePostForm() {
         <Button
           variant="secondarySolid"
           disabled={isPending}
-          onClick={() =>
-            postPost({ images: selectedImages.map((img) => img.file), content })
-          }
+          onClick={handlePostSubmit}
         >
           {isPending ? "잠시만 기다려주세요냥" : "다 적으면 누르라냥!"}
         </Button>

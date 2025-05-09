@@ -7,15 +7,16 @@ import { useMutation } from "@tanstack/react-query";
 interface IPost {
   images: File[];
   content: string;
+  emotion: ApiEmotion;
 }
 
 export default function usePostMutation() {
   return useMutation({
-    mutationFn: ({ images, content }: IPost) =>
+    mutationFn: ({ images, content, emotion }: IPost) =>
       postPost({
         images,
         content,
-        emotion: ApiEmotion.HAPPY,
+        emotion,
         post_type: ApiAnimalType.CAT,
       }),
     onSuccess: () => {
