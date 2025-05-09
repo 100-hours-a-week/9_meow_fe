@@ -5,6 +5,7 @@ import SelectAnimalType from "./SelectAnimalType";
 
 export default function SignupForm() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [nicknameValue, setNicknameValue] = useState<string>("");
 
   return (
     <div className="flex flex-col gap-4 items-center pt-8">
@@ -13,7 +14,10 @@ export default function SignupForm() {
         selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
       />
-      <NicknameInput />
+      <NicknameInput
+        nicknameValue={nicknameValue}
+        setNicknameValue={setNicknameValue}
+      />
       <SelectAnimalType />
     </div>
   );
