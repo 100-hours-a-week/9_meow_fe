@@ -3,13 +3,35 @@ import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SelectAnimalType from "./SelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
+import { Button } from "@/components/ui/button";
+import { IUser, postUsers } from "@/service/signup";
+import { useMutation } from "@tanstack/react-query";
+import useKakaoIdStore from "@/store/useKakaoIdStore";
 
 export default function SignupForm() {
+  const { mutate: signup, isPending } = useMutation({
+    mutationFn: (data: IUser) => postUsers(data),
+  });
+  const { kakaoId } = useKakaoIdStore();
+
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [nicknameValue, setNicknameValue] = useState<string>("");
   const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
     ApiAnimalType.CAT
   );
+
+  const handleSignup = () => {
+    if (!kakaoId) {
+      alert("카카오 로그인을 확인해주세옹");
+    } else {
+      signup({
+        nickname: nicknameValue,
+        animalType: selectedAnimal,
+        profileImage: selectedImage,
+        kakaoId,
+      });
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4 items-center pt-8">
@@ -31,6 +53,17 @@ export default function SignupForm() {
         selectedAnimal={selectedAnimal}
         setAnimal={setSelectedAnimal}
       />
+      <div className="flex gap-10 w-full justify-center">
+        <Button variant="primarySolid">취소냥</Button>
+        <Button
+          variant="secondarySolid"
+          disabled={isPending}
+          onClick={handleSignup}
+        >
+          {isPending ? "잠시만 기다려 달라옹..." : "£ 다 적으면 누르라냥!"}
+        </Button>
+      </div>
+      <Button variant="link">탈퇴할거냥</Button>
     </div>
   );
 }
