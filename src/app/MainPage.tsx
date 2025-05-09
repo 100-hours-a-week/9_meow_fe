@@ -37,7 +37,7 @@ export default function MainPage() {
   }
 
   return (
-    <div className="pt-2 pb-16 flex flex-col gap-2.5">
+    <div className="pt-2 pb-16 flex flex-col gap-2.5 px-2">
       {data.pages.map((page) =>
         page.content.map((post: IPostSummaryData) => {
           const userInfo: IUserItem = {
