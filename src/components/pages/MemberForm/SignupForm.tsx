@@ -2,10 +2,14 @@ import { useState } from "react";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SelectAnimalType from "./SelectAnimalType";
+import { ApiAnimalType } from "@/types/animal";
 
 export default function SignupForm() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [nicknameValue, setNicknameValue] = useState<string>("");
+  const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
+    ApiAnimalType.CAT
+  );
 
   return (
     <div className="flex flex-col gap-4 items-center pt-8">
@@ -18,7 +22,11 @@ export default function SignupForm() {
         nicknameValue={nicknameValue}
         setNicknameValue={setNicknameValue}
       />
-      <SelectAnimalType />
+      <SelectAnimalType
+        titleText="어떤 동물이냐옹"
+        selectedAnimal={selectedAnimal}
+        setAnimal={setSelectedAnimal}
+      />
     </div>
   );
 }
