@@ -5,6 +5,7 @@ import { Label } from "@radix-ui/react-label";
 
 interface ISelectAnimalType {
   titleText?: string;
+  isRequired?: boolean;
   animals: ApiAnimalType[];
   selectedAnimal: ApiAnimalType;
   setAnimal: (animal: ApiAnimalType) => void;
@@ -12,6 +13,7 @@ interface ISelectAnimalType {
 
 export default function SelectAnimalType({
   titleText,
+  isRequired = false,
   animals,
   selectedAnimal,
   setAnimal,
@@ -23,10 +25,10 @@ export default function SelectAnimalType({
   return (
     <div className="flex flex-col gap-1 w-full max-w-[400px]">
       {titleText && (
-        <p className="text-xl text-foreground font-bold">
+        <Label className="text-xl text-foreground font-bold flex items-center gap-1">
           {titleText + " "}
-          <span className="text-destructive">*</span>
-        </p>
+          {isRequired && <span className="text-destructive">*</span>}
+        </Label>
       )}
       <RadioGroup
         defaultValue={selectedAnimal}
@@ -39,7 +41,7 @@ export default function SelectAnimalType({
               id={`${animal}-${index + 1}`}
               onClick={() => handleAnimalChange(animal)}
             />
-            <Label htmlFor={`${animal}-${index + 1}`} className="text-lg">
+            <Label htmlFor={`r${index + 1}`} className="text-lg">
               {convertAnimalTypeToDisplay(animal)}
             </Label>
           </div>

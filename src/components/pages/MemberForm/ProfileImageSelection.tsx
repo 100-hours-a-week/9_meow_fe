@@ -1,12 +1,17 @@
 import { ChangeEvent } from "react";
 import { useImagePreview } from "@/hooks/common/useImagePreview";
+import { Label } from "@radix-ui/react-label";
 
 interface IProfileImageSelection {
+  titleText?: string;
+  isRequired?: boolean;
   selectedImage: File | null;
   setSelectedImage: (image: File) => void;
 }
 
 export default function ProfileImageSelection({
+  titleText,
+  isRequired = false,
   selectedImage,
   setSelectedImage,
 }: IProfileImageSelection) {
@@ -24,6 +29,12 @@ export default function ProfileImageSelection({
 
   return (
     <div className="flex flex-col gap-0 items-center px-2 py-2">
+      {titleText && (
+        <Label className="text-xl text-foreground font-bold flex items-center gap-1">
+          {titleText + " "}
+          {isRequired && <span className="text-destructive">*</span>}
+        </Label>
+      )}
       <div className="flex gap-3">
         <label className="flex items-center justify-center w-[100px] h-[100px] bg-orange-950 border border-foreground/30 rounded-full cursor-pointer overflow-hidden">
           {previewUrl ? (

@@ -4,11 +4,13 @@ import { cn } from "@/lib/utils";
 import React from "react";
 
 export interface INicknameInput {
+  isRequired?: boolean;
   nicknameValue: string;
   setNicknameValue: (value: string) => void;
 }
 
 export default function NicknameInput({
+  isRequired = false,
   nicknameValue,
   setNicknameValue,
 }: INicknameInput) {
@@ -33,7 +35,7 @@ export default function NicknameInput({
   return (
     <div className="flex flex-col gap-1 w-full max-w-[400px]">
       <Label className="text-xl text-foreground font-bold flex items-center gap-1">
-        이름이 뭐냥 <span className="text-destructive">*</span>
+        이름이 뭐냥 {isRequired && <span className="text-destructive">*</span>}
       </Label>
       <div className="flex items-center w-full gap-3 h-10">
         <input
