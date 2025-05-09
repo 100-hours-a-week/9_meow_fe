@@ -1,7 +1,9 @@
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import React from "react";
+import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { getDuplicateNickname } from "@/service/signup";
 
 export interface INicknameInput {
   isRequired?: boolean;
@@ -14,7 +16,22 @@ export default function NicknameInput({
   nicknameValue,
   setNicknameValue,
 }: INicknameInput) {
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const {
+    mutate: checkNickname,
+    data: isDuplicate,
+    isPending,
+    isError,
+  } = useMutation({
+    mutationFn: (nickname: string) => getDuplicateNickname(nickname),
+  });
+
+  const handleCheckNickname = () => {
+    if (nicknameValue.trim()) {
+      checkNickname(nicknameValue);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -31,6 +48,20 @@ export default function NicknameInput({
       setError(null);
     }
   };
+
+  useEffect(() => {
+    if (isError) {
+      setError("문제 생겼다옹... 잠시 후 다시 시도해라옹");
+    } else {
+      setError(null);
+    }
+
+    if (isDuplicate) {
+      setError("중복된 닉네임이 있다옹");
+    } else {
+      setError(null);
+    }
+  }, [isError, isDuplicate]);
 
   return (
     <div className="flex flex-col gap-1 w-full max-w-[400px]">
@@ -52,8 +83,10 @@ export default function NicknameInput({
           type="button"
           variant="primaryOutline"
           className="h-full px-5 rounded-xl text-foreground text-lg font-bold"
+          onClick={handleCheckNickname}
+          disabled={isPending}
         >
-          중복 확인
+          {isPending ? "확인 중..." : "중복 확인"}
         </Button>
       </div>
       <div className="w-full h-6">

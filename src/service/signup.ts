@@ -21,3 +21,10 @@ export const postUsers = async (user: IUser) => {
   const response = await formInstance.post("/users", formData);
   return response.data;
 };
+
+export const getDuplicateNickname = async (nickname: string) => {
+  const response = await formInstance.get(
+    `/users/check-nickname?nickname=${nickname}`
+  );
+  return response.data;
+};
