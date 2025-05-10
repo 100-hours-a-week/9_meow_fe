@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import useKakaoIdStore from "@/store/useKakaoIdStore";
 import { useMutation } from "@tanstack/react-query";
 import { ILoginCode, IKakaoAuthResponse } from "@/types/Login";
-import { getKakaoId, postLogin } from "@/service/login";
+import { getKakaoId, postLogin } from "@/api/login";
 import useTokenStore from "@/store/useTokenStore";
 
 export default function RedirectPage() {

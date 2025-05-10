@@ -5,11 +5,11 @@ import ProfileImageSelection from "./ProfileImageSelection";
 import SelectAnimalType from "./SelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
 import { Button } from "@/components/ui/button";
-import { IUser, postUsers } from "@/service/signup";
+import { IUser, postUsers } from "@/api/signup";
 import { useMutation } from "@tanstack/react-query";
 import useKakaoIdStore from "@/store/useKakaoIdStore";
 import useTokenStore from "@/store/useTokenStore";
-import { postLogin } from "@/service/login";
+import { postLogin } from "@/api/login";
 
 export default function SignupForm() {
   const navigate = useNavigate();

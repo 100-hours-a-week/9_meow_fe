@@ -1,4 +1,4 @@
-import { postPost } from "@/service/post";
+import { postPost } from "@/api/post";
 import { ApiAnimalType } from "@/types/animal";
 import { ApiEmotion } from "@/types/Emotion";
 

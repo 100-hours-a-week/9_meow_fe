@@ -1,4 +1,4 @@
-import { getKakaoUrl } from "@/service/login";
+import { getKakaoUrl } from "@/api/login";
 import { useQuery } from "@tanstack/react-query";
 
 export const useKakaoUrlQuery = () => {

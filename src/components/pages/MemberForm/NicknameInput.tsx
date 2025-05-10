@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { getDuplicateNickname } from "@/service/signup";
+import { getDuplicateNickname } from "@/api/signup";
 
 export interface INicknameInput {
   isRequired?: boolean;
@@ -87,7 +87,7 @@ export default function NicknameInput({
           className={cn(
             "flex-1 h-full rounded-xl border-2 border-foreground/30 px-4 text-foreground text-lg placeholder:text-foreground/50 placeholder:opacity-70 focus:outline-none focus:ring-primary focus:border-primary",
             error &&
-              "border-destructive ring-destructive focus:border-destructive focus:ring-destructive"
+              "border-destructive ring-destructive focus:border-destructive focus:ring-destructive",
           )}
           placeholder="닉네임을 입력하세야옹..."
           value={nicknameValue}

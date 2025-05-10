@@ -1,6 +1,6 @@
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { IPostSummaryDataPagination } from "@/types/PostSummaryData";
-import { getPostList } from "@/service/post";
+import { getPostList } from "@/api/post";
 
 const fetchPostList = async ({ pageParam }: { pageParam: number }) => {
   const response = await getPostList({ page: pageParam, size: 10 });

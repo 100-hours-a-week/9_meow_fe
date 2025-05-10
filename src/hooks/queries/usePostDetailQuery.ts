@@ -1,4 +1,4 @@
-import { getPostDetail } from "@/service/post";
+import { getPostDetail } from "@/api/post";
 import IPostDetailData from "@/types/PostDetailData";
 import { useQuery } from "@tanstack/react-query";
 
