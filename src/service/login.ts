@@ -5,7 +5,7 @@ export const getKakaoUrl = async () => {
   return response.data;
 };
 
-export const getLoginId = async (code: string) => {
+export const getKakaoId = async (code: string) => {
   const response = await defaultInstance.get("/auth/kakao/callback", {
     params: {
       code,

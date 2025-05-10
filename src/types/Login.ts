@@ -1,4 +1,4 @@
-export interface ILoginId {
+export interface IKakaoAuthResponse {
   kakaoId: number;
   isMember: boolean;
 }
