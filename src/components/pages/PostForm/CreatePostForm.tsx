@@ -15,7 +15,7 @@ export default function CreatePostForm() {
   const { selectedImages, addImages, removeImage, error } = useImageUpload();
   const [content, setContent] = useState("");
   const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
-    ApiEmotion.NONE
+    ApiEmotion.NONE,
   );
 
   const handlePostSubmit = () => {
@@ -56,7 +56,7 @@ export default function CreatePostForm() {
           disabled={isPending}
           onClick={handlePostSubmit}
         >
-          {isPending ? "잠시만 기다려주세요냥" : "다 적으면 누르라냥!"}
+          {isPending ? "잠시만 기다려주세옹" : "다 적으면 누르라냥!"}
         </Button>
       </div>
     </div>
