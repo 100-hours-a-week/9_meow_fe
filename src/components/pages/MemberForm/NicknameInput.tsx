@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { getDuplicateNickname } from "@/api/signup";
+import { signupQueries } from "@/api/queries/signupQueries";
 
 export interface INicknameInput {
   isRequired?: boolean;
@@ -27,9 +27,7 @@ export default function NicknameInput({
     isPending,
     isError,
     isSuccess,
-  } = useMutation({
-    mutationFn: (nickname: string) => getDuplicateNickname(nickname),
-  });
+  } = useMutation({ ...signupQueries.checkNickname() });
 
   const handleCheckNickname = () => {
     if (nicknameValue.trim()) {

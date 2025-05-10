@@ -1,8 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import KakaoLoginIcon from "/loginButton/kakao_login_large_narrow.png";
-import { useKakaoUrlQuery } from "@/hooks/queries/useKakaoUrlQuery";
+import { loginQueries } from "@/api/queries/loginQueries";
 
 export default function LoginButton() {
-  const { data: kakaoUrl } = useKakaoUrlQuery();
+  const { data: kakaoUrl } = useQuery(loginQueries.kakaoUrl());
 
   return (
     <button

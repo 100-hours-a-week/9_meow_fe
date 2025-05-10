@@ -1,13 +1,7 @@
 import formInstance from "./instance/formInstance";
+import { IUserRequest } from "./types";
 
-export interface IUser {
-  kakaoId: number;
-  nickname: string;
-  animalType: string;
-  profileImage: File | null;
-}
-
-export const postUsers = async (user: IUser) => {
+export const postUsers = async (user: IUserRequest) => {
   const formData = new FormData();
 
   if (user.profileImage) {
@@ -24,7 +18,7 @@ export const postUsers = async (user: IUser) => {
 
 export const getDuplicateNickname = async (nickname: string) => {
   const response = await formInstance.get(
-    `/users/check-nickname?nickname=${nickname}`
+    `/users/check-nickname?nickname=${nickname}`,
   );
   return response.data;
 };

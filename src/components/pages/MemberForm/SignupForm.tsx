@@ -1,44 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SelectAnimalType from "./SelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
 import { Button } from "@/components/ui/button";
-import { IUser, postUsers } from "@/api/signup";
 import { useMutation } from "@tanstack/react-query";
 import useKakaoIdStore from "@/store/useKakaoIdStore";
 import useTokenStore from "@/store/useTokenStore";
-import { postLogin } from "@/api/login";
+import { signupQueries } from "@/api/queries/signupQueries";
+import { loginQueries } from "@/api/queries/loginQueries";
 
 export default function SignupForm() {
   const navigate = useNavigate();
-  const { kakaoId } = useKakaoIdStore();
-  const setToken = useTokenStore((state) => state.setToken);
-
+  const { kakaoId, setKakaoId } = useKakaoIdStore();
+  const { token, setToken } = useTokenStore();
   const { mutate: login, isPending: isLoginPending } = useMutation({
-    mutationFn: (kakaoId: number) => postLogin(kakaoId),
-    onSuccess: (data) => {
-      setToken(data.token);
-      navigate("/");
-    },
-    onError: (error) => {
-      console.error("Login failed:", error);
-      alert("로그인에 실패했다옹... 다시 시도해달라옹");
-    },
+    ...loginQueries.login({ setToken }),
   });
-
-  const { mutate: signup, isPending: isSignupPending } = useMutation({
-    mutationFn: (data: IUser) => postUsers(data),
-    onSuccess: () => {
-      if (kakaoId) {
-        login(kakaoId);
-      }
-    },
-    onError: (error) => {
-      alert("회원가입에 실패했다옹... 다시 시도해달라옹");
-      console.error(error);
-    },
+  const {
+    mutate: signup,
+    isPending: isSignupPending,
+    isSuccess: isSignupSuccess,
+  } = useMutation({
+    ...signupQueries.signup({ setKakaoId }),
   });
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -66,6 +51,18 @@ export default function SignupForm() {
     isLoginPending ||
     isNicknameDuplicate ||
     !nicknameValue.trim();
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
+
+  useEffect(() => {
+    if (isSignupSuccess && kakaoId) {
+      login(kakaoId);
+    }
+  }, [isSignupSuccess, kakaoId, login]);
 
   return (
     <div className="flex flex-col gap-4 items-center pt-8">
