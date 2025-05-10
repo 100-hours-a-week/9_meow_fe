@@ -1,7 +1,7 @@
 import { PostCard } from "@/components/common";
 import { IPostContent } from "@/components/common/PostCard/PostContent";
 import { IUserItem } from "@/components/common/UserItem";
-import { IPostSummaryData } from "@/types/PostSummaryData";
+import { IPostSummaryData } from "@/api/types";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
 import { useRef } from "react";
 import { useObserver } from "@/hooks/common/useObserver";

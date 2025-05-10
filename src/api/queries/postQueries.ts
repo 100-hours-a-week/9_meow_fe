@@ -1,7 +1,9 @@
-import { IPostSummaryDataPagination } from "@/types/PostSummaryData";
-import { getPostDetail, getPostList } from "../post";
+import { IPostSummaryDataPagination } from "@/api/types";
+import { getPostDetail, getPostList, postPost } from "../post";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
-import IPostDetailData from "@/types/PostDetailData";
+import { IPostDetailData } from "@/api/types";
+import { ApiAnimalType } from "@/types/animal";
+import { ICreatePost } from "../types";
 
 export const postQueries = {
   all: () => ["post"] as const,
@@ -22,5 +24,18 @@ export const postQueries = {
       queryFn: () => getPostDetail(postId),
     }),
 
-  create: () => {},
+  create: () => ({
+    mutationKey: [...postQueries.all(), "create"],
+    mutationFn: ({ images, content, emotion }: ICreatePost) =>
+      postPost({
+        images,
+        content,
+        emotion,
+        // TODO : 로그인 정보에 있는 animal type 불러오도록
+        post_type: ApiAnimalType.CAT,
+      }),
+    onError: () => {
+      alert("게시글 작성에 실패했다옹. 잠시 후 다시 시도해보라냥");
+    },
+  }),
 };

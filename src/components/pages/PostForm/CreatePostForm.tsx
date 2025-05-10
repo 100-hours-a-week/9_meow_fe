@@ -3,14 +3,20 @@ import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
 import SelectEmotion from "./SelectEmotion";
 import { Button } from "@/components/ui/button";
-import usePostMutation from "@/hooks/mutations/usePostMutation";
 import { useNavigate } from "react-router-dom";
 import { useImageUpload } from "@/hooks/common/useImageUpload";
 import { ApiEmotion } from "@/types/Emotion";
+import { postQueries } from "@/api/queries/postQueries";
+import { useMutation } from "@tanstack/react-query";
 
 export default function CreatePostForm() {
   const navigate = useNavigate();
-  const { mutate: postPost, isPending, isSuccess, isError } = usePostMutation();
+  const {
+    mutate: createPost,
+    isPending,
+    isSuccess,
+    isError,
+  } = useMutation({ ...postQueries.create() });
 
   const { selectedImages, addImages, removeImage, error } = useImageUpload();
   const [content, setContent] = useState("");
@@ -19,7 +25,7 @@ export default function CreatePostForm() {
   );
 
   const handlePostSubmit = () => {
-    postPost({
+    createPost({
       images: selectedImages.map((img) => img.file),
       content,
       emotion: selectedEmotion,
@@ -29,9 +35,6 @@ export default function CreatePostForm() {
   useEffect(() => {
     if (isSuccess) {
       navigate("/");
-    }
-    if (isError) {
-      alert("게시글 작성에 실패했어요. 다시 시도해주세요.");
     }
   }, [isSuccess, isError, navigate]);
 
