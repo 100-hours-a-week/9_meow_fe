@@ -1,12 +1,13 @@
 import { IPostSummaryDataPagination } from "@/types/PostSummaryData";
-import { getPostList } from "../post";
-import { infiniteQueryOptions } from "@tanstack/react-query";
+import { getPostDetail, getPostList } from "../post";
+import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
+import IPostDetailData from "@/types/PostDetailData";
 
 export const postQueries = {
   all: () => ["post"] as const,
 
   list: ({ pageParam }: { pageParam: number }) =>
-    infiniteQueryOptions({
+    infiniteQueryOptions<IPostSummaryDataPagination, Error>({
       queryKey: [...postQueries.all(), "list"],
       queryFn: () => getPostList({ page: pageParam, size: 10 }),
       getNextPageParam: (lastPage: IPostSummaryDataPagination) => {
@@ -15,7 +16,11 @@ export const postQueries = {
       initialPageParam: 0,
     }),
 
-  detail: () => {},
+  detail: (postId: number) =>
+    queryOptions<IPostDetailData, Error>({
+      queryKey: [...postQueries.all(), "detail", postId],
+      queryFn: () => getPostDetail(postId),
+    }),
 
   create: () => {},
 };

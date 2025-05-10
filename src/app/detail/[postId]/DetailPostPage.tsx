@@ -1,11 +1,14 @@
+import { postQueries } from "@/api/queries/postQueries";
 import { PostCard } from "@/components/common";
 import { ImageCarousel } from "@/components/pages";
-import { usePostDetailQuery } from "@/hooks/queries/usePostDetailQuery";
+import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
 function DetailPostPage() {
   const { postId } = useParams();
-  const { data, isLoading, error } = usePostDetailQuery(Number(postId));
+  const { data, isLoading, error } = useQuery({
+    ...postQueries.detail(Number(postId)),
+  });
 
   // TODO: 로딩 스켈레톤 추가
   if (isLoading) {
