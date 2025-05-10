@@ -13,3 +13,10 @@ export const getKakaoId = async (code: string) => {
   });
   return response.data;
 };
+
+export const postLogin = async (kakaoId: number) => {
+  const response = await defaultInstance.post("/auth/login", {
+    kakaoId,
+  });
+  return response.data;
+};

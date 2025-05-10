@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SelectAnimalType from "./SelectAnimalType";
@@ -7,17 +8,43 @@ import { Button } from "@/components/ui/button";
 import { IUser, postUsers } from "@/service/signup";
 import { useMutation } from "@tanstack/react-query";
 import useKakaoIdStore from "@/store/useKakaoIdStore";
+import useTokenStore from "@/store/useTokenStore";
+import { postLogin } from "@/service/login";
 
 export default function SignupForm() {
-  const { mutate: signup, isPending } = useMutation({
-    mutationFn: (data: IUser) => postUsers(data),
-  });
+  const navigate = useNavigate();
   const { kakaoId } = useKakaoIdStore();
+  const setToken = useTokenStore((state) => state.setToken);
+
+  const { mutate: login, isPending: isLoginPending } = useMutation({
+    mutationFn: (kakaoId: number) => postLogin(kakaoId),
+    onSuccess: (data) => {
+      setToken(data.token);
+      navigate("/");
+    },
+    onError: (error) => {
+      console.error("Login failed:", error);
+      alert("로그인에 실패했다옹... 다시 시도해달라옹");
+    },
+  });
+
+  const { mutate: signup, isPending: isSignupPending } = useMutation({
+    mutationFn: (data: IUser) => postUsers(data),
+    onSuccess: () => {
+      if (kakaoId) {
+        login(kakaoId);
+      }
+    },
+    onError: (error) => {
+      alert("회원가입에 실패했다옹... 다시 시도해달라옹");
+      console.error(error);
+    },
+  });
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [nicknameValue, setNicknameValue] = useState<string>("");
   const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
-    ApiAnimalType.CAT
+    ApiAnimalType.CAT,
   );
   const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
 
@@ -35,7 +62,10 @@ export default function SignupForm() {
   };
 
   const isSubmitDisabled =
-    isPending || isNicknameDuplicate || !nicknameValue.trim();
+    isSignupPending ||
+    isLoginPending ||
+    isNicknameDuplicate ||
+    !nicknameValue.trim();
 
   return (
     <div className="flex flex-col gap-4 items-center pt-8">
@@ -65,7 +95,9 @@ export default function SignupForm() {
           disabled={isSubmitDisabled}
           onClick={handleSignup}
         >
-          {isPending ? "잠시만 기다려 달라옹..." : "다 적으면 누르라냥!"}
+          {isSignupPending || isLoginPending
+            ? "잠시만 기다려 달라옹..."
+            : "다 적으면 누르라냥!"}
         </Button>
       </div>
       <Button variant="link">탈퇴할거냥</Button>
