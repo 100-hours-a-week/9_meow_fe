@@ -3,13 +3,14 @@ import { IPostContent } from "@/components/common/PostCard/PostContent";
 import { IUserItem } from "@/components/common/UserItem";
 import { IPostSummaryData } from "@/types/PostSummaryData";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
-import { usePostListInfiniteQuery } from "@/hooks/queries/usePostListInfiniteQuery";
 import { useRef } from "react";
 import { useObserver } from "@/hooks/common/useObserver";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { postQueries } from "@/api/queries/postQueries";
 
 export default function MainPage() {
   const { data, fetchNextPage, hasNextPage, isLoading, error } =
-    usePostListInfiniteQuery();
+    useInfiniteQuery({ ...postQueries.list({ pageParam: 0 }) });
 
   const lastElementRef = useRef<HTMLDivElement | null>(null);
   useObserver({
