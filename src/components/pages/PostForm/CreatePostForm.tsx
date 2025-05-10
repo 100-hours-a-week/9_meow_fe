@@ -5,7 +5,7 @@ import SelectEmotion from "./SelectEmotion";
 import { Button } from "@/components/ui/button";
 import usePostMutation from "@/hooks/mutations/usePostMutation";
 import { useNavigate } from "react-router-dom";
-import { useImageUpload } from "@/hooks/useImageUpload";
+import { useImageUpload } from "@/hooks/common/useImageUpload";
 import { ApiEmotion } from "@/types/Emotion";
 
 export default function CreatePostForm() {
