@@ -1,7 +1,9 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
-import useLoginMutation from "@/hooks/mutations/useLoginMutation";
 import useKakaoIdStore from "@/store/useKakaoIdStore";
+import { useMutation } from "@tanstack/react-query";
+import { ILoginCode, ILoginId } from "@/types/Login";
+import { getLoginId } from "@/service/login";
 
 export default function RedirectPage() {
   const navigate = useNavigate();
@@ -10,7 +12,9 @@ export default function RedirectPage() {
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
 
-  const { mutate: login, data } = useLoginMutation();
+  const { mutate: login, data } = useMutation<ILoginId, Error, ILoginCode>({
+    mutationFn: ({ code }: ILoginCode) => getLoginId(code),
+  });
 
   useEffect(() => {
     if (code) {
