@@ -56,7 +56,7 @@ export default function MainPage() {
           };
           const postInfo: IPostFooter = {
             postId: post.id,
-            didLike: true,
+            didLike: post.liked,
             likeCount: post.likeCount,
             commentCount: post.commentCount,
           };
@@ -67,7 +67,7 @@ export default function MainPage() {
               <PostCard.Footer {...postInfo} />
             </PostCard>
           );
-        })
+        }),
       )}
       <div ref={lastElementRef} />
     </div>

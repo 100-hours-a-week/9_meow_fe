@@ -32,8 +32,7 @@ function DetailPostPage() {
           <ImageCarousel images={data?.imageUrls} />
           <PostCard.Footer
             postId={Number(postId)}
-            // TODO: 좋아요 여부 확인
-            didLike={false}
+            didLike={data?.liked}
             likeCount={data?.likeCount}
             commentCount={data?.commentCount}
           />

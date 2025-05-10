@@ -12,7 +12,7 @@ export interface IPostSummaryData {
   thumbnailUrl: string | null;
   commentCount: number;
   likeCount: number;
-  // didLike: boolean;
+  liked: boolean;
   createdAt: string;
   updatedAt: string;
 }
