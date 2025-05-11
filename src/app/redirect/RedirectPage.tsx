@@ -13,7 +13,11 @@ export default function RedirectPage() {
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
 
-  const { mutate: getKakao, data } = useMutation({
+  const {
+    mutate: getKakao,
+    data: kakaoData,
+    isSuccess: isKakaoSuccess,
+  } = useMutation({
     ...loginQueries.kakaoId({ setKakaoId }),
   });
 
@@ -25,14 +29,14 @@ export default function RedirectPage() {
     if (code) {
       getKakao({ code });
 
-      if (data?.isMember) {
+      if (isKakaoSuccess && kakaoData?.isMember) {
+        login(kakaoData.kakaoId);
         navigate("/");
-        login(data.kakaoId);
       } else {
         navigate("/signup");
       }
     }
-  }, [code, getKakao, data, navigate, setKakaoId, login]);
+  }, [code, getKakao, kakaoData, navigate, setKakaoId, login, isKakaoSuccess]);
 
   useEffect(() => {
     if (token) {

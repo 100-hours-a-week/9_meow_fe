@@ -17,6 +17,12 @@ export const loginQueries = {
     onSuccess: (data: IKakaoAuthResponse) => {
       setKakaoId(data.kakaoId);
     },
+    onError: (error: { response: { data: { kakaoId: number } } }) => {
+      // TEMP : 임시 코드임. 401 뜨는 에러 해결되면 제거해야함!
+      if (error.response.data.kakaoId) {
+        setKakaoId(error.response.data.kakaoId);
+      }
+    },
   }),
 
   login: ({ setToken }: { setToken: (token: string) => void }) => ({
