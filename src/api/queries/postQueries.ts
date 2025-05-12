@@ -7,10 +7,11 @@ import { ICreatePost } from "../types";
 export const postQueries = {
   all: () => ["post"] as const,
 
-  list: ({ pageParam }: { pageParam: number }) =>
+  list: () =>
     infiniteQueryOptions<IPostSummaryDataPagination, Error>({
       queryKey: [...postQueries.all(), "list"],
-      queryFn: () => getPostList({ page: pageParam, size: 10 }),
+      queryFn: ({ pageParam }) =>
+        getPostList({ page: pageParam as number, size: 10 }),
       getNextPageParam: (lastPage: IPostSummaryDataPagination) => {
         return lastPage.last ? undefined : lastPage.currentPage + 1;
       },
