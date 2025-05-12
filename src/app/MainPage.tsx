@@ -1,15 +1,16 @@
 import { PostCard } from "@/components/common";
 import { IPostContent } from "@/components/common/PostCard/PostContent";
 import { IUserItem } from "@/components/common/UserItem";
-import { IPostSummaryData } from "@/types/PostSummaryData";
+import { IPostSummaryData } from "@/api/types";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
-import { usePostListInfiniteQuery } from "@/hooks/queries/usePostListInfiniteQuery";
 import { useRef } from "react";
 import { useObserver } from "@/hooks/common/useObserver";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { postQueries } from "@/api/queries/postQueries";
 
 export default function MainPage() {
   const { data, fetchNextPage, hasNextPage, isLoading, error } =
-    usePostListInfiniteQuery();
+    useInfiniteQuery({ ...postQueries.list({ pageParam: 0 }) });
 
   const lastElementRef = useRef<HTMLDivElement | null>(null);
   useObserver({
@@ -37,7 +38,7 @@ export default function MainPage() {
   }
 
   return (
-    <div className="pt-2 pb-16 flex flex-col gap-2.5">
+    <div className="pt-2 pb-16 flex flex-col gap-2.5 px-2">
       {data.pages.map((page) =>
         page.content.map((post: IPostSummaryData) => {
           const userInfo: IUserItem = {
@@ -56,7 +57,7 @@ export default function MainPage() {
           };
           const postInfo: IPostFooter = {
             postId: post.id,
-            didLike: true,
+            didLike: post.liked,
             likeCount: post.likeCount,
             commentCount: post.commentCount,
           };
@@ -67,7 +68,7 @@ export default function MainPage() {
               <PostCard.Footer {...postInfo} />
             </PostCard>
           );
-        })
+        }),
       )}
       <div ref={lastElementRef} />
     </div>

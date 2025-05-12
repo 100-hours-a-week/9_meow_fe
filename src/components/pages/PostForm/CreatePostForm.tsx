@@ -3,27 +3,47 @@ import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
 import SelectEmotion from "./SelectEmotion";
 import { Button } from "@/components/ui/button";
-import usePostMutation from "@/hooks/mutations/usePostMutation";
 import { useNavigate } from "react-router-dom";
-import { useImageUpload } from "@/hooks/useImageUpload";
+import { useImageUpload } from "@/hooks/common/useImageUpload";
 import { ApiEmotion } from "@/types/Emotion";
+import { postQueries } from "@/api/queries/postQueries";
+import { useMutation } from "@tanstack/react-query";
 
 export default function CreatePostForm() {
   const navigate = useNavigate();
-  const { mutate: postPost, isPending, isSuccess, isError } = usePostMutation();
+  const {
+    mutate: createPost,
+    isPending,
+    isSuccess,
+    isError,
+  } = useMutation({ ...postQueries.create() });
 
   const { selectedImages, addImages, removeImage, error } = useImageUpload();
   const [content, setContent] = useState("");
   const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
-    ApiEmotion.NONE
+    ApiEmotion.NONE,
   );
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+
+  const handleCancel = () => {
+    const answer = window.confirm(
+      "취소하면 작성한 내용이 사라져요. 그래도 취소하겠냥?",
+    );
+    if (answer) {
+      navigate("/");
+    }
+  };
+  const handlePostSubmit = () => {
+    createPost({
+      images: selectedImages.map((img) => img.file),
+      content,
+      emotion: selectedEmotion,
+    });
+  };
 
   useEffect(() => {
     if (isSuccess) {
       navigate("/");
-    }
-    if (isError) {
-      alert("게시글 작성에 실패했어요. 다시 시도해주세요.");
     }
   }, [isSuccess, isError, navigate]);
 
@@ -36,21 +56,25 @@ export default function CreatePostForm() {
         removeImage={removeImage}
         error={error}
       />
-      <PostContentInput content={content} setContent={setContent} />
+      <PostContentInput
+        content={content}
+        setContent={setContent}
+        setIsSubmitDisabled={setIsSubmitDisabled}
+      />
       <SelectEmotion
         selectedEmotion={selectedEmotion}
         setEmotion={setSelectedEmotion}
       />
       <div className="flex gap-2 w-full justify-end">
-        <Button variant="primarySolid">취소냥</Button>
+        <Button variant="primarySolid" onClick={handleCancel}>
+          취소냥
+        </Button>
         <Button
           variant="secondarySolid"
-          disabled={isPending}
-          onClick={() =>
-            postPost({ images: selectedImages.map((img) => img.file), content })
-          }
+          disabled={isPending || isSubmitDisabled}
+          onClick={handlePostSubmit}
         >
-          {isPending ? "잠시만 기다려주세요냥" : "다 적으면 누르라냥!"}
+          {isPending ? "잠시만 기다려주세옹" : "다 적으면 누르라냥!"}
         </Button>
       </div>
     </div>

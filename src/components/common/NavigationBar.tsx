@@ -22,7 +22,8 @@ export default function NavigationBar() {
       {renderIconButton("/create", <img src="/icon/plus.svg" alt="plus" />)}
       {/* {renderIconButton("/chat", <img src="/icon/chat.svg" alt="chat" />)} */}
       {renderIconButton(
-        "/member",
+        // TODO : 로그인 되어있으면 member로, 안되어 있으면 login으로, Token 여부 확인해서 수정하기
+        "/login",
         <Avatar>
           <AvatarImage src={profileImage ?? "/logo.svg"} />
           <AvatarFallback>미야옹</AvatarFallback>
