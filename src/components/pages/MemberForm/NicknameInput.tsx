@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { signupQueries } from "@/api/queries/signupQueries";
+import { validateNickname } from "./validation/validateNickname";
 
 export interface INicknameInput {
   isRequired?: boolean;
@@ -41,13 +42,9 @@ export default function NicknameInput({
     setSuccessMessage(null);
     onDuplicateCheck?.(true); // Reset duplicate check status when nickname changes
 
-    const emojiRegex = /[\p{Emoji}]/u;
-    if (emojiRegex.test(value)) {
-      setError("이모지 없이 적어달라옹");
-    } else if (value.length < 3) {
-      setError("닉네임은 3자 이상이어야 한다옹");
-    } else if (value.length > 15) {
-      setError("닉네임은 15자 이하여야 한다옹");
+    const { isValid, message } = validateNickname(value);
+    if (!isValid) {
+      setError(message);
     } else {
       setError(null);
     }
@@ -96,7 +93,7 @@ export default function NicknameInput({
           variant="primaryOutline"
           className="h-full px-5 rounded-xl text-foreground text-lg font-bold"
           onClick={handleCheckNickname}
-          disabled={isPending}
+          disabled={isPending || !validateNickname(nicknameValue).isValid}
         >
           {isPending ? "확인 중..." : "중복 확인"}
         </Button>
