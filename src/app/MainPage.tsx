@@ -10,7 +10,7 @@ import { postQueries } from "@/api/queries/postQueries";
 
 export default function MainPage() {
   const { data, fetchNextPage, hasNextPage, isLoading, error } =
-    useInfiniteQuery({ ...postQueries.list({ pageParam: 0 }) });
+    useInfiniteQuery({ ...postQueries.list() });
 
   const lastElementRef = useRef<HTMLDivElement | null>(null);
   useObserver({
