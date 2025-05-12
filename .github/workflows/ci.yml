@@ -63,7 +63,7 @@ jobs:
       - name: Checkout Backend for Integration
         uses: actions/checkout@v3
         with:
-          repository: your-org/backend-repo
+          repository: 100-hours-a-week/9_meow_be
           token: ${{ secrets.GITHUB_TOKEN }}
           path: backend
 
