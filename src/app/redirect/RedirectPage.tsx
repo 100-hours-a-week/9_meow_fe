@@ -28,15 +28,17 @@ export default function RedirectPage() {
   useEffect(() => {
     if (code) {
       getKakao({ code });
-
-      if (isKakaoSuccess && kakaoData?.isMember) {
-        login(kakaoData.kakaoId);
-        navigate("/");
-      } else {
-        navigate("/signup");
-      }
     }
-  }, [code, getKakao, kakaoData, navigate, setKakaoId, login, isKakaoSuccess]);
+  }, [code, getKakao, kakaoData]);
+
+  useEffect(() => {
+    if (isKakaoSuccess && kakaoData?.isMember) {
+      login(kakaoData.kakaoId);
+      navigate("/");
+    } else if (isKakaoSuccess && !kakaoData?.isMember) {
+      navigate("/signup");
+    }
+  }, [isKakaoSuccess, kakaoData, login, navigate]);
 
   useEffect(() => {
     if (token) {
