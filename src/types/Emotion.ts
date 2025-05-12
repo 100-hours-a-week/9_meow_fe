@@ -1,6 +1,6 @@
 // API 응답에서 사용되는 감정 enum
 export enum ApiEmotion {
-  NONE = "none",
+  NONE = "normal",
   HAPPY = "happy",
   CURIOUS = "curious",
   SAD = "sad",
