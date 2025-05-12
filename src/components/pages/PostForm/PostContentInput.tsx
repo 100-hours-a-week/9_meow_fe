@@ -6,15 +6,29 @@ const MIN_LENGTH = 5;
 interface IPostContentInput {
   content: string;
   setContent: (content: string) => void;
+<<<<<<< HEAD
+=======
+  setIsSubmitDisabled: (isSubmitDisabled: boolean) => void;
+>>>>>>> origin/dev
 }
 
 export default function PostContentInput({
   content,
   setContent,
+<<<<<<< HEAD
+=======
+  setIsSubmitDisabled,
+>>>>>>> origin/dev
 }: IPostContentInput) {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
     setContent(newValue);
+<<<<<<< HEAD
+=======
+    setIsSubmitDisabled(
+      newValue.length < MIN_LENGTH || newValue.length > MAX_LENGTH,
+    );
+>>>>>>> origin/dev
   };
 
   return (
@@ -30,7 +44,11 @@ export default function PostContentInput({
           "text-sm text-right",
           content.length > MAX_LENGTH || content.length < MIN_LENGTH
             ? "text-destructive"
+<<<<<<< HEAD
             : "text-foreground/50"
+=======
+            : "text-foreground/50",
+>>>>>>> origin/dev
         )}
       >
         {content.length}/{MAX_LENGTH}

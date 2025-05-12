@@ -6,6 +6,10 @@ import DetailPostPage from "./app/detail/[postId]/DetailPostPage";
 import LoginPage from "./app/login/LoginPage";
 import SignupPage from "./app/signup/SignupPage";
 import NotFoundPage from "./app/not-found/NotFoundPage";
+<<<<<<< HEAD
+=======
+import RedirectPage from "./app/redirect/RedirectPage";
+>>>>>>> origin/dev
 import { Header, NavigationBar } from "./components/common";
 import "./index.css";
 
@@ -24,6 +28,10 @@ function App() {
               <Route path="/detail/:postId" element={<DetailPostPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
+<<<<<<< HEAD
+=======
+              <Route path="/redirect" element={<RedirectPage />} />
+>>>>>>> origin/dev
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </div>

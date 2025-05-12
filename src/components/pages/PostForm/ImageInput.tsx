@@ -1,6 +1,40 @@
 import { ChangeEvent } from "react";
 import { MAX_IMAGES } from "./validation/validateFileLength";
+<<<<<<< HEAD
 import { PreviewImage } from "@/hooks/useImageUpload";
+=======
+import { useImagePreview } from "@/hooks/common/useImagePreview";
+
+interface IPreviewImage {
+  file: File;
+  preview: string;
+}
+
+interface ImagePreviewProps {
+  image: IPreviewImage;
+  onDelete: () => void;
+}
+
+function ImagePreview({ image, onDelete }: ImagePreviewProps) {
+  const { previewUrl } = useImagePreview({ initialImage: image.file });
+
+  return (
+    <div className="relative w-[100px] h-[100px] border border-foreground/30 rounded-2xl">
+      <img
+        src={previewUrl || image.preview}
+        alt="Preview"
+        className="w-full h-full object-cover rounded-2xl"
+      />
+      <button
+        onClick={onDelete}
+        className="absolute -top-2 -right-2 w-6 h-6 bg-foreground rounded-full flex items-center justify-center"
+      >
+        <span className="text-background text-sm">×</span>
+      </button>
+    </div>
+  );
+}
+>>>>>>> origin/dev
 
 export default function ImageInput({
   selectedImages,
@@ -8,7 +42,11 @@ export default function ImageInput({
   removeImage,
   error,
 }: {
+<<<<<<< HEAD
   selectedImages: PreviewImage[];
+=======
+  selectedImages: IPreviewImage[];
+>>>>>>> origin/dev
   addImages: (files: File[]) => void;
   removeImage: (index: number) => void;
   error: string | null;
@@ -44,6 +82,7 @@ export default function ImageInput({
         )}
 
         {selectedImages.map((image, index) => (
+<<<<<<< HEAD
           <div
             key={index}
             className="relative w-[100px] h-[100px] border border-foreground/30 rounded-2xl"
@@ -60,6 +99,13 @@ export default function ImageInput({
               <span className="text-background text-sm">×</span>
             </button>
           </div>
+=======
+          <ImagePreview
+            key={index}
+            image={image}
+            onDelete={() => handleDeleteImage(index)}
+          />
+>>>>>>> origin/dev
         ))}
       </div>
       <div className="w-full flex justify-end items-center gap-2">

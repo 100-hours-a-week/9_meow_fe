@@ -1,11 +1,24 @@
+<<<<<<< HEAD
 import { PostCard } from "@/components/common";
 import { ImageCarousel } from "@/components/pages";
 import { usePostDetailQuery } from "@/hooks/queries/usePostDetailQuery";
+=======
+import { postQueries } from "@/api/queries/postQueries";
+import { PostCard } from "@/components/common";
+import { ImageCarousel } from "@/components/pages";
+import { useQuery } from "@tanstack/react-query";
+>>>>>>> origin/dev
 import { useParams } from "react-router-dom";
 
 function DetailPostPage() {
   const { postId } = useParams();
+<<<<<<< HEAD
   const { data, isLoading, error } = usePostDetailQuery(Number(postId));
+=======
+  const { data, isLoading, error } = useQuery({
+    ...postQueries.detail(Number(postId)),
+  });
+>>>>>>> origin/dev
 
   // TODO: 로딩 스켈레톤 추가
   if (isLoading) {
@@ -32,8 +45,12 @@ function DetailPostPage() {
           <ImageCarousel images={data?.imageUrls} />
           <PostCard.Footer
             postId={Number(postId)}
+<<<<<<< HEAD
             // TODO: 좋아요 여부 확인
             didLike={false}
+=======
+            didLike={data?.liked}
+>>>>>>> origin/dev
             likeCount={data?.likeCount}
             commentCount={data?.commentCount}
           />

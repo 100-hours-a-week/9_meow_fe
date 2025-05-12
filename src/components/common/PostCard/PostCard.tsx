@@ -9,7 +9,11 @@ interface IPostCard {
 
 function PostCard({ children }: IPostCard) {
   return (
+<<<<<<< HEAD
     <div className="flex flex-col gap-4 rounded-2xl bg-background border border-foreground/30 pl-2.5 pr-2 pt-2 pb-3">
+=======
+    <div className="flex flex-col gap-4 rounded-2xl bg-background border border-foreground/30 pl-2.5 pr-2 pt-2 pb-3 shadow-sm">
+>>>>>>> origin/dev
       {children}
     </div>
   );

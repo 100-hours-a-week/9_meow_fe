@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 
@@ -56,6 +57,8 @@ export default defineConfig({
     emptyOutDir: true,
   },
 
+=======
+>>>>>>> origin/dev
 import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
