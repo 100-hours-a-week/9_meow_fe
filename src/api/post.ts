@@ -1,6 +1,5 @@
 import { ApiEmotion } from "@/types/Emotion";
 import defaultInstance from "./instance/defaultInstance";
-import { ApiAnimalType } from "@/types/animal";
 import formInstance from "./instance/formInstance";
 
 export const getPostList = async ({
@@ -22,7 +21,6 @@ export const getPostList = async ({
 interface IPost {
   images: File[];
   emotion: ApiEmotion;
-  post_type: ApiAnimalType;
   content: string;
 }
 
@@ -37,13 +35,12 @@ export const postPost = async (post: IPost) => {
   // 다른 데이터들 추가
   formData.append("content", post.content);
   formData.append("emotion", post.emotion);
-  formData.append("post_type", post.post_type);
 
   const response = await formInstance.post("/posts", formData);
   return response.data;
 };
 
 export const getPostDetail = async (postId: number) => {
-  const response = await defaultInstance.get(`/posts/${postId}`);
+  const response = await formInstance.get(`/posts/${postId}`);
   return response.data;
 };
