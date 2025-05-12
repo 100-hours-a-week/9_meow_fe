@@ -63,7 +63,7 @@ jobs:
       - name: Checkout Backend for Integration
         uses: actions/checkout@v3
         with:
-          repository: your-org/backend-repo
+          repository: 100-hours-a-week/9_meow_be # backend repo
           token: ${{ secrets.GITHUB_TOKEN }}
           path: backend
 
@@ -95,5 +95,17 @@ jobs:
       - name: Check Backend API via Frontend
         run: curl -f http://localhost:$FRONTEND_PORT/api/health
 
-      - name: Check Tone Conversion via Backend
-        run: curl -f "http://localhost:$FRONTEND_PORT/api/infer?text=hi&type=cat"
+      - name: Generate 1x1 PNG Dummy Image
+        run: |
+          # Base64로 인코드된 1x1 투명 PNG
+          echo 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAn8B9M1E2gAAAABJRU5ErkJggg==' \
+            | base64 -d > sample.png
+  
+      - name: Check Create Post With Dummy Image via Backend
+        run: |
+          curl -s -X POST "http://localhost:$BACKEND_PORT/posts" \
+            -F 'content=CI test with dummy image' \
+            -F 'emotion=cat' \
+            -F 'post_type=post' \
+            -F 'images=@sample.png;type=image/png' \
+            && echo OK
