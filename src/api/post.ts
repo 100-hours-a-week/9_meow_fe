@@ -50,3 +50,8 @@ export const getPostDetail = async (postId: number) => {
   const response = await formInstance.get(`/posts/${postId}`);
   return response.data;
 };
+
+export const postLikePost = async (postId: number) => {
+  const response = await defaultInstance.post(`/posts/${postId}/likes`);
+  return response.data;
+};
