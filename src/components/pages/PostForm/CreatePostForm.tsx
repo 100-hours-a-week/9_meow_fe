@@ -23,7 +23,16 @@ export default function CreatePostForm() {
   const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
     ApiEmotion.NONE,
   );
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
+  const handleCancel = () => {
+    const answer = window.confirm(
+      "취소하면 작성한 내용이 사라져요. 그래도 취소하겠냥?",
+    );
+    if (answer) {
+      navigate("/");
+    }
+  };
   const handlePostSubmit = () => {
     createPost({
       images: selectedImages.map((img) => img.file),
@@ -47,16 +56,22 @@ export default function CreatePostForm() {
         removeImage={removeImage}
         error={error}
       />
-      <PostContentInput content={content} setContent={setContent} />
+      <PostContentInput
+        content={content}
+        setContent={setContent}
+        setIsSubmitDisabled={setIsSubmitDisabled}
+      />
       <SelectEmotion
         selectedEmotion={selectedEmotion}
         setEmotion={setSelectedEmotion}
       />
       <div className="flex gap-2 w-full justify-end">
-        <Button variant="primarySolid">취소냥</Button>
+        <Button variant="primarySolid" onClick={handleCancel}>
+          취소냥
+        </Button>
         <Button
           variant="secondarySolid"
-          disabled={isPending}
+          disabled={isPending || isSubmitDisabled}
           onClick={handlePostSubmit}
         >
           {isPending ? "잠시만 기다려주세옹" : "다 적으면 누르라냥!"}
