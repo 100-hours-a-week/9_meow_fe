@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { IKakaoAuthResponse, ILoginCode, ILoginResponse } from "@/api/types";
 import { getKakaoId, getKakaoUrl, postLogin } from "@/api/login";
+import { NavigateFunction } from "react-router-dom";
 
 export const loginQueries = {
   all: () => ["login"] as const,
@@ -11,16 +12,25 @@ export const loginQueries = {
       queryFn: () => getKakaoUrl(),
     }),
 
-  kakaoId: ({ setKakaoId }: { setKakaoId: (kakaoId: number) => void }) => ({
+  kakaoId: ({
+    setKakaoId,
+    login,
+    navigate,
+  }: {
+    setKakaoId: (kakaoId: number) => void;
+    login: (id: number) => void;
+    navigate: NavigateFunction;
+  }) => ({
     mutationKey: [...loginQueries.all(), "kakaoId"],
     mutationFn: ({ code }: ILoginCode) => getKakaoId(code),
     onSuccess: (data: IKakaoAuthResponse) => {
       setKakaoId(data.kakaoId);
-    },
-    onError: (error: { response: { data: { kakaoId: number } } }) => {
-      // TEMP : 임시 코드임. 401 뜨는 에러 해결되면 제거해야함!
-      if (error.response.data.kakaoId) {
-        setKakaoId(error.response.data.kakaoId);
+
+      if (data.isMember) {
+        login(data.kakaoId);
+        navigate("/");
+      } else {
+        navigate("/signup");
       }
     },
   }),

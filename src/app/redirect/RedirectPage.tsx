@@ -7,38 +7,25 @@ import { loginQueries } from "@/api/queries/loginQueries";
 
 export default function RedirectPage() {
   const navigate = useNavigate();
-  const setKakaoId = useKakaoIdStore((state) => state.setKakaoId);
+  const { setKakaoId } = useKakaoIdStore();
   const { token, setToken } = useTokenStore();
 
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
 
-  const {
-    mutate: getKakao,
-    data: kakaoData,
-    isSuccess: isKakaoSuccess,
-  } = useMutation({
-    ...loginQueries.kakaoId({ setKakaoId }),
-  });
-
   const { mutate: login } = useMutation({
     ...loginQueries.login({ setToken }),
+  });
+
+  const { mutate: getKakao } = useMutation({
+    ...loginQueries.kakaoId({ setKakaoId, login, navigate }),
   });
 
   useEffect(() => {
     if (code) {
       getKakao({ code });
     }
-  }, [code, getKakao, kakaoData]);
-
-  useEffect(() => {
-    if (isKakaoSuccess && kakaoData?.isMember) {
-      login(kakaoData.kakaoId);
-      navigate("/");
-    } else if (isKakaoSuccess && !kakaoData?.isMember) {
-      navigate("/signup");
-    }
-  }, [isKakaoSuccess, kakaoData, login, navigate]);
+  }, [code, getKakao]);
 
   useEffect(() => {
     if (token) {
