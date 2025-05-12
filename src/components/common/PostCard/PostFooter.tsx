@@ -27,6 +27,18 @@ export default function PostFooter({
     likePost({ postId });
   };
 
+  const handleShareClick = async () => {
+    const url = `${window.location.origin}/detail/${postId}`;
+
+    try {
+      await navigator.clipboard.writeText(url);
+      alert("링크를 클립보드에 복사했다냥.");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      alert("링크 복사에 실패했다옹...");
+    }
+  };
+
   return (
     <div className="flex flex-row items-center gap-2 w-full">
       <img
@@ -41,7 +53,7 @@ export default function PostFooter({
         onClick={() => navigate(`/detail/${postId}`)}
       />
       <p>{commentCount}</p>
-      <img src="/icon/share.svg" alt="공유" />
+      <img src="/icon/share.svg" alt="공유" onClick={handleShareClick} />
     </div>
   );
 }
