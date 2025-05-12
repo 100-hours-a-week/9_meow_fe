@@ -18,11 +18,7 @@ export default function SignupForm() {
   const { mutate: login, isPending: isLoginPending } = useMutation({
     ...loginQueries.login({ setToken, navigate }),
   });
-  const {
-    mutate: signup,
-    isPending: isSignupPending,
-    isSuccess: isSignupSuccess,
-  } = useMutation({
+  const { mutate: signup, isPending: isSignupPending } = useMutation({
     ...signupQueries.signup({ setKakaoId, login }),
   });
 
@@ -57,12 +53,6 @@ export default function SignupForm() {
       navigate("/");
     }
   }, [token, navigate]);
-
-  useEffect(() => {
-    if (isSignupSuccess && kakaoId) {
-      login(kakaoId);
-    }
-  }, [isSignupSuccess, kakaoId, login]);
 
   return (
     <div className="flex flex-col gap-4 items-center pt-8">
