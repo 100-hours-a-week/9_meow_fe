@@ -1,6 +1,6 @@
 import { UseMutationOptions } from "@tanstack/react-query";
 import { getDuplicateNickname, postUsers } from "@/api/signup";
-import { ISignupResponse, IUserRequest } from "@/api/types";
+import { IUserRequest } from "@/api/types";
 
 export const signupQueries = {
   all: () => ["signup"] as const,
@@ -12,15 +12,18 @@ export const signupQueries = {
 
   signup: ({
     setKakaoId,
+    login,
   }: {
     setKakaoId: (kakaoId: number) => void;
-  }): UseMutationOptions<ISignupResponse, Error, IUserRequest> => ({
+    login: (id: number) => void;
+  }) => ({
     mutationKey: [...signupQueries.all(), "signup"],
     mutationFn: (data: IUserRequest) => postUsers(data),
-    onSuccess: (data) => {
-      setKakaoId(data.data.kakaoId);
+    onSuccess: (data: number) => {
+      setKakaoId(data);
+      login(data);
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       console.error("Signup failed:", error);
       alert("회원가입에 실패했다옹... 다시 시도해달라옹");
     },

@@ -10,13 +10,6 @@ export interface IKakaoAuthResponse {
   isMember: boolean;
 }
 
-export interface ISignupResponse {
-  message: string;
-  data: {
-    kakaoId: number;
-  };
-}
-
 export interface ILoginResponse {
   accessToken: string;
 }

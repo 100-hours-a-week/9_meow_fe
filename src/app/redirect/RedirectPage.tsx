@@ -14,7 +14,7 @@ export default function RedirectPage() {
   const code = searchParams.get("code");
 
   const { mutate: login } = useMutation({
-    ...loginQueries.login({ setToken }),
+    ...loginQueries.login({ setToken, navigate }),
   });
 
   const { mutate: getKakao } = useMutation({
