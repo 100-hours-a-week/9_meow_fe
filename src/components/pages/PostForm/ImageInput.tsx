@@ -16,7 +16,7 @@ function ImagePreview({ image, onDelete }: ImagePreviewProps) {
   const { previewUrl } = useImagePreview({ initialImage: image.file });
 
   return (
-    <div className="relative w-[100px] h-[100px] border border-foreground/30 rounded-2xl">
+    <div className="relative w-[100px] h-[100px] outline outline-foreground/30 rounded-2xl">
       <img
         src={previewUrl || image.preview}
         alt="Preview"
@@ -58,7 +58,7 @@ export default function ImageInput({
     <div className="flex flex-col gap-0 items-center px-2 py-2">
       <div className="flex gap-3">
         {selectedImages.length < MAX_IMAGES && (
-          <label className="flex items-center justify-center w-[100px] h-[100px] bg-orange-100 border border-foreground/30 rounded-2xl cursor-pointer">
+          <label className="flex items-center justify-center w-[100px] h-[100px] bg-orange-100 outline outline-foreground/30 rounded-2xl cursor-pointer">
             <div className="flex flex-col items-center gap-2">
               <span className="text-2xl">+</span>
               <span className="text-sm">사진을 추가해라냥</span>
