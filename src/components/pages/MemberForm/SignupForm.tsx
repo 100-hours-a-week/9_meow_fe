@@ -16,14 +16,10 @@ export default function SignupForm() {
   const { kakaoId, setKakaoId } = useKakaoIdStore();
   const { token, setToken } = useTokenStore();
   const { mutate: login, isPending: isLoginPending } = useMutation({
-    ...loginQueries.login({ setToken }),
+    ...loginQueries.login({ setToken, navigate }),
   });
-  const {
-    mutate: signup,
-    isPending: isSignupPending,
-    isSuccess: isSignupSuccess,
-  } = useMutation({
-    ...signupQueries.signup({ setKakaoId }),
+  const { mutate: signup, isPending: isSignupPending } = useMutation({
+    ...signupQueries.signup({ setKakaoId, login }),
   });
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -57,12 +53,6 @@ export default function SignupForm() {
       navigate("/");
     }
   }, [token, navigate]);
-
-  useEffect(() => {
-    if (isSignupSuccess && kakaoId) {
-      login(kakaoId);
-    }
-  }, [isSignupSuccess, kakaoId, login]);
 
   return (
     <div className="flex flex-col gap-4 items-center pt-8">

@@ -1,17 +1,6 @@
 import { PostCard } from "@/components/common";
 import { IPostContent } from "@/components/common/PostCard/PostContent";
 import { IUserItem } from "@/components/common/UserItem";
-<<<<<<< HEAD
-import { IPostSummaryData } from "@/types/PostSummaryData";
-import { IPostFooter } from "@/components/common/PostCard/PostFooter";
-import { usePostListInfiniteQuery } from "@/hooks/queries/usePostListInfiniteQuery";
-import { useRef } from "react";
-import { useObserver } from "@/hooks/common/useObserver";
-
-export default function MainPage() {
-  const { data, fetchNextPage, hasNextPage, isLoading, error } =
-    usePostListInfiniteQuery();
-=======
 import { IPostSummaryData } from "@/api/types";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
 import { useRef } from "react";
@@ -21,8 +10,7 @@ import { postQueries } from "@/api/queries/postQueries";
 
 export default function MainPage() {
   const { data, fetchNextPage, hasNextPage, isLoading, error } =
-    useInfiniteQuery({ ...postQueries.list({ pageParam: 0 }) });
->>>>>>> origin/dev
+    useInfiniteQuery({ ...postQueries.list() });
 
   const lastElementRef = useRef<HTMLDivElement | null>(null);
   useObserver({
@@ -50,11 +38,7 @@ export default function MainPage() {
   }
 
   return (
-<<<<<<< HEAD
-    <div className="pt-2 pb-16 flex flex-col gap-2.5">
-=======
     <div className="pt-2 pb-16 flex flex-col gap-2.5 px-2">
->>>>>>> origin/dev
       {data.pages.map((page) =>
         page.content.map((post: IPostSummaryData) => {
           const userInfo: IUserItem = {
@@ -73,11 +57,7 @@ export default function MainPage() {
           };
           const postInfo: IPostFooter = {
             postId: post.id,
-<<<<<<< HEAD
-            didLike: true,
-=======
             didLike: post.liked,
->>>>>>> origin/dev
             likeCount: post.likeCount,
             commentCount: post.commentCount,
           };
@@ -88,11 +68,7 @@ export default function MainPage() {
               <PostCard.Footer {...postInfo} />
             </PostCard>
           );
-<<<<<<< HEAD
-        })
-=======
         }),
->>>>>>> origin/dev
       )}
       <div ref={lastElementRef} />
     </div>
