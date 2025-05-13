@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { IKakaoAuthResponse, ILoginCode, ILoginResponse } from "@/api/types";
-import { getKakaoId, getKakaoUrl, postLogin } from "@/api/login";
+import { getKakaoId, getKakaoUrl, postLogin, postRefresh } from "@/api/login";
 import { NavigateFunction } from "react-router-dom";
 
 export const loginQueries = {
@@ -51,6 +51,24 @@ export const loginQueries = {
     onError: (error: Error) => {
       console.error("Login failed:", error);
       alert("로그인에 실패했다옹... 다시 시도해달라옹");
+    },
+  }),
+
+  refresh: ({
+    setToken,
+    navigate,
+    onRefreshSuccess,
+  }: {
+    setToken: (token: string) => void;
+    navigate: NavigateFunction;
+    onRefreshSuccess?: () => void;
+  }) => ({
+    mutationKey: [...loginQueries.all(), "refresh"],
+    mutationFn: () => postRefresh(),
+    onSuccess: (data: ILoginResponse) => {
+      setToken(data.accessToken);
+      onRefreshSuccess?.();
+      navigate("/");
     },
   }),
 };

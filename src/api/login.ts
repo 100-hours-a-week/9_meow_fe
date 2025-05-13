@@ -20,3 +20,8 @@ export const postLogin = async (kakaoId: number) => {
   });
   return response.data;
 };
+
+export const postRefresh = async () => {
+  const response = await defaultInstance.post("/auth/refresh");
+  return response.data;
+};
