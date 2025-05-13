@@ -24,7 +24,7 @@ export const postQueries = {
       queryFn: () => getPostDetail(postId),
     }),
 
-  create: () => ({
+  create: ({ refresh }: { refresh: () => void }) => ({
     mutationKey: [...postQueries.all(), "create"],
     mutationFn: ({ images, content, emotion }: ICreatePost) =>
       postPost({
@@ -32,8 +32,13 @@ export const postQueries = {
         content,
         emotion,
       }),
-    onError: () => {
-      alert("게시글 작성에 실패했다옹. 잠시 후 다시 시도해보라냥");
+    onError: (error) => {
+      if (error.code === "401") {
+        refresh();
+        return;
+      } else {
+        alert("게시글 작성에 실패했다옹. 잠시 후 다시 시도해보라냥");
+      }
     },
   }),
 };
