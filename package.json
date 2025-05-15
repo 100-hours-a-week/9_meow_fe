@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview --port 4173",
-    "test:unit": "npm run build",
+    "test:unit": "vitest run --coverage",
     "lint": "eslint ."
   },
   "dependencies": {
