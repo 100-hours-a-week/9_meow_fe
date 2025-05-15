@@ -22,13 +22,10 @@ jobs:
       !contains(github.event.head_commit.message, '[skip ci]')
       && !contains(github.event.head_commit.message, '[ci skip]')
       && (
-        ( github.event_name == 'push'
-          && github.ref == 'refs/heads/develop'
-        )
-        || ( github.event_name == 'pull_request'
+        ( github.event_name == 'pull_request'
              && github.base_ref == 'develop'
              && contains(github.head_ref, 'feat')
-           )
+        )
       )
     steps:
       - uses: actions/checkout@v3
@@ -56,9 +53,6 @@ jobs:
           && github.base_ref == 'release'
           && github.head_ref == 'develop'
         )
-        || ( github.event_name == 'push'
-             && startsWith(github.ref, 'refs/heads/release/')
-           )
       )
     services:
       mysql:
