@@ -1,8 +1,9 @@
-import { IPostSummaryDataPagination } from "@/api/types";
+import { IError, IPostSummaryDataPagination } from "@/api/types";
 import { getPostDetail, getPostList, postPost } from "../post";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { IPostDetailData } from "@/api/types";
 import { ICreatePost } from "../types";
+import { AxiosError } from "axios";
 
 export const postQueries = {
   all: () => ["post"] as const,
@@ -24,7 +25,7 @@ export const postQueries = {
       queryFn: () => getPostDetail(postId),
     }),
 
-  create: () => ({
+  create: ({ refresh }: { refresh: () => void }) => ({
     mutationKey: [...postQueries.all(), "create"],
     mutationFn: ({ images, content, emotion }: ICreatePost) =>
       postPost({
@@ -32,8 +33,13 @@ export const postQueries = {
         content,
         emotion,
       }),
-    onError: () => {
-      alert("게시글 작성에 실패했다옹. 잠시 후 다시 시도해보라냥");
+    onError: (error: AxiosError<IError>) => {
+      if (error.response?.status === 401) {
+        refresh();
+        return;
+      } else {
+        alert("게시글 작성에 실패했다옹. 잠시 후 다시 시도해보라냥");
+      }
     },
   }),
 };
