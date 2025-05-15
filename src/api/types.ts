@@ -1,6 +1,11 @@
 import { ApiAnimalType } from "@/types/animal";
 import { ApiEmotion } from "@/types/Emotion";
 
+export interface IError {
+  statusCode: number;
+  data: unknown | null;
+}
+
 export interface ILoginCode {
   code: string;
 }

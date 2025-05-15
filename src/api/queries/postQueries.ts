@@ -1,8 +1,9 @@
-import { IPostSummaryDataPagination } from "@/api/types";
+import { IError, IPostSummaryDataPagination } from "@/api/types";
 import { getPostDetail, getPostList, postPost } from "../post";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { IPostDetailData } from "@/api/types";
 import { ICreatePost } from "../types";
+import { AxiosError } from "axios";
 
 export const postQueries = {
   all: () => ["post"] as const,
@@ -32,8 +33,8 @@ export const postQueries = {
         content,
         emotion,
       }),
-    onError: (error) => {
-      if (error.code === "401") {
+    onError: (error: AxiosError<IError>) => {
+      if (error.response?.status === 401) {
         refresh();
         return;
       } else {
