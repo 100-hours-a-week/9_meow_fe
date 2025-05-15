@@ -56,11 +56,9 @@ export const loginQueries = {
 
   refresh: ({
     setToken,
-    navigate,
     onRefreshSuccess,
   }: {
     setToken: (token: string) => void;
-    navigate: NavigateFunction;
     onRefreshSuccess?: () => void;
   }) => ({
     mutationKey: [...loginQueries.all(), "refresh"],
@@ -68,7 +66,6 @@ export const loginQueries = {
     onSuccess: (data: ILoginResponse) => {
       setToken(data.accessToken);
       onRefreshSuccess?.();
-      navigate("/");
     },
   }),
 };

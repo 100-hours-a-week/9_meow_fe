@@ -17,7 +17,6 @@ export default function CreatePostForm() {
   const { mutate: refresh } = useMutation({
     ...loginQueries.refresh({
       setToken,
-      navigate,
       onRefreshSuccess: () => {
         createPost({
           images: selectedImages.map((img) => img.file),
