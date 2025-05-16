@@ -1,4 +1,6 @@
+import { loginQueries } from "@/api/queries/loginQueries";
 import { postQueries } from "@/api/queries/postQueries";
+import useTokenStore from "@/store/useTokenStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -17,14 +19,18 @@ export default function PostFooter({
 }: IPostFooter) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { setToken } = useTokenStore();
 
+  const { mutate: refresh } = useMutation({
+    ...loginQueries.refresh({ setToken }),
+  });
   const { mutate: likePost, isPending } = useMutation({
-    ...postQueries.like({ queryClient }),
+    ...postQueries.like({ queryClient, refresh }),
   });
 
   const handleLikeClick = () => {
     if (isPending) return; // 이미 요청 중이면 중복 요청 방지
-    likePost({ postId });
+    likePost({ postId, isLiked: !didLike });
   };
 
   const handleShareClick = async () => {

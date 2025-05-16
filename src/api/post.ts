@@ -51,7 +51,25 @@ export const getPostDetail = async (postId: number) => {
   return response.data;
 };
 
-export const postLikePost = async (postId: number) => {
-  const response = await defaultInstance.post(`/posts/${postId}/likes`);
+export const postLikePost = async ({
+  postId,
+  isLiked,
+}: {
+  postId: number;
+  isLiked: boolean;
+}) => {
+  const accessToken = localStorage.getItem(TOKEN_KEY);
+
+  const response = await defaultInstance.post(
+    `/posts/${postId}/likes`,
+    {
+      is_liked: isLiked,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
   return response.data;
 };

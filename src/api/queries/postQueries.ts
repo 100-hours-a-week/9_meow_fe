@@ -47,15 +47,28 @@ export const postQueries = {
     },
   }),
 
-  like: ({ queryClient }: { queryClient: QueryClient }) => ({
+  like: ({
+    queryClient,
+    refresh,
+  }: {
+    queryClient: QueryClient;
+    refresh: () => void;
+  }) => ({
     mutationKey: [...postQueries.all(), "like"],
-    mutationFn: ({ postId }: { postId: number }) => postLikePost(postId),
+    mutationFn: ({ postId, isLiked }: { postId: number; isLiked: boolean }) =>
+      postLikePost({ postId, isLiked }),
     onSuccess: () => {
       // 좋아요 성공 시 posts 쿼리 데이터를 무효화하여 재요청
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      alert("좋아요 성공!");
     },
-    onError: () => {
-      alert("좋아요에 실패했다옹...");
+    onError: (error: AxiosError<IError>) => {
+      
+      if (error.response?.status === 401) {
+        refresh();
+      } else {
+        alert("좋아요에 실패했다옹...");
+      }
     },
   }),
 };
