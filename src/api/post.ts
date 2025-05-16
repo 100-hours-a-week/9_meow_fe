@@ -1,7 +1,6 @@
 import { ApiEmotion } from "@/types/Emotion";
 import defaultInstance from "./instance/defaultInstance";
 import formInstance from "./instance/formInstance";
-import { TOKEN_KEY } from "@/store/useTokenStore";
 
 export const getPostList = async ({
   page,
@@ -38,11 +37,7 @@ export const postPost = async (post: IPost) => {
   formData.append("emotion", post.emotion);
 
   // localStorage에서 accessToken 가져오기
-  const accessToken = localStorage.getItem(TOKEN_KEY);
-
-  const response = await formInstance.post("/posts", formData, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
+  const response = await formInstance.post("/posts", formData);
   return response.data;
 };
 
@@ -58,18 +53,8 @@ export const postLikePost = async ({
   postId: number;
   isLiked: boolean;
 }) => {
-  const accessToken = localStorage.getItem(TOKEN_KEY);
-
-  const response = await defaultInstance.post(
-    `/posts/${postId}/likes`,
-    {
-      is_liked: isLiked,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    },
-  );
+  const response = await defaultInstance.post(`/posts/${postId}/likes`, {
+    is_liked: isLiked,
+  });
   return response.data;
 };
