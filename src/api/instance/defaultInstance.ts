@@ -8,7 +8,6 @@ const defaultInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true,
 });
 
 defaultInstance.interceptors.request.use(

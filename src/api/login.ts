@@ -15,9 +15,15 @@ export const getKakaoId = async (code: string) => {
 };
 
 export const postLogin = async (kakaoId: number) => {
-  const response = await defaultInstance.post("/auth/login", {
-    kakaoId,
-  });
+  const response = await defaultInstance.post(
+    "/auth/login",
+    {
+      kakaoId,
+    },
+    {
+      withCredentials: true,
+    },
+  );
   return response.data;
 };
 
