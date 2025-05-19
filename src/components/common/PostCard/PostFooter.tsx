@@ -22,7 +22,12 @@ export default function PostFooter({
   const { setToken } = useTokenStore();
 
   const { mutate: refresh } = useMutation({
-    ...loginQueries.refresh({ setToken }),
+    ...loginQueries.refresh({
+      setToken,
+      onRefreshSuccess: () => {
+        likePost({ postId, isLiked: didLike });
+      },
+    }),
   });
   const { mutate: likePost, isPending } = useMutation({
     ...postQueries.like({ queryClient, refresh }),
@@ -30,7 +35,7 @@ export default function PostFooter({
 
   const handleLikeClick = () => {
     if (isPending) return; // 이미 요청 중이면 중복 요청 방지
-    likePost({ postId, isLiked: !didLike });
+    likePost({ postId, isLiked: didLike });
   };
 
   const handleShareClick = async () => {
