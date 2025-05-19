@@ -3,14 +3,45 @@ import { IPostContent } from "@/components/common/PostCard/PostContent";
 import { IUserItem } from "@/components/common/UserItem";
 import { IPostSummaryData } from "@/api/types";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useObserver } from "@/hooks/common/useObserver";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { postQueries } from "@/api/queries/postQueries";
+import { AxiosError } from "axios";
+import { loginQueries } from "@/api/queries/loginQueries";
+import useTokenStore from "@/store/useTokenStore";
 
 export default function MainPage() {
+  const { setToken } = useTokenStore();
+  const queryClient = useQueryClient();
+  const { mutate: refresh } = useMutation({
+    ...loginQueries.refresh({
+      setToken,
+      onRefreshSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [...postQueries.all(), "list"],
+        });
+      },
+    }),
+  });
   const { data, fetchNextPage, hasNextPage, isLoading, error } =
-    useInfiniteQuery({ ...postQueries.list() });
+    useInfiniteQuery({
+      ...postQueries.list(),
+    });
+
+  useEffect(() => {
+    if (error instanceof AxiosError) {
+      if (error.response?.status === 401) {
+        refresh();
+      } else {
+        alert("게시글을 불러오는데 실패했다옹...");
+      }
+    }
+  }, [error, refresh]);
 
   const lastElementRef = useRef<HTMLDivElement | null>(null);
   useObserver({

@@ -10,7 +10,7 @@ export const getPostList = async ({
   page: number;
   size: number;
 }) => {
-  const response = await defaultInstance.get(`/posts`, {
+  const response = await authInstance.get(`/posts`, {
     params: {
       page,
       size,
