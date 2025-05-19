@@ -26,26 +26,26 @@ function DetailPostPage() {
         <>
           <PostCard.Header
             userInfo={{
-              userId: data?.userId,
-              nickname: data?.nickname,
-              profileImageUrl: data?.profileImageUrl,
-              animalType: data?.postType,
+              userId: data.userId,
+              nickname: data.nickname,
+              profileImageUrl: data.profileImageUrl,
+              animalType: data.postType,
             }}
           />
-          <ImageCarousel images={data?.imageUrls} />
+          <ImageCarousel images={data.imageUrls} />
           <PostCard.Footer
             postId={Number(postId)}
-            didLike={data?.liked}
-            likeCount={data?.likeCount}
-            commentCount={data?.commentCount}
+            didLike={data.liked}
+            likeCount={data.likeCount}
+            commentCount={data.commentCount}
           />
           <PostCard.Content
             postId={Number(postId)}
             thumbnailUrl={null}
-            content={data?.transformedContent}
-            animalType={data?.postType}
-            timestamp={new Date(data?.createdAt)}
-            emotion={data?.emotion}
+            content={data.transformedContent}
+            animalType={data.postType}
+            timestamp={new Date(data.createdAt)}
+            emotion={data.emotion}
           />
         </>
       )}
