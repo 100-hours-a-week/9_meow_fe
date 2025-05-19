@@ -29,12 +29,12 @@ export default function PostContent({
       className="flex flex-col gap-1 w-full"
     >
       <div className="flex flex-row items-start gap-2">
-        <p className="text-base whitespace-pre-wrap flex-1">{content}</p>
+        <p className="text-sm whitespace-pre-wrap flex-1">{content}</p>
         {thumbnailUrl && (
           <img
             src={thumbnailUrl}
             alt="썸네일"
-            className="w-[150px] h-[150px] rounded-lg object-cover flex-shrink-0"
+            className="w-[100px] h-[100px] rounded-lg object-cover flex-shrink-0"
           />
         )}
       </div>
