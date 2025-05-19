@@ -63,7 +63,7 @@ export default function CreatePostForm() {
   }, [isSuccess, isError, navigate]);
 
   return (
-    <div className="flex flex-col gap-4 items-center p-5">
+    <div className="flex flex-col gap-4 items-center p-5 pb-16">
       <h1 className="text-3xl font-bold">오늘은 무슨 일이 있었냥</h1>
       <ImageInput
         selectedImages={selectedImages}
