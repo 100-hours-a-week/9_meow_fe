@@ -1,6 +1,7 @@
 import { ApiEmotion } from "@/types/Emotion";
 import defaultInstance from "./instance/defaultInstance";
 import formInstance from "./instance/formInstance";
+import authInstance from "./instance/authInstance";
 
 export const getPostList = async ({
   page,
@@ -53,7 +54,7 @@ export const postLikePost = async ({
   postId: number;
   isLiked: boolean;
 }) => {
-  const response = await defaultInstance.post(`/posts/${postId}/likes`, {
+  const response = await authInstance.post(`/posts/${postId}/likes`, {
     is_liked: isLiked,
   });
   return response.data;
