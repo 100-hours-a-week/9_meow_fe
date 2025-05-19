@@ -59,11 +59,11 @@ export const postQueries = {
       postLikePost({ postId, isLiked }),
     onSuccess: () => {
       // 좋아요 성공 시 posts 쿼리 데이터를 무효화하여 재요청
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-      alert("좋아요 성공!");
+      queryClient.invalidateQueries({
+        queryKey: [...postQueries.all(), "list"],
+      });
     },
     onError: (error: AxiosError<IError>) => {
-      
       if (error.response?.status === 401) {
         refresh();
       } else {
