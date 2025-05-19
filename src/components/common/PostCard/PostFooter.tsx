@@ -31,7 +31,17 @@ export default function PostFooter({
     }),
   });
   const { mutate: likePost, isPending } = useMutation({
-    ...postQueries.like({ queryClient, refresh }),
+    ...postQueries.like({
+      refresh,
+      onLikeSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [...postQueries.all(), "detail", postId],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [...postQueries.all(), "list"],
+        });
+      },
+    }),
   });
 
   const handleLikeClick = () => {

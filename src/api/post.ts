@@ -1,5 +1,4 @@
 import { ApiEmotion } from "@/types/Emotion";
-import defaultInstance from "./instance/defaultInstance";
 import formInstance from "./instance/formInstance";
 import authInstance from "./instance/authInstance";
 
@@ -43,7 +42,7 @@ export const postPost = async (post: IPost) => {
 };
 
 export const getPostDetail = async (postId: number) => {
-  const response = await defaultInstance.get(`/posts/${postId}`);
+  const response = await authInstance.get(`/posts/${postId}`);
   return response.data;
 };
 

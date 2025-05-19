@@ -1,10 +1,6 @@
 import { IError, IPostSummaryDataPagination } from "@/api/types";
 import { getPostDetail, getPostList, postLikePost, postPost } from "../post";
-import {
-  infiniteQueryOptions,
-  QueryClient,
-  queryOptions,
-} from "@tanstack/react-query";
+import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { IPostDetailData } from "@/api/types";
 import { ICreatePost } from "../types";
 import { AxiosError } from "axios";
@@ -48,20 +44,18 @@ export const postQueries = {
   }),
 
   like: ({
-    queryClient,
     refresh,
+    onLikeSuccess,
   }: {
-    queryClient: QueryClient;
     refresh: () => void;
+    onLikeSuccess?: () => void;
   }) => ({
     mutationKey: [...postQueries.all(), "like"],
     mutationFn: ({ postId, isLiked }: { postId: number; isLiked: boolean }) =>
       postLikePost({ postId, isLiked }),
     onSuccess: () => {
       // 좋아요 성공 시 posts 쿼리 데이터를 무효화하여 재요청
-      queryClient.invalidateQueries({
-        queryKey: [...postQueries.all(), "list"],
-      });
+      onLikeSuccess?.();
     },
     onError: (error: AxiosError<IError>) => {
       if (error.response?.status === 401) {
