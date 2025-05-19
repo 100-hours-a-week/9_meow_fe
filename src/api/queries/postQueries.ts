@@ -1,5 +1,5 @@
 import { IError, IPostSummaryDataPagination } from "@/api/types";
-import { getPostDetail, getPostList, postPost } from "../post";
+import { getPostDetail, getPostList, postLikePost, postPost } from "../post";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { IPostDetailData } from "@/api/types";
 import { ICreatePost } from "../types";
@@ -39,6 +39,29 @@ export const postQueries = {
         return;
       } else {
         alert("게시글 작성에 실패했다옹. 잠시 후 다시 시도해보라냥");
+      }
+    },
+  }),
+
+  like: ({
+    refresh,
+    onLikeSuccess,
+  }: {
+    refresh: () => void;
+    onLikeSuccess?: () => void;
+  }) => ({
+    mutationKey: [...postQueries.all(), "like"],
+    mutationFn: ({ postId, isLiked }: { postId: number; isLiked: boolean }) =>
+      postLikePost({ postId, isLiked }),
+    onSuccess: () => {
+      // 좋아요 성공 시 posts 쿼리 데이터를 무효화하여 재요청
+      onLikeSuccess?.();
+    },
+    onError: (error: AxiosError<IError>) => {
+      if (error.response?.status === 401) {
+        refresh();
+      } else {
+        alert("좋아요에 실패했다옹...");
       }
     },
   }),

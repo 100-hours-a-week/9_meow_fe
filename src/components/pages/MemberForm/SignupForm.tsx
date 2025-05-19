@@ -55,7 +55,7 @@ export default function SignupForm() {
   }, [token, navigate]);
 
   return (
-    <div className="flex flex-col gap-4 items-center pt-8">
+    <div className="flex flex-col gap-4 items-center pt-8 m-3 pb-16">
       <h2 className="text-4xl">환영한다냥</h2>
       <ProfileImageSelection
         titleText="친구는 어떻게 생겼냐옹"

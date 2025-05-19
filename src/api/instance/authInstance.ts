@@ -3,14 +3,14 @@ import axios from "axios";
 
 const baseURL = `${import.meta.env.VITE_API_URL}`;
 
-const formInstance = axios.create({
+const authInstance = axios.create({
   baseURL,
   headers: {
-    "Content-Type": "multipart/form-data",
+    "Content-Type": "application/json",
   },
 });
 
-formInstance.interceptors.request.use(
+authInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem(TOKEN_KEY);
     if (token) {
@@ -23,4 +23,4 @@ formInstance.interceptors.request.use(
   },
 );
 
-export default formInstance;
+export default authInstance;
