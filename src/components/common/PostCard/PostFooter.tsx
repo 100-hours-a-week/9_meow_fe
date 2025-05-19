@@ -1,5 +1,6 @@
 import { loginQueries } from "@/api/queries/loginQueries";
 import { postQueries } from "@/api/queries/postQueries";
+import { Button } from "@/components/ui/button";
 import useTokenStore from "@/store/useTokenStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -52,19 +53,29 @@ export default function PostFooter({
 
   return (
     <div className="flex flex-row items-center gap-2 w-full">
-      <img
-        src={didLike ? "/icon/cat-filled.svg" : "/icon/cat-outlined.svg"}
-        alt="좋아요 후"
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={handleLikeClick}
-      />
+        disabled={isPending}
+      >
+        <img
+          src={didLike ? "/icon/cat-filled.svg" : "/icon/cat-outlined.svg"}
+          alt="좋아요"
+        />
+      </Button>
       <p>{likeCount}</p>
-      <img
-        src="/icon/comment.svg"
-        alt="댓글"
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={() => navigate(`/detail/${postId}`)}
-      />
+      >
+        <img src="/icon/comment.svg" alt="댓글" />
+      </Button>
       <p>{commentCount}</p>
-      <img src="/icon/share.svg" alt="공유" onClick={handleShareClick} />
+      <Button variant="ghost" size="icon" onClick={handleShareClick}>
+        <img src="/icon/share.svg" alt="공유" />
+      </Button>
     </div>
   );
 }
