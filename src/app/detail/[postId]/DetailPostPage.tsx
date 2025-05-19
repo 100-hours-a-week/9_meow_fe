@@ -32,13 +32,17 @@ function DetailPostPage() {
               animalType: data.postType,
             }}
           />
-          <ImageCarousel images={data.imageUrls} />
-          <PostCard.Footer
-            postId={Number(postId)}
-            didLike={data.liked}
-            likeCount={data.likeCount}
-            commentCount={data.commentCount}
-          />
+          {data.imageUrls.length > 0 && (
+            <ImageCarousel images={data.imageUrls} />
+          )}
+          {data.imageUrls.length > 0 && (
+            <PostCard.Footer
+              postId={Number(postId)}
+              didLike={data.liked}
+              likeCount={data.likeCount}
+              commentCount={data.commentCount}
+            />
+          )}
           <PostCard.Content
             postId={Number(postId)}
             thumbnailUrl={null}
@@ -47,6 +51,14 @@ function DetailPostPage() {
             timestamp={new Date(data.createdAt)}
             emotion={data.emotion}
           />
+          {data.imageUrls.length === 0 && (
+            <PostCard.Footer
+              postId={Number(postId)}
+              didLike={data.liked}
+              likeCount={data.likeCount}
+              commentCount={data.commentCount}
+            />
+          )}
         </>
       )}
     </div>
