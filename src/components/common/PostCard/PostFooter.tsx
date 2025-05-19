@@ -52,12 +52,13 @@ export default function PostFooter({
   };
 
   return (
-    <div className="flex flex-row items-center gap-2 w-full">
+    <div className="flex flex-row items-center gap-2 w-full text-xs">
       <Button
         variant="ghost"
         size="icon"
         onClick={handleLikeClick}
         disabled={isPending}
+        className="size-6 p-1"
       >
         <img
           src={didLike ? "/icon/cat-filled.svg" : "/icon/cat-outlined.svg"}
@@ -69,11 +70,17 @@ export default function PostFooter({
         variant="ghost"
         size="icon"
         onClick={() => navigate(`/detail/${postId}`)}
+        className="size-6 p-1"
       >
         <img src="/icon/comment.svg" alt="댓글" />
       </Button>
       <p>{commentCount}</p>
-      <Button variant="ghost" size="icon" onClick={handleShareClick}>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={handleShareClick}
+        className="size-6 p-1"
+      >
         <img src="/icon/share.svg" alt="공유" />
       </Button>
     </div>
