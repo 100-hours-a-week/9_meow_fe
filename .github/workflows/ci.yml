@@ -107,7 +107,6 @@ jobs:
   deploy-frontend:
     name: 🚀 Deploy Frontend
     runs-on: ubuntu-latest
-    needs: [unit-tests]
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     steps:
       - name: Checkout Repository
