@@ -1,4 +1,4 @@
-import LoginButton from "@/components/pages/LoginButton";
+import { LoginButton } from "@/components/pages";
 import { TOKEN_KEY } from "@/store/useTokenStore";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
