@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import KakaoLoginIcon from "/loginButton/kakao_login_large_narrow.png";
+import KakaoLoginIcon from "/loginButton/kakao_login_medium_narrow.png";
 import { loginQueries } from "@/api/queries/loginQueries";
 
 export default function LoginButton() {
