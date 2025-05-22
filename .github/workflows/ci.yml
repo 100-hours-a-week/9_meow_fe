@@ -126,19 +126,37 @@ jobs:
       - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, Tag & Push Docker Image
+      - name: Determine ECR Namespace
+        id: ns
         run: |
-          IMAGE_URI=${{ secrets.ECR_REGISTRY }}/9_meow_fe:develop
-          docker build -t $IMAGE_URI .
-          docker push $IMAGE_URI
+          BRANCH=${GITHUB_REF#refs/heads/}
+          if [[ "$BRANCH" == "develop" ]]; then
+            echo "ENV=dev" >> $GITHUB_ENV
+          elif [[ "$BRANCH" =~ ^release/ ]]; then
+            echo "ENV=release" >> $GITHUB_ENV
+          elif [[ "$BRANCH" == "main" ]]; then
+            echo "ENV=prod" >> $GITHUB_ENV
+          else
+            echo "ENV=skip" >> $GITHUB_ENV
+          fi
 
-      - name: Deploy to AWS via SSH
-        uses: appleboy/ssh-action@v0.1.8
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd /home/ubuntu/deployment
-            docker-compose pull frontend
-            docker-compose up -d frontend
+      - name: Build, Tag & Push to ECR
+        if: env.ENV != 'skip'
+        run: |
+          SERVICE=9_meow_fe
+          IMAGE_URI=${{ secrets.ECR_REGISTRY }}/${ENV}/${SERVICE}
+          # 빌드 및 latest 태그
+          docker build -t $IMAGE_URI:latest .
+          # ECR에 업로드
+          docker push $IMAGE_URI:latest
+
+      # - name: Deploy to AWS via SSH
+      #   uses: appleboy/ssh-action@v0.1.8
+      #   with:
+      #     host: ${{ secrets.SERVER_HOST }}
+      #     username: ${{ secrets.SERVER_USER }}
+      #     key: ${{ secrets.SERVER_SSH_KEY }}
+      #     script: |
+      #       cd /home/ubuntu/deployment
+      #       docker-compose pull frontend
+      #       docker-compose up -d frontend
