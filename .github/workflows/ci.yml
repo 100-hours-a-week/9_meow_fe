@@ -150,13 +150,11 @@ jobs:
           # ECR에 업로드
           docker push $IMAGE_URI:latest
 
-      # - name: Deploy to AWS via SSH
-      #   uses: appleboy/ssh-action@v0.1.8
-      #   with:
-      #     host: ${{ secrets.SERVER_HOST }}
-      #     username: ${{ secrets.SERVER_USER }}
-      #     key: ${{ secrets.SERVER_SSH_KEY }}
-      #     script: |
-      #       cd /home/ubuntu/deployment
-      #       docker-compose pull frontend
-      #       docker-compose up -d frontend
+      - name: Deploy to AWS via SSH
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            /home/ubuntu/deployment/update.sh
