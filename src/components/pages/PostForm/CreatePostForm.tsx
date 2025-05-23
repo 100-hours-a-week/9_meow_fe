@@ -8,30 +8,15 @@ import { useImageUpload } from "@/hooks/common/useImageUpload";
 import { ApiEmotion } from "@/types/Emotion";
 import { postQueries } from "@/api/queries/postQueries";
 import { useMutation } from "@tanstack/react-query";
-import { loginQueries } from "@/api/queries/loginQueries";
-import useTokenStore from "@/store/useTokenStore";
 
 export default function CreatePostForm() {
   const navigate = useNavigate();
-  const { setToken } = useTokenStore();
-  const { mutate: refresh } = useMutation({
-    ...loginQueries.refresh({
-      setToken,
-      onRefreshSuccess: () => {
-        createPost({
-          images: selectedImages.map((img) => img.file),
-          content,
-          emotion: selectedEmotion,
-        });
-      },
-    }),
-  });
   const {
     mutate: createPost,
     isPending,
     isSuccess,
     isError,
-  } = useMutation({ ...postQueries.create({ refresh }) });
+  } = useMutation({ ...postQueries.create() });
 
   const { selectedImages, addImages, removeImage, error } = useImageUpload();
   const [content, setContent] = useState("");

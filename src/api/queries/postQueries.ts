@@ -25,7 +25,7 @@ export const postQueries = {
       queryFn: () => getPostDetail(postId),
     }),
 
-  create: ({ refresh }: { refresh: () => void }) => ({
+  create: () => ({
     mutationKey: [...postQueries.all(), "create"],
     mutationFn: ({ images, content, emotion }: ICreatePost) =>
       postPost({
@@ -34,22 +34,14 @@ export const postQueries = {
         emotion,
       }),
     onError: (error: AxiosError<IError>) => {
-      if (error.response?.status === 401) {
-        refresh();
-        return;
-      } else {
-        alert("게시글 작성에 실패했다옹. 잠시 후 다시 시도해보라냥");
+      if (error.response?.status !== 401) {
+        alert("게시글 작성에 실패했다옹. 잠시 후 다시 시도해보냥");
+        console.log("error", error);
       }
     },
   }),
 
-  like: ({
-    refresh,
-    onLikeSuccess,
-  }: {
-    refresh: () => void;
-    onLikeSuccess?: () => void;
-  }) => ({
+  like: ({ onLikeSuccess }: { onLikeSuccess?: () => void }) => ({
     mutationKey: [...postQueries.all(), "like"],
     mutationFn: ({ postId, isLiked }: { postId: number; isLiked: boolean }) =>
       postLikePost({ postId, isLiked }),
@@ -58,9 +50,7 @@ export const postQueries = {
       onLikeSuccess?.();
     },
     onError: (error: AxiosError<IError>) => {
-      if (error.response?.status === 401) {
-        refresh();
-      } else {
+      if (error.response?.status !== 401) {
         alert("좋아요에 실패했다옹...");
       }
     },
