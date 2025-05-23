@@ -1,4 +1,4 @@
-import useTokenStore, { TOKEN_KEY } from "@/store/useTokenStore";
+import useTokenStore from "@/store/useTokenStore";
 import axios from "axios";
 import { postRefresh } from "../login";
 
@@ -13,7 +13,7 @@ const authInstance = axios.create({
 
 authInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem(TOKEN_KEY);
+    const token = useTokenStore.getState().token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
