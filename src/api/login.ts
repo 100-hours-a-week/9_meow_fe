@@ -1,4 +1,3 @@
-import authInstance from "./instance/authInstance";
 import defaultInstance from "./instance/defaultInstance";
 
 export const getKakaoUrl = async () => {
@@ -29,7 +28,7 @@ export const postLogin = async (kakaoId: number) => {
 };
 
 export const postRefresh = async () => {
-  const response = await authInstance.post("/auth/refresh", null, {
+  const response = await defaultInstance.post("/auth/refresh", null, {
     withCredentials: true,
   });
   return response.data;
