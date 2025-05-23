@@ -1,5 +1,6 @@
-import { TOKEN_KEY } from "@/store/useTokenStore";
 import axios from "axios";
+import { postRefresh } from "../login";
+import useTokenStore from "@/store/useTokenStore";
 
 const baseURL = `${import.meta.env.VITE_API_URL}`;
 
@@ -12,13 +13,39 @@ const formInstance = axios.create({
 
 formInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem(TOKEN_KEY);
+    const token = useTokenStore.getState().token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  },
+);
+
+formInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const response: { accessToken: string } = await postRefresh();
+        const newToken = response.accessToken;
+        useTokenStore.getState().setToken(newToken);
+
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return formInstance(originalRequest);
+      } catch (refreshError) {
+        alert("토큰 갱신에 실패했다옹... 로그아웃 하고 다시 로그인 해보라냥");
+        window.location.href = "/login";
+        return Promise.reject(refreshError);
+      }
+    }
+
     return Promise.reject(error);
   },
 );
