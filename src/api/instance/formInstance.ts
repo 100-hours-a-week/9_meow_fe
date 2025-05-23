@@ -1,6 +1,6 @@
 import axios from "axios";
 import { postRefresh } from "../login";
-import useTokenStore, { TOKEN_KEY } from "@/store/useTokenStore";
+import useTokenStore from "@/store/useTokenStore";
 
 const baseURL = `${import.meta.env.VITE_API_URL}`;
 
@@ -13,7 +13,7 @@ const formInstance = axios.create({
 
 formInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem(TOKEN_KEY);
+    const token = useTokenStore.getState().token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
