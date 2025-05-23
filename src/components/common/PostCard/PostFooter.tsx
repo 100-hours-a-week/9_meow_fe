@@ -1,5 +1,7 @@
+import { loginQueries } from "@/api/queries/loginQueries";
 import { postQueries } from "@/api/queries/postQueries";
 import { Button } from "@/components/ui/button";
+import useTokenStore from "@/store/useTokenStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -18,9 +20,19 @@ export default function PostFooter({
 }: IPostFooter) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { setToken } = useTokenStore();
 
+  const { mutate: refresh } = useMutation({
+    ...loginQueries.refresh({
+      setToken,
+      onRefreshSuccess: () => {
+        likePost({ postId, isLiked: didLike });
+      },
+    }),
+  });
   const { mutate: likePost, isPending } = useMutation({
     ...postQueries.like({
+      refresh,
       onLikeSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: [...postQueries.all(), "detail", postId],
