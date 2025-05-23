@@ -40,6 +40,8 @@ formInstance.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return formInstance(originalRequest);
       } catch (refreshError) {
+        alert("토큰 갱신에 실패했다옹... 로그아웃 하고 다시 로그인 해보라냥");
+        window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }
