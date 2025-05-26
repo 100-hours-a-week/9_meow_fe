@@ -47,7 +47,7 @@ export default function MainPage() {
             userId: post.userId,
             nickname: post.nickname,
             animalType: post.postType,
-            profileImageUrl: post.profileImageUrl,
+            profileImageUrl: post.profileImageUrl ?? undefined,
           };
           const postContent: IPostContent = {
             postId: post.id,
