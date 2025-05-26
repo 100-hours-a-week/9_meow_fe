@@ -146,7 +146,7 @@ jobs:
           SERVICE=9_meow_fe
           IMAGE_URI=${{ secrets.ECR_REGISTRY }}/${ENV}/${SERVICE}
           # 빌드 및 latest 태그
-          docker build -t $IMAGE_URI:latest .
+          docker build --build-arg VITE_API_URL=/api -t $IMAGE_URI:latest .
           # ECR에 업로드
           docker push $IMAGE_URI:latest
 
