@@ -1,3 +1,5 @@
+import { Button } from "../ui/button";
+
 export default function Background({
   children,
 }: {
@@ -9,8 +11,30 @@ export default function Background({
       <div className="w-[300px] flex-shrink-0 relative hidden md:block bg-transparent">
         <div className="flex flex-col items-end justify-center h-full p-6">
           <div className="flex flex-row gap-5 items-center">
-            <img src="/icon/ask.svg" className="w-10 h-10" />
-            <img src="/icon/instagram.svg" className="w-8 h-8" />
+            <Button
+              variant="ghost"
+              className="p-1"
+              onClick={() => {
+                window.open(
+                  "https://docs.google.com/forms/d/e/1FAIpQLScfUhc48SbNaHes8pIwmlDWwWztPRLCDIAmW7eEIgEgI5KLLQ/viewform?usp=dialog",
+                  "_blank",
+                );
+              }}
+            >
+              <img src="/icon/ask.svg" className="size-12" />
+            </Button>
+            <Button
+              variant="ghost"
+              className="p-1"
+              onClick={() => {
+                window.open(
+                  "https://www.instagram.com/meowng_official/?utm_source=ig_web_button_share_sheet",
+                  "_blank",
+                );
+              }}
+            >
+              <img src="/icon/instagram.svg" className="size-10" />
+            </Button>
           </div>
           <div className="h-full flex flex-col text-foreground font-bold text-2xl text-right justify-end">
             <h1 className="text-7xl">미야옹</h1>
