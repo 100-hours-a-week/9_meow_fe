@@ -16,7 +16,7 @@ export default function NavigationBar() {
   const [profileImage] = useState<string | undefined>();
 
   return (
-    <div className="flex justify-between items-center border-t border-border/30 px-5 py-1 fixed bottom-0 w-full bg-background">
+    <div className="flex justify-between items-center border-t border-border/30 px-5 py-1 fixed bottom-0 w-full bg-background max-w-[430px] mx-auto">
       {renderIconButton("/", <img src="/icon/home.svg" alt="home" />)}
       {/* {renderIconButton("/calendar", <img src="/icon/calendar.svg" alt="calendar" />)} */}
       {renderIconButton("/create", <img src="/icon/plus.svg" alt="plus" />)}
@@ -27,7 +27,7 @@ export default function NavigationBar() {
         <Avatar>
           <AvatarImage src={profileImage ?? "/logo.svg"} />
           <AvatarFallback>미야옹</AvatarFallback>
-        </Avatar>
+        </Avatar>,
       )}
     </div>
   );
