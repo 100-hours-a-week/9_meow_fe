@@ -8,7 +8,7 @@ export default function Background({
   return (
     <div className="flex h-screen overflow-hidden bg-gradient-to-b from-[#fff7f0] via-[#fcefdc] to-[#f9e8cb]">
       {children}
-      <div className="w-[300px] flex-shrink-0 relative hidden md:block bg-transparent">
+      <div className="w-[300px] flex-shrink-0 relative hidden md:block bg-transparent mr-auto">
         <div className="flex flex-col items-end justify-center h-full p-6">
           <div className="flex flex-row gap-5 items-center">
             <Button
