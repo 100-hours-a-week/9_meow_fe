@@ -17,7 +17,7 @@ export default function CommentInput() {
   };
 
   return (
-    <div className="w-full flex gap-2 bg-orange-100 rounded-lg p-3">
+    <div className="w-full flex gap-2 bg-orange-100 rounded-lg p-3 sticky bottom-16 shadow-lg border border-foreground/20">
       <div className="w-full flex flex-col gap-2">
         <textarea
           value={value}
