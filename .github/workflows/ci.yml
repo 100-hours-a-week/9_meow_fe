@@ -162,7 +162,10 @@ jobs:
             ${{ env.IMAGE_URI }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-
+      - name: Debug workspace layout
+        run: |
+          echo "현재 작업 디렉터리: $GITHUB_WORKSPACE"
+          ls -R $GITHUB_WORKSPACE
       - name: Prepare CodeDeploy bundle
         run: |
           # 1) 작업 디렉터리 meow/deployment 
