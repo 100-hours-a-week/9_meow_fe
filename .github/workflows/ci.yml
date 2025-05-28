@@ -165,7 +165,7 @@ jobs:
 
       - name: Prepare CodeDeploy bundle
         run: |
-          # 1) 작업 디렉터리를 meow/deployment 로 이동
+          # 1) 작업 디렉터리 meow/deployment 
           cd meow/deployment
 
           # 2) 번들 폴더 생성
