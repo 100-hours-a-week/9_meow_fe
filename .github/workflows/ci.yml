@@ -123,7 +123,9 @@ jobs:
             echo "ENV=skip" >> $GITHUB_ENV
           fi
           SERVICE=9_meow_fe
+          echo "SERVICE=${SERVICE}" >> $GITHUB_ENV
           IMAGE_URI=${{ secrets.ECR_REGISTRY }}/${ENV}/${SERVICE}
+          echo "IMAGE_URI=${IMAGE_URI}" >> $GITHUB_ENV
           echo "APP_NAME=MyApp" >> $GITHUB_ENV
           echo "DG_NAME=${ENV}" >> $GITHUB_ENV
 
@@ -148,8 +150,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.ECR_REGISTRY }}/${{ env.ENV }}/${{ env.SERVICE }}:${{ github.sha }}
-            ${{ secrets.ECR_REGISTRY }}/${{ env.ENV }}/${{ env.SERVICE }}:latest
+            ${{ env.IMAGE_URI }}:${{ github.sha }}
+            ${{ env.IMAGE_URI }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
