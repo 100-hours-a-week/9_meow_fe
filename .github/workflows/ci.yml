@@ -111,23 +111,37 @@ jobs:
 
       - name: Determine ENV & App Names
         id: meta
+        shell: bash
         run: |
+          # 1) 브랜치별 ENV 결정
           branch=${GITHUB_REF#refs/heads/}
           if [[ "$branch" == "develop" ]]; then
-            echo "ENV=dev" >> $GITHUB_ENV
+           deploy_env=dev
           elif [[ "$branch" =~ ^release/ ]]; then
-            echo "ENV=release" >> $GITHUB_ENV
+            deploy_env=release
           elif [[ "$branch" == "main" ]]; then
-            echo "ENV=prod" >> $GITHUB_ENV
+            deploy_env=prod
           else
-            echo "ENV=skip" >> $GITHUB_ENV
+           deploy_env=skip
           fi
-          echo "SERVICE=9_meow_fe" >> $GITHUB_ENV
-          registry="${{ secrets.ECR_REGISTRY }}"; registry="${registry%/}"
-          echo "REGISTRY=${registry}" >> $GITHUB_ENV
-          echo "IMAGE_URI=${registry}/${ENV}/${SERVICE}" >> $GITHUB_ENV
-          echo "APP_NAME=MyApp" >> $GITHUB_ENV
-          echo "DG_NAME=${ENV}" >> $GITHUB_ENV
+
+          # 2) 서비스명 고정
+          service_name=9_meow_fe
+
+          # 3) 레지스트리 끝의 슬래시 제거
+          registry="${{ secrets.ECR_REGISTRY }}"
+          registry="${registry%/}"
+
+          # 4) IMAGE_URI 조합 (shell 변수 사용!!)
+          image_uri="${registry}/${deploy_env}/${service_name}"
+
+          # 5) 환경변수로 내보내기
+          echo "ENV=${deploy_env}"       >> $GITHUB_ENV
+          echo "SERVICE=${service_name}" >> $GITHUB_ENV
+          echo "REGISTRY=${registry}"    >> $GITHUB_ENV
+          echo "IMAGE_URI=${image_uri}"  >> $GITHUB_ENV
+          echo "APP_NAME=MyApp"          >> $GITHUB_ENV
+          echo "DG_NAME=${deploy_env}"   >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
