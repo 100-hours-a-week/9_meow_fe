@@ -39,7 +39,7 @@ export default function CommentInput({ postId }: ICommentInput) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       if (value.length <= MAX_LENGTH && value.trim().length > 0 && !isPending) {
-        createComment({ content: value });
+        handleSend();
       }
     }
   };
