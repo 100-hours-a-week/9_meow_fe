@@ -41,15 +41,14 @@ function DetailPostPage() {
               didLike={data.liked}
               likeCount={data.likeCount}
               commentCount={data.commentCount}
+              timestamp={new Date(data.createdAt)}
+              emotion={data.emotion}
             />
           )}
           <PostCard.Content
             postId={Number(postId)}
             thumbnailUrl={null}
             content={data.transformedContent}
-            animalType={data.postType}
-            timestamp={new Date(data.createdAt)}
-            emotion={data.emotion}
           />
           {data.imageUrls.length === 0 && (
             <PostCard.Footer
@@ -57,6 +56,8 @@ function DetailPostPage() {
               didLike={data.liked}
               likeCount={data.likeCount}
               commentCount={data.commentCount}
+              timestamp={new Date(data.createdAt)}
+              emotion={data.emotion}
             />
           )}
         </>
