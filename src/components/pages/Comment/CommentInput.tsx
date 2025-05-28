@@ -1,19 +1,47 @@
+import { commentQueries } from "@/api/queries/commentQueries";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 
 const MAX_LENGTH = 50;
 
-export default function CommentInput() {
+interface ICommentInput {
+  postId: number;
+}
+
+export default function CommentInput({ postId }: ICommentInput) {
   const [value, setValue] = useState("");
+
+  const queryClient = useQueryClient();
+  const { mutate: createComment, isPending } = useMutation({
+    ...commentQueries.create(postId),
+    onSuccess: () => {
+      setValue("");
+      queryClient.invalidateQueries({
+        queryKey: commentQueries.list(postId).queryKey,
+      });
+    },
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
   };
 
   const handleSend = () => {
-    // TODO : 댓글 전송 로직 추가
-    console.log("댓글 작성", value);
+    createComment({ content: value });
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (value.length <= MAX_LENGTH && value.trim().length > 0 && !isPending) {
+        createComment({ content: value });
+      }
+    }
   };
 
   return (
@@ -22,6 +50,7 @@ export default function CommentInput() {
         <textarea
           value={value}
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
           placeholder="댓글을 입력하세요..."
           className="w-full resize-none flex-1 text-sm"
         />
@@ -39,7 +68,9 @@ export default function CommentInput() {
           onClick={handleSend}
           variant="ghost"
           className="p-0"
-          disabled={value.length > MAX_LENGTH || value.trim().length === 0}
+          disabled={
+            value.length > MAX_LENGTH || value.trim().length === 0 || isPending
+          }
         >
           <img src="/icon/send.svg" alt="댓글 전송" className="size-6" />
         </Button>
