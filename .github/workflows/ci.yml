@@ -1,0 +1,193 @@
+name: Frontend CI & CD
+
+on:
+  push:
+    branches:
+      - develop
+      - 'release/**'
+  pull_request:
+    branches:
+      - develop
+      - 'release/**'
+      - main
+
+jobs:
+  unit-tests:
+    name: 🔨 Unit Tests
+    runs-on: ubuntu-latest
+    if: >
+      !contains(github.event.head_commit.message, '[skip ci]') &&
+      !contains(github.event.head_commit.message, '[ci skip]') &&
+      github.event_name == 'pull_request' &&
+      github.base_ref == 'develop' &&
+      contains(github.head_ref, 'feat')
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm ci
+      - run: npm run test:unit
+
+  integration-tests:
+    name: 🔗 Integration Tests
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    if: >
+      !contains(github.event.head_commit.message, '[skip ci]') &&
+      !contains(github.event.head_commit.message, '[ci skip]') &&
+      github.event_name == 'pull_request' &&
+      contains(github.base_ref, 'release') &&
+      github.head_ref == 'develop'
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
+          MYSQL_DATABASE: community_db
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s --health-retries=3
+    env:
+      BACKEND_PORT: 8080
+      FRONTEND_PORT: 4173
+    steps:
+      - uses: actions/checkout@v3
+      - name: Checkout Backend for Integration
+        uses: actions/checkout@v3
+        with:
+          repository: 100-hours-a-week/9_meow_be
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: backend
+      - name: Setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+      - run: |
+          cd backend
+          mvn clean package -DskipTests
+          java -jar target/*.jar &
+      - run: |
+          for i in {1..12}; do
+            curl -sf http://localhost:$BACKEND_PORT/api/health && break
+            sleep 5
+          done
+      - run: |
+          npm ci
+          npm run build
+          npm run preview &
+      - run: |
+          for i in {1..6}; do
+            curl -sf http://localhost:$FRONTEND_PORT/ && break
+            sleep 5
+          done
+      - run: curl -f http://localhost:$FRONTEND_PORT/api/health
+
+  deploy-frontend:
+    name: 🚀 Deploy Frontend
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/develop' &&
+      !contains(github.event.head_commit.message, '[skip cd]') &&
+      !contains(github.event.head_commit.message, '[cd skip]')
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_FOR_ACTIONS }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_FOR_ACTIONS }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Determine ENV & Image URI
+        id: meta
+        shell: bash
+        run: |
+          # 1) 브랜치 기준 ENV 계산
+          branch=${GITHUB_REF#refs/heads/}
+          if [[ "$branch" == "develop" ]]; then
+            env=dev
+          elif [[ "$branch" =~ ^release/ ]]; then
+            env=release
+          elif [[ "$branch" == "main" ]]; then
+            env=prod
+          else
+            env=skip
+          fi
+
+          # 2) 서비스명 고정
+          service=9_meow_fe
+
+          # 3) 레지스트리 뒤 슬래시 제거
+          registry="${{ secrets.ECR_REGISTRY }}"
+          registry="${registry%/}"
+
+          # 4) 최종 IMAGE_URI
+          image_uri="${registry}/${env}/${service}"
+
+          # 5) 모두 한 번에 내보내기
+          echo "ENV=$env"         >> $GITHUB_ENV
+          echo "SERVICE=$service" >> $GITHUB_ENV
+          echo "REGISTRY=$registry" >> $GITHUB_ENV
+          echo "IMAGE_URI=$image_uri" >> $GITHUB_ENV
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Cache buildx layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ env.ENV }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-${{ env.ENV }}-
+
+      - name: Build & Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE_URI }}:${{ github.sha }}
+            ${{ env.IMAGE_URI }}:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+      - name: Prepare CodeDeploy bundle
+        run: |
+          # 1) 작업 디렉터리를 meow/deployment 로 이동
+          cd meow/deployment
+
+          # 2) 번들 폴더 생성
+          mkdir -p bundle
+
+          # 3) appspec.yml 과 scripts/ 복사
+          cp appspec.yml bundle/appspec.yml
+          cp -r scripts bundle/scripts
+
+          # 4) 압축
+          cd bundle
+          zip -r ../../deploy-bundle.zip .
+        shell: bash
+
+      - name: Upload bundle to S3
+        run: |
+          aws s3 cp deploy-bundle.zip \
+            s3://${{ secrets.DEPLOY_BUCKET }}/${ENV}/deploy-bundle.zip
+
+      - name: Trigger CodeDeploy
+        run: |
+          aws deploy create-deployment \
+            --application-name ${{ env.APP_NAME }} \
+            --deployment-group-name ${{ env.DG_NAME }} \
+            --s3-location bucket=${{ secrets.DEPLOY_BUCKET }},key=${ENV}/deploy-bundle.zip,bundleType=zip
