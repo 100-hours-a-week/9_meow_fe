@@ -112,6 +112,7 @@ jobs:
       - name: Determine ENV & App Names
         id: meta
         run: |
+          # 브랜치에 따라 ENV 설정
           BRANCH=${GITHUB_REF#refs/heads/}
           if [[ "$BRANCH" == "develop" ]]; then
             echo "ENV=dev" >> $GITHUB_ENV
@@ -122,14 +123,16 @@ jobs:
           else
             echo "ENV=skip" >> $GITHUB_ENV
           fi
-          SERVICE=9_meow_fe
-          echo "SERVICE=${SERVICE}" >> $GITHUB_ENV
-          IMAGE_URI=${{ secrets.ECR_REGISTRY }}/${ENV}/${SERVICE}
-          echo "IMAGE_URI=${IMAGE_URI}" >> $GITHUB_ENV
-          echo "APP_NAME=MyApp" >> $GITHUB_ENV
-          echo "DG_NAME=${ENV}" >> $GITHUB_ENV
 
-      # ─────────── Docker Build Cache 설정 ───────────
+          # 서비스 이름 설정 및 내보내기
+          echo "SERVICE=9_meow_fe" >> $GITHUB_ENV
+
+          # 레지스트리 뒤 슬래시 제거 후 IMAGE_URI 조합
+          REGISTRY="${{ secrets.ECR_REGISTRY }}"
+          REGISTRY="${REGISTRY%/}"
+          echo "REGISTRY=${REGISTRY}" >> $GITHUB_ENV
+          echo "IMAGE_URI=${REGISTRY}/${ENV}/${SERVICE}" >> $GITHUB_ENV
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -155,7 +158,6 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
-      # ─────────── CodeDeploy 번들 준비 ────────────
       - name: Prepare CodeDeploy bundle
         run: |
           mkdir deploy
