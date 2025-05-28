@@ -72,3 +72,25 @@ export interface IPostSummaryDataPagination {
   totalPages: number;
   content: IPostSummaryData[];
 }
+
+export interface ICommentData {
+  id: number;
+  userId: number;
+  nickname: string;
+  profileImageUrl: string;
+  transformedContent: string;
+  postType: ApiAnimalType;
+  createdAt: string;
+}
+
+export interface ICommentDataPagination {
+  content: ICommentData[];
+  currentPage: number;
+  totalPages: number;
+  totalElements: number;
+  pageSize: number;
+  last: boolean;
+}
+export interface ICreateComment {
+  content: string;
+}
