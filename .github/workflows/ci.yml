@@ -140,7 +140,7 @@ jobs:
           echo "SERVICE=${service_name}" >> $GITHUB_ENV
           echo "REGISTRY=${registry}"    >> $GITHUB_ENV
           echo "IMAGE_URI=${image_uri}"  >> $GITHUB_ENV
-          echo "APP_NAME=MyApp"          >> $GITHUB_ENV
+          echo "APP_NAME=meow-${deploy_env}-deployment" >> $GITHUB_ENV
           echo "DG_NAME=${deploy_env}"   >> $GITHUB_ENV
 
       - name: Set up QEMU
