@@ -17,24 +17,16 @@ export default function CommentInput() {
   };
 
   return (
-    <div className="w-full flex gap-2 bg-orange-100 rounded-lg p-3 sticky bottom-16 shadow-lg border border-foreground/20">
+    <div className="w-full flex gap-2 bg-orange-100 rounded-lg py-2 px-3 sticky bottom-16 shadow-lg border border-foreground/20">
       <div className="w-full flex flex-col gap-2">
         <textarea
           value={value}
           onChange={handleChange}
           placeholder="댓글을 입력하세요..."
-          className="w-full h-15 resize-none flex-1"
+          className="w-full resize-none flex-1 text-sm"
         />
       </div>
-      <div className="flex flex-col items-end gap-2">
-        <Button
-          onClick={handleSend}
-          variant="ghost"
-          className="p-0"
-          disabled={value.length > MAX_LENGTH || value.trim().length === 0}
-        >
-          <img src="/icon/send.svg" alt="댓글 전송" className="size-8" />
-        </Button>
+      <div className="flex flex-row items-center gap-1">
         <span
           className={cn(
             "text-xs text-foreground/50",
@@ -43,6 +35,14 @@ export default function CommentInput() {
         >
           {value.length}/{MAX_LENGTH}
         </span>
+        <Button
+          onClick={handleSend}
+          variant="ghost"
+          className="p-0"
+          disabled={value.length > MAX_LENGTH || value.trim().length === 0}
+        >
+          <img src="/icon/send.svg" alt="댓글 전송" className="size-6" />
+        </Button>
       </div>
     </div>
   );
