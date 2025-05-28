@@ -4,7 +4,7 @@ import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
 
 export interface IUserItem {
   userId: number;
-  profileImageUrl: string | null;
+  profileImageUrl?: string;
   nickname: string;
   animalType: ApiAnimalType;
 }
@@ -24,7 +24,7 @@ export default function UserItem({
         <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
         <AvatarFallback>미야옹</AvatarFallback>
       </Avatar>
-      <div className="flex flex-col text-base">
+      <div className="flex flex-col text-sm">
         <p className="text-orange-950">{nickname}</p>
         <p className="text-orange-950/30">
           {convertAnimalTypeToDisplay(animalType)}
