@@ -21,7 +21,7 @@ export default function CreatePostForm() {
   const { selectedImages, addImages, removeImage, error } = useImageUpload();
   const [content, setContent] = useState("");
   const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
-    ApiEmotion.NONE,
+    ApiEmotion.NORMAL,
   );
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 

@@ -30,10 +30,7 @@ export default function SelectEmotion({
               onClick={() => handleEmotionChange(value)}
             />
             <Label htmlFor={`r${index + 1}`} className="text-xs">
-              {key === "NONE"
-                ? // TODO: 사용자에 따라서 다르게 보이도록
-                  DisplayEmotion.CAT
-                : DisplayEmotion[key as keyof typeof DisplayEmotion]}
+              {DisplayEmotion[key as keyof typeof DisplayEmotion]}
             </Label>
           </div>
         ))}
