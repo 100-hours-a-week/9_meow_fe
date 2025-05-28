@@ -164,18 +164,21 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Prepare CodeDeploy bundle
-        working-directory: ${{ github.workspace }}
         run: |
-          # 1) 번들 폴더 생성
+          # 1) 작업 디렉터리를 meow/deployment 로 이동
+          cd meow/deployment
+
+          # 2) 번들 폴더 생성
           mkdir -p bundle
 
-          # 2) 루트에 있어야 할 파일 복사
+          # 3) appspec.yml 과 scripts/ 복사
           cp appspec.yml bundle/appspec.yml
           cp -r scripts bundle/scripts
 
-          # 3) 압축
+          # 4) 압축
           cd bundle
-          zip -r ../deploy-bundle.zip .
+          zip -r ../../deploy-bundle.zip .
+        shell: bash
 
       - name: Upload bundle to S3
         run: |
