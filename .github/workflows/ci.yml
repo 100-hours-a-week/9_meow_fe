@@ -96,47 +96,38 @@ jobs:
       !contains(github.event.head_commit.message, '[skip cd]') &&
       !contains(github.event.head_commit.message, '[cd skip]')
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      - uses: aws-actions/configure-aws-credentials@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_FOR_ACTIONS }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_FOR_ACTIONS }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - uses: aws-actions/amazon-ecr-login@v2
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Determine ENV & Image URI
+      - name: Determine ENV & App Names
         id: meta
-        shell: bash
         run: |
-          # 1) 브랜치 기준 ENV 계산
           branch=${GITHUB_REF#refs/heads/}
           if [[ "$branch" == "develop" ]]; then
-            env=dev
+            echo "ENV=dev" >> $GITHUB_ENV
           elif [[ "$branch" =~ ^release/ ]]; then
-            env=release
+            echo "ENV=release" >> $GITHUB_ENV
           elif [[ "$branch" == "main" ]]; then
-            env=prod
+            echo "ENV=prod" >> $GITHUB_ENV
           else
-            env=skip
+            echo "ENV=skip" >> $GITHUB_ENV
           fi
-
-          # 2) 서비스명 고정
-          service=9_meow_fe
-
-          # 3) 레지스트리 뒤 슬래시 제거
-          registry="${{ secrets.ECR_REGISTRY }}"
-          registry="${registry%/}"
-
-          # 4) 최종 IMAGE_URI
-          image_uri="${registry}/${env}/${service}"
-
-          # 5) 모두 한 번에 내보내기
-          echo "ENV=$env"         >> $GITHUB_ENV
-          echo "SERVICE=$service" >> $GITHUB_ENV
-          echo "REGISTRY=$registry" >> $GITHUB_ENV
-          echo "IMAGE_URI=$image_uri" >> $GITHUB_ENV
+          echo "SERVICE=9_meow_fe" >> $GITHUB_ENV
+          registry="${{ secrets.ECR_REGISTRY }}"; registry="${registry%/}"
+          echo "REGISTRY=${registry}" >> $GITHUB_ENV
+          echo "IMAGE_URI=${registry}/${ENV}/${SERVICE}" >> $GITHUB_ENV
+          echo "APP_NAME=MyApp" >> $GITHUB_ENV
+          echo "DG_NAME=${ENV}" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -162,31 +153,6 @@ jobs:
             ${{ env.IMAGE_URI }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-      - name: Debug workspace layout
-        run: |
-          echo "현재 작업 디렉터리: $GITHUB_WORKSPACE"
-          ls -R $GITHUB_WORKSPACE
-      - name: Prepare CodeDeploy bundle
-        run: |
-          # 1) 작업 디렉터리 meow/deployment 
-          cd meow/deployment
-
-          # 2) 번들 폴더 생성
-          mkdir -p bundle
-
-          # 3) appspec.yml 과 scripts/ 복사
-          cp appspec.yml bundle/appspec.yml
-          cp -r scripts bundle/scripts
-
-          # 4) 압축
-          cd bundle
-          zip -r ../../deploy-bundle.zip .
-        shell: bash
-
-      - name: Upload bundle to S3
-        run: |
-          aws s3 cp deploy-bundle.zip \
-            s3://${{ secrets.DEPLOY_BUCKET }}/${ENV}/deploy-bundle.zip
 
       - name: Trigger CodeDeploy
         run: |
