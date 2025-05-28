@@ -1,5 +1,8 @@
 import { postQueries } from "@/api/queries/postQueries";
 import { Button } from "@/components/ui/button";
+import { ApiEmotion } from "@/types/Emotion";
+import { convertEmotionTypeToDisplay } from "@/utils/convertEmotion";
+import { convertTimestamp } from "@/utils/convertTimestamp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +11,8 @@ export interface IPostFooter {
   didLike: boolean;
   likeCount: number;
   commentCount: number;
+  timestamp: Date;
+  emotion: ApiEmotion;
 }
 
 export default function PostFooter({
@@ -15,6 +20,8 @@ export default function PostFooter({
   didLike,
   likeCount,
   commentCount,
+  timestamp,
+  emotion,
 }: IPostFooter) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -50,37 +57,45 @@ export default function PostFooter({
   };
 
   return (
-    <div className="flex flex-row items-center gap-2 w-full text-xs">
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={handleLikeClick}
-        disabled={isPending}
-        className="size-6 p-1"
-      >
-        <img
-          src={didLike ? "/icon/cat-filled.svg" : "/icon/cat-outlined.svg"}
-          alt="좋아요"
-        />
-      </Button>
-      <p>{likeCount}</p>
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => navigate(`/detail/${postId}`)}
-        className="size-6 p-1"
-      >
-        <img src="/icon/comment.svg" alt="댓글" />
-      </Button>
-      <p>{commentCount}</p>
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={handleShareClick}
-        className="size-6 p-1"
-      >
-        <img src="/icon/share.svg" alt="공유" />
-      </Button>
+    <div className="flex flex-row justify-between items-center text-xs w-full">
+      <div className="flex flex-row items-center gap-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleLikeClick}
+          disabled={isPending}
+          className="size-6 p-1"
+        >
+          <img
+            src={didLike ? "/icon/cat-filled.svg" : "/icon/cat-outlined.svg"}
+            alt="좋아요"
+          />
+        </Button>
+        <p>{likeCount}</p>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => navigate(`/detail/${postId}`)}
+          className="size-6 p-1"
+        >
+          <img src="/icon/comment.svg" alt="댓글" />
+        </Button>
+        <p>{commentCount}</p>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleShareClick}
+          className="size-6 p-1"
+        >
+          <img src="/icon/share.svg" alt="공유" />
+        </Button>
+      </div>
+      <div className="flex flex-row items-center gap-2 text-muted-foreground text-xs">
+        <p>{convertTimestamp(timestamp)}</p>
+        {emotion !== ApiEmotion.NORMAL && (
+          <p> / {convertEmotionTypeToDisplay(emotion)}</p>
+        )}
+      </div>
     </div>
   );
 }

@@ -53,15 +53,14 @@ export default function MainPage() {
             postId: post.id,
             thumbnailUrl: post.thumbnailUrl,
             content: post.transformedContent,
-            animalType: post.postType,
-            timestamp: new Date(post.createdAt),
-            emotion: post.emotion,
           };
           const postInfo: IPostFooter = {
             postId: post.id,
             didLike: post.liked,
             likeCount: post.likeCount,
             commentCount: post.commentCount,
+            timestamp: new Date(post.createdAt),
+            emotion: post.emotion,
           };
           return (
             <PostCard key={`post-${post.id}`}>

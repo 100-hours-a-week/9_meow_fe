@@ -1,6 +1,6 @@
 // API 응답에서 사용되는 감정 enum
 export enum ApiEmotion {
-  NONE = "normal",
+  NORMAL = "normal",
   HAPPY = "happy",
   CURIOUS = "curious",
   SAD = "sad",
@@ -10,8 +10,7 @@ export enum ApiEmotion {
 
 // UI에서 표시되는 감정 enum
 export enum DisplayEmotion {
-  CAT = "냥",
-  DOG = "멍",
+  NORMAL = "선택 없음",
   HAPPY = "☺️행복",
   CURIOUS = "🤔호기심",
   SAD = "😢슬픔",
