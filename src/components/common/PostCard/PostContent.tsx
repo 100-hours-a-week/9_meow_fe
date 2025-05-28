@@ -40,8 +40,8 @@ export default function PostContent({
       </div>
       <div className="flex flex-row items-center gap-2 text-muted-foreground text-xs">
         <p>{convertTimestamp(timestamp)}</p>
-        {emotion !== ApiEmotion.NONE && (
-          <p> / {convertEmotionTypeToDisplay(emotion, animalType)}</p>
+        {emotion !== ApiEmotion.NORMAL && (
+          <p> / {convertEmotionTypeToDisplay(emotion)}</p>
         )}
       </div>
     </div>
