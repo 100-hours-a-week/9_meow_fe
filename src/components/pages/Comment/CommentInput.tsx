@@ -1,4 +1,5 @@
 import { commentQueries } from "@/api/queries/commentQueries";
+import { postQueries } from "@/api/queries/postQueries";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -20,6 +21,9 @@ export default function CommentInput({ postId }: ICommentInput) {
       setValue("");
       queryClient.invalidateQueries({
         queryKey: commentQueries.list(postId).queryKey,
+      });
+      queryClient.invalidateQueries({
+        queryKey: postQueries.detail(postId).queryKey,
       });
     },
   });
