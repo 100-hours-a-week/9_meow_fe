@@ -86,7 +86,7 @@ function DetailPostPage() {
         )}
       </div>
       <div className="w-full flex flex-col gap-4 items-center flex-1 justify-between">
-        <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex flex-col gap-4 pb-16">
           {commentData?.pages.map((page) =>
             page.content.map((comment) => (
               <CommentItem

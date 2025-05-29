@@ -49,7 +49,7 @@ export default function CommentInput({ postId }: ICommentInput) {
   };
 
   return (
-    <div className="w-full flex gap-2 bg-orange-100 rounded-lg py-2 px-3 sticky bottom-16 shadow-lg border border-foreground/20">
+    <div className="w-[90%] flex gap-2 bg-orange-100 rounded-lg py-2 px-3 fixed bottom-16 max-w-[400px] sm:mx-auto shadow-lg border border-foreground/20">
       <div className="w-full flex flex-col gap-2">
         <textarea
           value={value}
