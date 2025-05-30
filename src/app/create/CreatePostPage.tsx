@@ -1,16 +1,12 @@
 import { CreatePostForm } from "@/components/pages";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { TOKEN_KEY } from "@/store/useTokenStore";
 
 function CreatePostPage() {
   const navigate = useNavigate();
-  const hasChecked = useRef(false);
 
   useEffect(() => {
-    if (hasChecked.current) return;
-    hasChecked.current = true;
-
     const token = localStorage.getItem(TOKEN_KEY);
     if (!token) {
       const answer = window.confirm(
