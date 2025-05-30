@@ -43,9 +43,10 @@ export interface IPostDetailData {
   imageUrls: string[];
   commentCount: number;
   likeCount: number;
-  liked: boolean;
   createdAt: string;
   updatedAt: string;
+  liked: boolean;
+  myPost: boolean;
 }
 
 export interface IPostSummaryData {
@@ -59,9 +60,10 @@ export interface IPostSummaryData {
   thumbnailUrl: string | null;
   commentCount: number;
   likeCount: number;
-  liked: boolean;
   createdAt: string;
   updatedAt: string;
+  liked: boolean;
+  myPost: boolean;
 }
 
 export interface IPostSummaryDataPagination {

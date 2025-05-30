@@ -53,6 +53,7 @@ function DetailPostPage() {
                 profileImageUrl: data.profileImageUrl,
                 animalType: data.postType,
               }}
+              isMyPost={data.myPost}
             />
             {data.imageUrls.length > 0 && (
               <ImageCarousel images={data.imageUrls} />
@@ -68,7 +69,6 @@ function DetailPostPage() {
               />
             )}
             <PostCard.Content
-              postId={Number(postId)}
               thumbnailUrl={null}
               content={data.transformedContent}
             />
