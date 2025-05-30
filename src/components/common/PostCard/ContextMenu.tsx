@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 
 export default function ContextMenu() {
   const [isOpen, setIsOpen] = useState<boolean>(false);

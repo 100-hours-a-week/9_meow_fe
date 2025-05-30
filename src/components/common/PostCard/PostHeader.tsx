@@ -1,4 +1,4 @@
-import ContextMenu from "../ContextMenu";
+import ContextMenu from "./ContextMenu";
 import UserItem, { IUserItem } from "../UserItem";
 
 interface IPostHeader {
