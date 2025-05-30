@@ -51,13 +51,19 @@ export default function CommentInput({ postId }: ICommentInput) {
   return (
     <div className="w-[90%] flex gap-2 bg-orange-100 rounded-lg py-2 px-3 fixed bottom-16 max-w-[400px] sm:mx-auto shadow-lg border border-foreground/20">
       <div className="w-full flex flex-col gap-2">
-        <textarea
-          value={value}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          placeholder="댓글을 입력하세야옹..."
-          className="w-full resize-none flex-1 text-sm rounded-sm"
-        />
+        <div className="relative w-full h-full">
+          <textarea
+            value={value}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            placeholder="댓글을 입력하세야옹..."
+            className={cn(
+              "w-full h-full resize-none flex-1 text-sm rounded-sm px-1",
+              isPending && "animate-pulse bg-muted-foreground",
+            )}
+            disabled={isPending}
+          />
+        </div>
       </div>
       <div className="flex flex-row items-center gap-1">
         <span
