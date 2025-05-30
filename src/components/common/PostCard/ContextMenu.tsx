@@ -17,7 +17,14 @@ export default function ContextMenu() {
       onBlur={() => setIsOpen(false)}
       onKeyDown={handleKeyDown}
     >
-      <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
+      >
         <img src="/icon/dots-vertical.svg" alt="context menu" />
       </Button>
       {isOpen && (

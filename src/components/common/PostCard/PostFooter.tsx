@@ -4,7 +4,6 @@ import { ApiEmotion } from "@/types/Emotion";
 import { convertEmotionTypeToDisplay } from "@/utils/convertEmotion";
 import { convertTimestamp } from "@/utils/convertTimestamp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 
 export interface IPostFooter {
   postId: number;
@@ -23,7 +22,6 @@ export default function PostFooter({
   timestamp,
   emotion,
 }: IPostFooter) {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { mutate: likePost, isPending } = useMutation({
@@ -39,12 +37,14 @@ export default function PostFooter({
     }),
   });
 
-  const handleLikeClick = () => {
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (isPending) return; // 이미 요청 중이면 중복 요청 방지
     likePost({ postId, isLiked: didLike });
   };
 
-  const handleShareClick = async () => {
+  const handleShareClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     const url = `${window.location.origin}/detail/${postId}`;
 
     try {
@@ -72,12 +72,7 @@ export default function PostFooter({
           />
         </Button>
         <p>{likeCount}</p>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => navigate(`/detail/${postId}`)}
-          className="size-6 p-1"
-        >
+        <Button variant="ghost" size="icon" className="size-6 p-1">
           <img src="/icon/comment.svg" alt="댓글" />
         </Button>
         <p>{commentCount}</p>

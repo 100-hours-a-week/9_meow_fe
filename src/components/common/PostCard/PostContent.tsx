@@ -1,23 +1,11 @@
-import { useNavigate } from "react-router-dom";
-
 export interface IPostContent {
-  postId: number;
   thumbnailUrl: string | null;
   content: string;
 }
 
-export default function PostContent({
-  postId,
-  thumbnailUrl,
-  content,
-}: IPostContent) {
-  const navigate = useNavigate();
-
+export default function PostContent({ thumbnailUrl, content }: IPostContent) {
   return (
-    <div
-      onClick={() => navigate(`/detail/${postId}`)}
-      className="flex flex-col gap-1 w-full"
-    >
+    <div className="flex flex-col gap-1 w-full">
       <div className="flex flex-row items-start gap-2">
         <p className="text-sm whitespace-pre-wrap flex-1">{content}</p>
         {thumbnailUrl && (

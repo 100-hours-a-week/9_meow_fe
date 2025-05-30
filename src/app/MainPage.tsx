@@ -50,7 +50,6 @@ export default function MainPage() {
             profileImageUrl: post.profileImageUrl ?? undefined,
           };
           const postContent: IPostContent = {
-            postId: post.id,
             thumbnailUrl: post.thumbnailUrl,
             content: post.transformedContent,
           };
@@ -63,7 +62,7 @@ export default function MainPage() {
             emotion: post.emotion,
           };
           return (
-            <PostCard key={`post-${post.id}`}>
+            <PostCard key={`post-${post.id}`} postId={post.id}>
               <PostCard.Header userInfo={userInfo} isMyPost={post.myPost} />
               <PostCard.Content {...postContent} />
               <PostCard.Footer {...postInfo} />

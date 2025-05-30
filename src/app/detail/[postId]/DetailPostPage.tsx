@@ -69,7 +69,6 @@ function DetailPostPage() {
               />
             )}
             <PostCard.Content
-              postId={Number(postId)}
               thumbnailUrl={null}
               content={data.transformedContent}
             />
