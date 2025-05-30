@@ -64,7 +64,7 @@ export default function MainPage() {
           };
           return (
             <PostCard key={`post-${post.id}`}>
-              <PostCard.Header userInfo={userInfo} />
+              <PostCard.Header userInfo={userInfo} isMyPost={post.myPost} />
               <PostCard.Content {...postContent} />
               <PostCard.Footer {...postInfo} />
             </PostCard>
