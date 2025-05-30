@@ -55,8 +55,8 @@ export default function CommentInput({ postId }: ICommentInput) {
           value={value}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder="댓글을 입력하세요..."
-          className="w-full resize-none flex-1 text-sm"
+          placeholder="댓글을 입력하세야옹..."
+          className="w-full resize-none flex-1 text-sm rounded-sm"
         />
       </div>
       <div className="flex flex-row items-center gap-1">
