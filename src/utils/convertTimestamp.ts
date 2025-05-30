@@ -5,6 +5,11 @@ export const convertTimestamp = (timestamp: Date): string => {
   const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 
+  // 미래 날짜인 경우
+  if (diffInMs < 0) {
+    return `0분 전`;
+  }
+
   if (diffInMinutes < 60) {
     return `${diffInMinutes}분 전`;
   }
