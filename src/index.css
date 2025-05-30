@@ -138,4 +138,12 @@
     @apply bg-orange-50 text-foreground;
     font-family: "Ownglyph_ParkDaHyun", sans-serif;
   }
+  textarea:focus {
+    outline: 2px solid var(--foreground);
+    outline-offset: 0;
+  }
+  textarea:focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 0;
+  }
 }

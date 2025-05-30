@@ -1,4 +1,5 @@
 import { commentQueries } from "@/api/queries/commentQueries";
+import { postQueries } from "@/api/queries/postQueries";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -20,6 +21,9 @@ export default function CommentInput({ postId }: ICommentInput) {
       setValue("");
       queryClient.invalidateQueries({
         queryKey: commentQueries.list(postId).queryKey,
+      });
+      queryClient.invalidateQueries({
+        queryKey: postQueries.detail(postId).queryKey,
       });
     },
   });
@@ -45,14 +49,14 @@ export default function CommentInput({ postId }: ICommentInput) {
   };
 
   return (
-    <div className="w-full flex gap-2 bg-orange-100 rounded-lg py-2 px-3 sticky bottom-16 shadow-lg border border-foreground/20">
+    <div className="w-[90%] flex gap-2 bg-orange-100 rounded-lg py-2 px-3 fixed bottom-16 max-w-[400px] sm:mx-auto shadow-lg border border-foreground/20">
       <div className="w-full flex flex-col gap-2">
         <textarea
           value={value}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder="댓글을 입력하세요..."
-          className="w-full resize-none flex-1 text-sm"
+          placeholder="댓글을 입력하세야옹..."
+          className="w-full resize-none flex-1 text-sm rounded-sm"
         />
       </div>
       <div className="flex flex-row items-center gap-1">

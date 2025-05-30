@@ -42,7 +42,7 @@ function DetailPostPage() {
   }
 
   return (
-    <div className="h-full flex flex-col pt-2 pb-16 px-3 gap-4">
+    <div className="h-full flex flex-col pt-2 px-3 gap-4">
       <div className="w-full flex flex-col gap-4 items-center">
         {data && (
           <>
@@ -86,7 +86,7 @@ function DetailPostPage() {
         )}
       </div>
       <div className="w-full flex flex-col gap-4 items-center flex-1 justify-between">
-        <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex flex-col gap-4 pb-16">
           {commentData?.pages.map((page) =>
             page.content.map((comment) => (
               <CommentItem
