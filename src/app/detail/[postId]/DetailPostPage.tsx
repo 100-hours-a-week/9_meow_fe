@@ -54,6 +54,7 @@ function DetailPostPage() {
                 animalType: data.postType,
               }}
               isMyPost={data.myPost}
+              postId={Number(postId)}
             />
             {data.imageUrls.length > 0 && (
               <ImageCarousel images={data.imageUrls} />
