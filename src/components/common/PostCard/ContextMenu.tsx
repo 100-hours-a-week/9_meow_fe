@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Button } from "../../ui/button";
+import { useNavigate } from "react-router-dom";
 
-export default function ContextMenu() {
+export default function ContextMenu({ postId }: { postId: number }) {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -11,12 +13,7 @@ export default function ContextMenu() {
   };
 
   return (
-    <div
-      className="relative"
-      tabIndex={-1}
-      onBlur={() => setIsOpen(false)}
-      onKeyDown={handleKeyDown}
-    >
+    <div className="relative" onKeyDown={handleKeyDown}>
       <Button
         variant="ghost"
         size="icon"
@@ -29,7 +26,15 @@ export default function ContextMenu() {
       </Button>
       {isOpen && (
         <div className="w-24 absolute top-9 right-0 bg-orange-100 rounded-lg shadow-lg p-2 gap-2 flex flex-col">
-          <Button variant="primaryOutline" size="sm" className="text-xs w-full">
+          <Button
+            variant="primaryOutline"
+            size="sm"
+            className="text-xs w-full"
+            onClick={() => {
+              navigate(`/edit/${postId}`);
+              setIsOpen(false);
+            }}
+          >
             ¢ 수정하기
           </Button>
           <Button
