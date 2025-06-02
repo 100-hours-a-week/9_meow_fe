@@ -36,7 +36,6 @@ export const postPost = async (post: IPost) => {
   formData.append("content", post.content);
   formData.append("emotion", post.emotion);
 
-  // localStorage에서 accessToken 가져오기
   const response = await formInstance.post("/posts", formData);
   return response.data;
 };

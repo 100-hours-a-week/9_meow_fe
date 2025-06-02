@@ -6,16 +6,12 @@ interface ITokenState {
   clearToken: () => void;
 }
 
-export const TOKEN_KEY = "auth_token";
-
 const useTokenStore = create<ITokenState>((set) => ({
-  token: localStorage.getItem(TOKEN_KEY),
+  token: null,
   setToken: (token: string) => {
-    localStorage.setItem(TOKEN_KEY, token);
     set({ token });
   },
   clearToken: () => {
-    localStorage.removeItem(TOKEN_KEY);
     set({ token: null });
   },
 }));
