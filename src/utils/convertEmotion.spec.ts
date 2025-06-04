@@ -1,5 +1,8 @@
 import { DisplayEmotion, ApiEmotion } from "@/types/Emotion";
-import { convertEmotionTypeToDisplay } from "./convertEmotion";
+import {
+  convertDisplayToEmotionType,
+  convertEmotionTypeToDisplay,
+} from "./convertEmotion";
 
 describe("convertEmotionTypeToDisplay", () => {
   it("should return NORMAL display emotion", () => {
@@ -60,5 +63,67 @@ describe("convertEmotionTypeToDisplay", () => {
     expect(() => convertEmotionTypeToDisplay("unknown" as ApiEmotion)).toThrow(
       "Unknown emotion: unknown",
     );
+  });
+});
+
+describe("convertDisplayToEmotionType", () => {
+  it("should return NORMAL emotion type", () => {
+    expect(convertDisplayToEmotionType(DisplayEmotion.NORMAL)).toBe(
+      ApiEmotion.NORMAL,
+    );
+    expect(convertDisplayToEmotionType("선택 없음" as DisplayEmotion)).toBe(
+      ApiEmotion.NORMAL,
+    );
+    expect(convertDisplayToEmotionType(DisplayEmotion.NORMAL)).toBe("normal");
+  });
+  it("should return HAPPY emotion type", () => {
+    expect(convertDisplayToEmotionType(DisplayEmotion.HAPPY)).toBe(
+      ApiEmotion.HAPPY,
+    );
+    expect(convertDisplayToEmotionType("☺️행복" as DisplayEmotion)).toBe(
+      ApiEmotion.HAPPY,
+    );
+    expect(convertDisplayToEmotionType(DisplayEmotion.HAPPY)).toBe("happy");
+  });
+  it("should return CURIOUS emotion type", () => {
+    expect(convertDisplayToEmotionType(DisplayEmotion.CURIOUS)).toBe(
+      ApiEmotion.CURIOUS,
+    );
+    expect(convertDisplayToEmotionType("🤔호기심" as DisplayEmotion)).toBe(
+      ApiEmotion.CURIOUS,
+    );
+    expect(convertDisplayToEmotionType(DisplayEmotion.CURIOUS)).toBe("curious");
+  });
+  it("should return SAD emotion type", () => {
+    expect(convertDisplayToEmotionType(DisplayEmotion.SAD)).toBe(
+      ApiEmotion.SAD,
+    );
+    expect(convertDisplayToEmotionType("😢슬픔" as DisplayEmotion)).toBe(
+      ApiEmotion.SAD,
+    );
+    expect(convertDisplayToEmotionType(DisplayEmotion.SAD)).toBe("sad");
+  });
+  it("should return GRUMPY emotion type", () => {
+    expect(convertDisplayToEmotionType(DisplayEmotion.GRUMPY)).toBe(
+      ApiEmotion.GRUMPY,
+    );
+    expect(convertDisplayToEmotionType("😠까칠" as DisplayEmotion)).toBe(
+      ApiEmotion.GRUMPY,
+    );
+    expect(convertDisplayToEmotionType(DisplayEmotion.GRUMPY)).toBe("grumpy");
+  });
+  it("should return ANGRY emotion type", () => {
+    expect(convertDisplayToEmotionType(DisplayEmotion.ANGRY)).toBe(
+      ApiEmotion.ANGRY,
+    );
+    expect(convertDisplayToEmotionType("😡화남" as DisplayEmotion)).toBe(
+      ApiEmotion.ANGRY,
+    );
+    expect(convertDisplayToEmotionType(DisplayEmotion.ANGRY)).toBe("angry");
+  });
+  it("should throw an error for unknown emotion", () => {
+    expect(() =>
+      convertDisplayToEmotionType("unknown" as DisplayEmotion),
+    ).toThrow("Unknown emotion: unknown");
   });
 });
