@@ -66,7 +66,7 @@ export default function SignupForm() {
         isRequired={true}
         nicknameValue={nicknameValue}
         setNicknameValue={setNicknameValue}
-        onDuplicateCheck={setIsNicknameDuplicate}
+        setIsNicknameDuplicate={setIsNicknameDuplicate}
       />
       <SelectAnimalType
         titleText="어떤 동물이냐옹"
