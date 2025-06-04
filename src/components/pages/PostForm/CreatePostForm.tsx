@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
 import SelectEmotion from "./SelectEmotion";
@@ -11,12 +11,9 @@ import { useMutation } from "@tanstack/react-query";
 
 export default function CreatePostForm() {
   const navigate = useNavigate();
-  const {
-    mutate: createPost,
-    isPending,
-    isSuccess,
-    isError,
-  } = useMutation({ ...postQueries.create() });
+  const { mutate: createPost, isPending } = useMutation({
+    ...postQueries.create({ navigate }),
+  });
 
   const { selectedImages, addImages, removeImage, error } = useImageUpload();
   const [content, setContent] = useState("");
@@ -40,12 +37,6 @@ export default function CreatePostForm() {
       emotion: selectedEmotion,
     });
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/");
-    }
-  }, [isSuccess, isError, navigate]);
 
   return (
     <div className="flex flex-col gap-4 items-center p-5 pb-16">

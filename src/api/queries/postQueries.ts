@@ -4,6 +4,7 @@ import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { IPostDetailData } from "@/api/types";
 import { ICreatePost } from "../types";
 import { AxiosError } from "axios";
+import { NavigateFunction } from "react-router-dom";
 
 export const postQueries = {
   all: () => ["post"] as const,
@@ -25,7 +26,7 @@ export const postQueries = {
       queryFn: () => getPostDetail(postId),
     }),
 
-  create: () => ({
+  create: ({ navigate }: { navigate: NavigateFunction }) => ({
     mutationKey: [...postQueries.all(), "create"],
     mutationFn: ({ images, content, emotion }: ICreatePost) =>
       postPost({
@@ -33,6 +34,9 @@ export const postQueries = {
         content,
         emotion,
       }),
+    onSuccess: () => {
+      navigate("/");
+    },
     onError: (error: AxiosError<IError>) => {
       if (error.response?.status !== 401) {
         alert("게시글 작성에 실패했다옹. 잠시 후 다시 시도해보냥");
