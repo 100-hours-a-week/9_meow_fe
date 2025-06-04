@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import SignupForm from "./SignupForm";
+import SignupForm from "../SignupForm";
 import { useMutation } from "@tanstack/react-query";
 import { signupQueries } from "@/api/queries/signupQueries";
 import useKakaoIdStore from "@/store/useKakaoIdStore";
