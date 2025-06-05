@@ -30,7 +30,8 @@ export default function ContextMenu({ postId }: { postId: number }) {
             variant="primaryOutline"
             size="sm"
             className="text-xs w-full"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               navigate(`/edit/${postId}`);
               setIsOpen(false);
             }}
