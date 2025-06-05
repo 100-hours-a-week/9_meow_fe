@@ -3,7 +3,7 @@ import { MAX_IMAGES } from "./validation/validateFileLength";
 import { useImagePreview } from "@/hooks/common/useImagePreview";
 
 interface IPreviewImage {
-  file: File;
+  file: File | null;
   preview: string;
 }
 

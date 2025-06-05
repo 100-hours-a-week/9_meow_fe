@@ -4,7 +4,7 @@ import { ValidationReturnType } from "@/types/ValidationReturnType";
 import { useState } from "react";
 
 export interface PreviewImage {
-  file: File;
+  file: File | null;
   preview: string;
 }
 
@@ -43,8 +43,8 @@ export const useImageUpload = () => {
               }
             };
             reader.readAsDataURL(file);
-          })
-      )
+          }),
+      ),
     );
 
     setSelectedImages((prev) => [...prev, ...newImages]);
@@ -61,6 +61,7 @@ export const useImageUpload = () => {
 
   return {
     selectedImages,
+    setSelectedImages,
     error,
     addImages,
     removeImage,
