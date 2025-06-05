@@ -8,6 +8,7 @@ import { useImageUpload } from "@/hooks/common/useImageUpload";
 import { ApiEmotion } from "@/types/Emotion";
 import { postQueries } from "@/api/queries/postQueries";
 import { useMutation } from "@tanstack/react-query";
+import { imageQueries } from "@/api/queries/ImageQueries";
 
 export default function CreatePostForm() {
   const navigate = useNavigate();
@@ -16,6 +17,10 @@ export default function CreatePostForm() {
   });
 
   const { selectedImages, addImages, removeImage, error } = useImageUpload();
+  const { mutateAsync: uploadImage, isPending: isUploading } = useMutation({
+    ...imageQueries.upload({ key: "test" }),
+  });
+
   const [content, setContent] = useState("");
   const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
     ApiEmotion.NORMAL,
@@ -30,12 +35,31 @@ export default function CreatePostForm() {
       navigate("/");
     }
   };
-  const handlePostSubmit = () => {
-    createPost({
-      images: selectedImages.map((img) => img.file),
-      content,
-      emotion: selectedEmotion,
-    });
+
+  const handlePostSubmit = async () => {
+    if (selectedImages.length === 0) {
+      createPost({
+        images: [],
+        content,
+        emotion: selectedEmotion,
+      });
+      return;
+    }
+
+    try {
+      const imageUrls = await Promise.all(
+        selectedImages.map((image) => uploadImage(image.file)),
+      );
+
+      createPost({
+        images: imageUrls,
+        content,
+        emotion: selectedEmotion,
+      });
+    } catch (error) {
+      console.error("포스트 생성 중 오류 발생:", error);
+      alert("포스트 생성에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -62,10 +86,12 @@ export default function CreatePostForm() {
         </Button>
         <Button
           variant="secondarySolid"
-          disabled={isPending || isSubmitDisabled}
+          disabled={isPending || isSubmitDisabled || isUploading}
           onClick={handlePostSubmit}
         >
-          {isPending ? "잠시만 기다려주세옹" : "다 적으면 누르라냥!"}
+          {isPending || isUploading
+            ? "잠시만 기다려주세옹"
+            : "다 적으면 누르라냥!"}
         </Button>
       </div>
     </div>

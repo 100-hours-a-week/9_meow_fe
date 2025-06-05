@@ -106,3 +106,8 @@ export interface IImagesPreSignedUrlResponse {
   url: string;
   key: string;
 }
+
+export interface IUploadImageToS3 {
+  url: string;
+  file: File;
+}
