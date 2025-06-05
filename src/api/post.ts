@@ -58,3 +58,8 @@ export const postLikePost = async ({
   });
   return response.data;
 };
+
+export const deletePost = async (postId: number) => {
+  const response = await authInstance.delete(`/posts/${postId}`);
+  return response.data;
+};

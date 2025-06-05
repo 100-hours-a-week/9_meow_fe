@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { Button } from "../../ui/button";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { postQueries } from "@/api/queries/postQueries";
 
 export default function ContextMenu({ postId }: { postId: number }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { mutate: deletePost } = useMutation({
+    ...postQueries.delete({ postId, navigate }),
+  });
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -42,6 +47,15 @@ export default function ContextMenu({ postId }: { postId: number }) {
             variant="secondaryOutline"
             size="sm"
             className="text-xs w-full"
+            onClick={() => {
+              if (
+                window.confirm(
+                  "정말 삭제하겠냥? 한번 삭제한 게시글은 다시 되돌릴 수 없다옹...",
+                )
+              ) {
+                deletePost();
+              }
+            }}
           >
             ♧ 삭제하기
           </Button>

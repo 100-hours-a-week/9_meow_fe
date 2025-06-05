@@ -1,5 +1,11 @@
 import { IError, IPostSummaryDataPagination } from "@/api/types";
-import { getPostDetail, getPostList, postLikePost, postPost } from "../post";
+import {
+  deletePost,
+  getPostDetail,
+  getPostList,
+  postLikePost,
+  postPost,
+} from "../post";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { IPostDetailData } from "@/api/types";
 import { ICreatePost } from "../types";
@@ -56,6 +62,25 @@ export const postQueries = {
     onError: (error: AxiosError<IError>) => {
       if (error.response?.status !== 401) {
         alert("좋아요에 실패했다옹...");
+      }
+    },
+  }),
+
+  delete: ({
+    postId,
+    navigate,
+  }: {
+    postId: number;
+    navigate: NavigateFunction;
+  }) => ({
+    mutationKey: [...postQueries.all(), "delete", postId],
+    mutationFn: () => deletePost(postId),
+    onSuccess: () => {
+      navigate("/");
+    },
+    onError: (error: AxiosError<IError>) => {
+      if (error.response?.status !== 401) {
+        alert("게시글 삭제에 실패했다옹. 잠시 후 다시 시도해냥");
       }
     },
   }),
