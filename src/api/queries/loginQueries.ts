@@ -25,10 +25,8 @@ export const loginQueries = {
     mutationFn: ({ code }: ILoginCode) => getKakaoId(code),
     onSuccess: (data: IKakaoAuthResponse) => {
       setKakaoId(data.kakaoId);
-
       if (data.isMember) {
         login(data.kakaoId);
-        navigate("/");
       } else {
         navigate("/signup");
       }
