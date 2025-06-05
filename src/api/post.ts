@@ -54,3 +54,8 @@ export const deletePost = async (postId: number) => {
   const response = await authInstance.delete(`/posts/${postId}`);
   return response.data;
 };
+
+export const getPostEditInfo = async (postId: number) => {
+  const response = await authInstance.get(`/posts/${postId}/edit`);
+  return response.data;
+};

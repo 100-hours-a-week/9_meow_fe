@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
 import SelectEmotion from "./SelectEmotion";
@@ -6,11 +6,18 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useImageUpload } from "@/hooks/common/useImageUpload";
 import { ApiEmotion } from "@/types/Emotion";
+import { useQuery } from "@tanstack/react-query";
+import { postQueries } from "@/api/queries/postQueries";
 
 export default function EditPostForm({ postId }: { postId: number }) {
   const navigate = useNavigate();
 
-  const { selectedImages, addImages, removeImage, error } = useImageUpload();
+  const { data: postData } = useQuery({
+    ...postQueries.editInfo({ postId }),
+  });
+
+  const { selectedImages, setSelectedImages, addImage, removeImage } =
+    useImageUpload();
   const [content, setContent] = useState("");
   const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
     ApiEmotion.NORMAL,
@@ -30,14 +37,26 @@ export default function EditPostForm({ postId }: { postId: number }) {
     console.log(`submit postId: ${postId}`);
   };
 
+  useEffect(() => {
+    if (postData) {
+      setSelectedImages(
+        postData.imageUrls.map((url) => ({
+          file: null,
+          preview: url,
+        })),
+      );
+      setSelectedEmotion(postData.emotion);
+      setContent(postData.content);
+    }
+  }, [postData, setSelectedImages, setSelectedEmotion, setContent]);
+
   return (
     <div className="flex flex-col gap-4 items-center p-5 pb-16">
       <h1 className="text-3xl font-bold">수정해라 냥!</h1>
       <ImageInput
         selectedImages={selectedImages}
-        addImages={addImages}
+        addImage={addImage}
         removeImage={removeImage}
-        error={error}
       />
       <PostContentInput
         content={content}

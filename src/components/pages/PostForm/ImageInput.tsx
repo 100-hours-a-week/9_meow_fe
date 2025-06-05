@@ -6,7 +6,7 @@ import {
 import { validateFileSize } from "./validation/validateFileSize";
 
 interface IPreviewImage {
-  file: File;
+  file: File | null;
   preview: string;
 }
 

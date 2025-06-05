@@ -1,7 +1,12 @@
-import { IError, IPostSummaryDataPagination } from "@/api/types";
+import {
+  IError,
+  IPostEditResponse,
+  IPostSummaryDataPagination,
+} from "@/api/types";
 import {
   deletePost,
   getPostDetail,
+  getPostEditInfo,
   getPostList,
   postLikePost,
   postPost,
@@ -84,4 +89,10 @@ export const postQueries = {
       }
     },
   }),
+
+  editInfo: ({ postId }: { postId: number }) =>
+    queryOptions<IPostEditResponse, Error>({
+      queryKey: [...postQueries.all(), "editInfo", postId],
+      queryFn: () => getPostEditInfo(postId),
+    }),
 };
