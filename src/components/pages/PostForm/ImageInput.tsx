@@ -1,6 +1,8 @@
 import { ChangeEvent } from "react";
 import { MAX_IMAGES } from "./validation/validateFileLength";
 import { useImagePreview } from "@/hooks/common/useImagePreview";
+import { imageQueries } from "@/api/queries/ImageQueries";
+import { useMutation } from "@tanstack/react-query";
 
 interface IPreviewImage {
   file: File;
@@ -43,10 +45,15 @@ export default function ImageInput({
   removeImage: (index: number) => void;
   error: string | null;
 }) {
+  const { mutate: presignedUrl } = useMutation({
+    ...imageQueries.getPreSignedUrl(),
+  });
+
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
-
+    const file = files[0];
+    presignedUrl({ fileName: file.name, fileType: file.type });
     addImages(Array.from(files));
   };
 
@@ -68,7 +75,6 @@ export default function ImageInput({
               accept="image/*"
               onChange={handleImageChange}
               className="hidden"
-              multiple
             />
           </label>
         )}

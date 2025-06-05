@@ -96,3 +96,13 @@ export interface ICommentDataPagination {
 export interface ICreateComment {
   content: string;
 }
+
+export interface IImagePreSignedUrlRequest {
+  fileName: string;
+  fileType: string;
+}
+
+export interface IImagesPreSignedUrlResponse {
+  url: string;
+  key: string;
+}
