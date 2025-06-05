@@ -30,10 +30,10 @@ export default function CreatePostForm() {
       navigate("/");
     }
   };
-  
+
   const handlePostSubmit = () => {
     createPost({
-      images: selectedImages.map((img) => img.file),
+      images: selectedImages.map((img) => img.file as File),
       content,
       emotion: selectedEmotion,
     });

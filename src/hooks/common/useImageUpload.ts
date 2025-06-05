@@ -3,13 +3,13 @@ import { validateFileSize } from "@/components/pages/PostForm/validation/validat
 import { ValidationReturnType } from "@/types/ValidationReturnType";
 import { useState } from "react";
 
-export interface PreviewImage {
+export interface IPreviewImage {
   file: File | null;
   preview: string;
 }
 
 export const useImageUpload = () => {
-  const [selectedImages, setSelectedImages] = useState<PreviewImage[]>([]);
+  const [selectedImages, setSelectedImages] = useState<IPreviewImage[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const addImages = async (files: File[]) => {
@@ -34,7 +34,7 @@ export const useImageUpload = () => {
     const newImages = await Promise.all(
       files.map(
         (file) =>
-          new Promise<PreviewImage>((resolve) => {
+          new Promise<IPreviewImage>((resolve) => {
             const reader = new FileReader();
             reader.onload = (e: ProgressEvent<FileReader>) => {
               const result = e.target?.result;

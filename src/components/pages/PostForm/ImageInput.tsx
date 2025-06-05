@@ -1,11 +1,7 @@
 import { ChangeEvent } from "react";
 import { MAX_IMAGES } from "./validation/validateFileLength";
 import { useImagePreview } from "@/hooks/common/useImagePreview";
-
-interface IPreviewImage {
-  file: File | null;
-  preview: string;
-}
+import { IPreviewImage } from "@/hooks/common/useImageUpload";
 
 interface ImagePreviewProps {
   image: IPreviewImage;
