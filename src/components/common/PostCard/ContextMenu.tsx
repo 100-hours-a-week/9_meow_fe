@@ -47,13 +47,16 @@ export default function ContextMenu({ postId }: { postId: number }) {
             variant="secondaryOutline"
             size="sm"
             className="text-xs w-full"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               if (
                 window.confirm(
                   "정말 삭제하겠냥? 한번 삭제한 게시글은 다시 되돌릴 수 없다옹...",
                 )
               ) {
                 deletePost();
+              } else {
+                setIsOpen(false);
               }
             }}
           >
