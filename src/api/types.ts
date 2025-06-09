@@ -27,7 +27,7 @@ export interface IUserRequest {
 }
 
 export interface ICreatePost {
-  images: File[];
+  imageUrls: string[];
   content: string;
   emotion: ApiEmotion;
 }
@@ -95,4 +95,9 @@ export interface ICommentDataPagination {
 }
 export interface ICreateComment {
   content: string;
+}
+
+export interface IImagesPreSignedUrlResponse {
+  url: string;
+  key: string;
 }

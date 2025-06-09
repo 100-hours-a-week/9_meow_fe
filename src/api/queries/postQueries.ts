@@ -28,9 +28,9 @@ export const postQueries = {
 
   create: ({ navigate }: { navigate: NavigateFunction }) => ({
     mutationKey: [...postQueries.all(), "create"],
-    mutationFn: ({ images, content, emotion }: ICreatePost) =>
+    mutationFn: ({ imageUrls, content, emotion }: ICreatePost) =>
       postPost({
-        images,
+        imageUrls,
         content,
         emotion,
       }),
