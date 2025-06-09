@@ -1,5 +1,9 @@
-import { ChangeEvent } from "react";
-import { MAX_IMAGES } from "./validation/validateFileLength";
+import { ChangeEvent, useState } from "react";
+import {
+  MAX_IMAGES,
+  validateFileLength,
+} from "./validation/validateFileLength";
+import { validateFileSize } from "./validation/validateFileSize";
 
 interface IPreviewImage {
   file: File;
@@ -8,19 +12,31 @@ interface IPreviewImage {
 
 export default function ImageInput({
   selectedImages,
-  addImages,
+  addImage,
   removeImage,
-  error,
 }: {
   selectedImages: IPreviewImage[];
-  addImages: (files: File[]) => void;
+  addImage: (file: File) => void;
   removeImage: (index: number) => void;
-  error: string | null;
 }) {
+  const [error, setError] = useState<string | null>(null);
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files) return;
-    addImages(Array.from(files));
+    if (!files || files.length === 0) return;
+    const { isValid: isFileLengthValid, message: fileLengthMessage } =
+      validateFileLength(selectedImages.length);
+    if (!isFileLengthValid) {
+      setError(fileLengthMessage);
+      return;
+    }
+    const { isValid: isFileSizeValid, message: fileSizeMessage } =
+      validateFileSize(files[0]);
+    if (!isFileSizeValid) {
+      setError(fileSizeMessage);
+      return;
+    }
+    setError(null);
+    addImage(files[0]);
   };
 
   const handleDeleteImage = (index: number) => {

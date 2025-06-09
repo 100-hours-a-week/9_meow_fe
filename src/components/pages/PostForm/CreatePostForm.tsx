@@ -15,7 +15,7 @@ export default function CreatePostForm() {
     ...postQueries.create({ navigate }),
   });
 
-  const { selectedImages, addImages, removeImage, error } = useImageUpload();
+  const { selectedImages, addImage, removeImage } = useImageUpload();
   const [content, setContent] = useState("");
   const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
     ApiEmotion.NORMAL,
@@ -43,9 +43,8 @@ export default function CreatePostForm() {
       <h1 className="text-3xl font-bold">오늘은 무슨 일이 있었냥</h1>
       <ImageInput
         selectedImages={selectedImages}
-        addImages={addImages}
+        addImage={addImage}
         removeImage={removeImage}
-        error={error}
       />
       <PostContentInput
         content={content}
