@@ -1,19 +1,28 @@
 import defaultInstance from "./instance/defaultInstance";
-import { IImagePreSignedUrlRequest } from "./types";
+import { s3Instance } from "./instance/s3Instance";
 
-export const getPreSignedUrl = async ({
-  fileName,
-  fileType,
-}: IImagePreSignedUrlRequest) => {
-  const response = await defaultInstance.post("/presigned-url", {
-    fileName,
-    fileType,
+export const uploadImageToS3 = async ({
+  file,
+}: {
+  file: File;
+}): Promise<string> => {
+  const presignedUrlResponse = await defaultInstance.post("/presigned-url", {
+    fileName: file.name,
+    fileType: file.type,
   });
 
-  const data = response.data;
+  const data = presignedUrlResponse.data;
   if (!data.url || !data.key) {
     throw new Error("Pre-signed URL 발급 실패");
   }
 
-  return data;
+  const response = await s3Instance.put(data.url, file, {
+    headers: { "Content-Type": file.type },
+  });
+
+  if (response.status !== 200) {
+    throw new Error("이미지 업로드 실패");
+  }
+
+  return data.key;
 };
