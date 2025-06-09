@@ -62,21 +62,22 @@ export default function ImageInput({
         )}
         {selectedImages.map((image, index) => {
           return (
-            <>
-              <div className="relative w-[100px] h-[100px] outline outline-foreground/30 rounded-2xl">
-                <img
-                  src={image.preview}
-                  alt="Preview"
-                  className="w-full h-full object-cover rounded-2xl"
-                />
-                <button
-                  onClick={() => handleDeleteImage(index)}
-                  className="absolute -top-2 -right-2 w-6 h-6 bg-foreground rounded-full flex items-center justify-center"
-                >
-                  <span className="text-background text-sm">×</span>
-                </button>
-              </div>
-            </>
+            <div
+              key={index}
+              className="relative w-[100px] h-[100px] outline outline-foreground/30 rounded-2xl"
+            >
+              <img
+                src={image.preview}
+                alt="Preview"
+                className="w-full h-full object-cover rounded-2xl"
+              />
+              <button
+                onClick={() => handleDeleteImage(index)}
+                className="absolute -top-2 -right-2 w-6 h-6 bg-foreground rounded-full flex items-center justify-center"
+              >
+                <span className="text-background text-sm">×</span>
+              </button>
+            </div>
           );
         })}
       </div>
