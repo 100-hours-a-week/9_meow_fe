@@ -7,6 +7,7 @@ import LoginPage from "./app/login/LoginPage";
 import SignupPage from "./app/signup/SignupPage";
 import NotFoundPage from "./app/not-found/NotFoundPage";
 import RedirectPage from "./app/redirect/RedirectPage";
+import PostEdit from "./app/edit/PostEdit";
 import { Background, Header, NavigationBar } from "./components/common";
 import "./index.css";
 
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/" element={<MainPage />} />
                 <Route path="/create" element={<CreatePostPage />} />
                 <Route path="/detail/:postId" element={<DetailPostPage />} />
+                <Route path="/edit/:postId" element={<PostEdit />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/redirect" element={<RedirectPage />} />

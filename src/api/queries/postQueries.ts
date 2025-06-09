@@ -1,6 +1,23 @@
-import { IError, IPostSummaryDataPagination } from "@/api/types";
-import { getPostDetail, getPostList, postLikePost, postPost } from "../post";
-import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
+import {
+  IError,
+  IPostEditInfoResponse,
+  IPostEditResponse,
+  IPostSummaryDataPagination,
+} from "@/api/types";
+import {
+  deletePost,
+  getPostDetail,
+  getPostEditInfo,
+  getPostList,
+  postLikePost,
+  postPost,
+  putPost,
+} from "../post";
+import {
+  infiniteQueryOptions,
+  queryOptions,
+  UseMutationOptions,
+} from "@tanstack/react-query";
 import { IPostDetailData } from "@/api/types";
 import { ICreatePost } from "../types";
 import { AxiosError } from "axios";
@@ -57,6 +74,47 @@ export const postQueries = {
       if (error.response?.status !== 401) {
         alert("좋아요에 실패했다옹...");
       }
+    },
+  }),
+
+  delete: ({
+    postId,
+    navigate,
+  }: {
+    postId: number;
+    navigate: NavigateFunction;
+  }) => ({
+    mutationKey: [...postQueries.all(), "delete", postId],
+    mutationFn: () => deletePost(postId),
+    onSuccess: () => {
+      navigate("/");
+    },
+    onError: (error: AxiosError<IError>) => {
+      if (error.response?.status !== 401) {
+        alert("게시글 삭제에 실패했다옹. 잠시 후 다시 시도해냥");
+      }
+    },
+  }),
+
+  editInfo: ({ postId }: { postId: number }) =>
+    queryOptions<IPostEditInfoResponse, Error>({
+      queryKey: [...postQueries.all(), "editInfo", postId],
+      queryFn: () => getPostEditInfo(postId),
+    }),
+
+  edit: ({
+    postId,
+    navigate,
+  }: {
+    postId: number;
+    navigate: NavigateFunction;
+  }): UseMutationOptions<IPostEditResponse, Error, ICreatePost> => ({
+    mutationKey: [...postQueries.all(), "edit", postId],
+    mutationFn: ({ imageUrls, content, emotion }: ICreatePost) =>
+      putPost({ postId, imageUrls, content, emotion }),
+    onSuccess: () => {
+      alert("게시글 수정에 성공했다옹");
+      navigate(`/detail/${postId}`);
     },
   }),
 };

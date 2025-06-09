@@ -59,6 +59,7 @@ export const useImageUpload = () => {
 
   return {
     selectedImages,
+    setSelectedImages,
     addImage,
     removeImage,
     isUploading,

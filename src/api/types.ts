@@ -75,6 +75,18 @@ export interface IPostSummaryDataPagination {
   content: IPostSummaryData[];
 }
 
+export interface IPostEditInfoResponse {
+  id: number;
+  username: string;
+  profileImageUrl: string;
+  content: string;
+  emotion: ApiEmotion;
+  imageUrls: string[];
+}
+
+export interface IPostEditResponse {
+  postId: number;
+}
 export interface ICommentData {
   id: number;
   userId: number;
