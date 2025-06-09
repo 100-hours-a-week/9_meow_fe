@@ -48,6 +48,7 @@ export default function EditPostForm({ postId }: { postId: number }) {
       setSelectedEmotion(postData.emotion);
       setContent(postData.content);
     }
+    setIsSubmitDisabled(false);
   }, [postData, setSelectedImages, setSelectedEmotion, setContent]);
 
   return (
