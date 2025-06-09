@@ -75,7 +75,7 @@ export interface IPostSummaryDataPagination {
   content: IPostSummaryData[];
 }
 
-export interface IPostEditResponse {
+export interface IPostEditInfoResponse {
   id: number;
   username: string;
   profileImageUrl: string;

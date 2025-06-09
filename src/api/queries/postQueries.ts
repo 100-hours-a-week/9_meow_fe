@@ -1,6 +1,6 @@
 import {
   IError,
-  IPostEditResponse,
+  IPostEditInfoResponse,
   IPostSummaryDataPagination,
 } from "@/api/types";
 import {
@@ -91,7 +91,7 @@ export const postQueries = {
   }),
 
   editInfo: ({ postId }: { postId: number }) =>
-    queryOptions<IPostEditResponse, Error>({
+    queryOptions<IPostEditInfoResponse, Error>({
       queryKey: [...postQueries.all(), "editInfo", postId],
       queryFn: () => getPostEditInfo(postId),
     }),
