@@ -1,5 +1,4 @@
 import { ApiEmotion } from "@/types/Emotion";
-import formInstance from "./instance/formInstance";
 import authInstance from "./instance/authInstance";
 
 export const getPostList = async ({
@@ -19,25 +18,17 @@ export const getPostList = async ({
 };
 
 interface IPost {
-  images: File[];
+  imageUrls: string[];
   emotion: ApiEmotion;
   content: string;
 }
 
 export const postPost = async (post: IPost) => {
-  const formData = new FormData();
-
-  // 이미지 파일들 추가
-  post.images.forEach((image) => {
-    formData.append(`images`, image);
+  const response = await authInstance.post("/posts", {
+    imageUrls: post.imageUrls,
+    content: post.content,
+    emotion: post.emotion,
   });
-
-  // 다른 데이터들 추가
-  formData.append("content", post.content);
-  formData.append("emotion", post.emotion);
-
-  // localStorage에서 accessToken 가져오기
-  const response = await formInstance.post("/posts", formData);
   return response.data;
 };
 

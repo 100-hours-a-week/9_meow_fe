@@ -15,7 +15,14 @@ export default function CreatePostForm() {
     ...postQueries.create({ navigate }),
   });
 
-  const { selectedImages, addImage, removeImage } = useImageUpload();
+  const {
+    selectedImages,
+    addImage,
+    removeImage,
+    isUploading,
+    uploadImagesToS3,
+  } = useImageUpload();
+
   const [content, setContent] = useState("");
   const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
     ApiEmotion.NORMAL,
@@ -30,12 +37,15 @@ export default function CreatePostForm() {
       navigate("/");
     }
   };
-  const handlePostSubmit = () => {
-    createPost({
-      images: selectedImages.map((img) => img.file),
-      content,
-      emotion: selectedEmotion,
-    });
+
+  const handlePostSubmit = async () => {
+    try {
+      const imageUrls = await uploadImagesToS3();
+      createPost({ imageUrls, content, emotion: selectedEmotion });
+    } catch (error) {
+      console.error("포스트 생성 중 오류 발생:", error);
+      alert("포스트 생성에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -61,10 +71,12 @@ export default function CreatePostForm() {
         </Button>
         <Button
           variant="secondarySolid"
-          disabled={isPending || isSubmitDisabled}
+          disabled={isPending || isSubmitDisabled || isUploading}
           onClick={handlePostSubmit}
         >
-          {isPending ? "잠시만 기다려주세옹" : "다 적으면 누르라냥!"}
+          {isPending || isUploading
+            ? "잠시만 기다려주세옹"
+            : "다 적으면 누르라냥!"}
         </Button>
       </div>
     </div>

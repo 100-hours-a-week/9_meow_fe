@@ -27,7 +27,7 @@ export interface IUserRequest {
 }
 
 export interface ICreatePost {
-  images: File[];
+  imageUrls: string[];
   content: string;
   emotion: ApiEmotion;
 }
