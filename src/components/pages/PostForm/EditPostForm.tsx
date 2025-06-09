@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useImageUpload } from "@/hooks/common/useImageUpload";
 import { ApiEmotion } from "@/types/Emotion";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { postQueries } from "@/api/queries/postQueries";
 
 export default function EditPostForm({ postId }: { postId: number }) {
@@ -15,9 +15,18 @@ export default function EditPostForm({ postId }: { postId: number }) {
   const { data: postData } = useQuery({
     ...postQueries.editInfo({ postId }),
   });
+  const { mutate: editPost, isPending } = useMutation({
+    ...postQueries.edit({ postId, navigate }),
+  });
 
-  const { selectedImages, setSelectedImages, addImage, removeImage } =
-    useImageUpload();
+  const {
+    selectedImages,
+    setSelectedImages,
+    addImage,
+    removeImage,
+    uploadImagesToS3,
+    isUploading,
+  } = useImageUpload();
   const [content, setContent] = useState("");
   const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
     ApiEmotion.NORMAL,
@@ -33,8 +42,14 @@ export default function EditPostForm({ postId }: { postId: number }) {
     }
   };
 
-  const handlePostSubmit = () => {
-    console.log(`submit postId: ${postId}`);
+  const handlePostSubmit = async () => {
+    try {
+      const imageUrls = await uploadImagesToS3();
+      editPost({ imageUrls, content, emotion: selectedEmotion });
+    } catch (error) {
+      console.error("포스트 수정 중 오류 발생:", error);
+      alert("포스트 수정에 실패했다옹. 잠시 후 다시 시도해보냥");
+    }
   };
 
   useEffect(() => {
@@ -74,7 +89,7 @@ export default function EditPostForm({ postId }: { postId: number }) {
         </Button>
         <Button
           variant="secondarySolid"
-          disabled={isSubmitDisabled}
+          disabled={isSubmitDisabled || isPending || isUploading}
           onClick={handlePostSubmit}
         >
           다 적으면 누르라냥!
