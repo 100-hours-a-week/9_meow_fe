@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { imageQueries } from "@/api/queries/ImageQueries";
 
 export interface IPreviewImage {
-  file: File | null;
+  file: File;
   preview: string;
 }
 

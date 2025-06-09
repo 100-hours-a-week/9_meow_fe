@@ -4,11 +4,7 @@ import {
   validateFileLength,
 } from "./validation/validateFileLength";
 import { validateFileSize } from "./validation/validateFileSize";
-
-interface IPreviewImage {
-  file: File | null;
-  preview: string;
-}
+import { IPreviewImage } from "@/hooks/common/useImageUpload";
 
 export default function ImageInput({
   selectedImages,

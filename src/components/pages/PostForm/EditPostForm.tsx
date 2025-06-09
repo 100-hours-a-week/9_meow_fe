@@ -41,7 +41,7 @@ export default function EditPostForm({ postId }: { postId: number }) {
     if (postData) {
       setSelectedImages(
         postData.imageUrls.map((url) => ({
-          file: null,
+          file: new File([], ""),
           preview: url,
         })),
       );
