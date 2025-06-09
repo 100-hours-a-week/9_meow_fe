@@ -59,3 +59,22 @@ export const getPostEditInfo = async (postId: number) => {
   const response = await authInstance.get(`/posts/${postId}/edit`);
   return response.data;
 };
+
+export const putPost = async ({
+  postId,
+  imageUrls,
+  content,
+  emotion,
+}: {
+  postId: number;
+  imageUrls: string[];
+  content: string;
+  emotion: ApiEmotion;
+}) => {
+  const response = await authInstance.put(`/posts/${postId}`, {
+    imageUrls,
+    content,
+    emotion,
+  });
+  return response.data;
+};

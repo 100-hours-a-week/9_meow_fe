@@ -84,6 +84,9 @@ export interface IPostEditInfoResponse {
   imageUrls: string[];
 }
 
+export interface IPostEditResponse {
+  postId: number;
+}
 export interface ICommentData {
   id: number;
   userId: number;
