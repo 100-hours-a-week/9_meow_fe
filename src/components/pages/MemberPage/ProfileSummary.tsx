@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import MemberInfoSummary from "./ProfileSummary/MemberInfoSummary";
 import { ApiAnimalType } from "@/types/animal";
 import ProfileInfo from "./ProfileSummary/ProfileInfo";
-import ProfileTab from "./ProfileSummary/ProfileTab";
 
 interface IProfileSummary {
   memberId: number;
@@ -28,7 +27,8 @@ export default function ProfileSummary({ memberId }: IProfileSummary) {
         </Button>
       </div>
       <ProfileInfo postCount={900} followerCount={12} followingCount={130} />
-      <ProfileTab />
+      {/* TODO: 이벤트 추가되면 주석 풀기 */}
+      {/* <ProfileTab /> */}
     </div>
   );
 }
