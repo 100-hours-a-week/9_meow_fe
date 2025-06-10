@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import MemberInfoSummary from "./ProfileSummary/MemberInfoSummary";
 import { ApiAnimalType } from "@/types/animal";
 
@@ -14,8 +15,16 @@ export default function ProfileSummary({ memberId }: IProfileSummary) {
     animalType: ApiAnimalType.CAT,
   };
   return (
-    <div>
+    <div className="flex flex-col gap-4 items-center">
       <MemberInfoSummary {...memberInfo} />
+      <div className="flex flex-row gap-5">
+        <Button variant="primaryOutline" className="w-36 text-lg">
+          팔로우
+        </Button>
+        <Button variant="primarySolid" className="w-36 text-lg">
+          프로필 공유
+        </Button>
+      </div>
     </div>
   );
 }
