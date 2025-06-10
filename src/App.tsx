@@ -9,7 +9,10 @@ import NotFoundPage from "./app/not-found/NotFoundPage";
 import RedirectPage from "./app/redirect/RedirectPage";
 import PostEdit from "./app/edit/PostEdit";
 import MyPage from "./app/mypage/MyPage";
+import ProfileEditPage from "./app/mypage/edit/ProfileEditPage";
 import MemberPage from "./app/member/[memberId]/MemberPage";
+import FollowerPage from "./app/member/[memberId]/follower/FollowerPage";
+import FollowingPage from "./app/member/[memberId]/following/FollowingPage";
 import { Background, Header, NavigationBar } from "./components/common";
 import "./index.css";
 
@@ -29,7 +32,16 @@ function App() {
                 <Route path="/detail/:postId" element={<DetailPostPage />} />
                 <Route path="/edit/:postId" element={<PostEdit />} />
                 <Route path="/mypage" element={<MyPage />} />
+                <Route path="/mypage/edit" element={<ProfileEditPage />} />
                 <Route path="/member/:memberId" element={<MemberPage />} />
+                <Route
+                  path="/member/:memberId/follower"
+                  element={<FollowerPage />}
+                />
+                <Route
+                  path="/member/:memberId/following"
+                  element={<FollowingPage />}
+                />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/redirect" element={<RedirectPage />} />
