@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import useTokenStore from "@/store/useTokenStore";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -14,6 +15,7 @@ function renderIconButton(route: string, icon: React.ReactNode) {
 export default function NavigationBar() {
   // TODO : 프로필 이미지 추가
   const [profileImage] = useState<string | undefined>();
+  const { token } = useTokenStore();
 
   return (
     <div className="flex justify-between items-center border-t border-border/30 px-5 py-1 fixed bottom-0 w-full bg-background max-w-[430px] mx-auto">
@@ -22,8 +24,7 @@ export default function NavigationBar() {
       {renderIconButton("/create", <img src="/icon/plus.svg" alt="plus" />)}
       {/* {renderIconButton("/chat", <img src="/icon/chat.svg" alt="chat" />)} */}
       {renderIconButton(
-        // TODO : 로그인 되어있으면 member로, 안되어 있으면 login으로, Token 여부 확인해서 수정하기
-        "/login",
+        token ? "/mypage" : "/login",
         <Avatar>
           <AvatarImage src={profileImage ?? "/logo.svg"} />
           <AvatarFallback>미야옹</AvatarFallback>
