@@ -4,12 +4,12 @@ import { ApiAnimalType } from "@/types/animal";
 import ProfileInfo from "./ProfileSummary/ProfileInfo";
 
 interface IProfileSummary {
-  memberId: number;
+  userId: number;
 }
 
-export default function ProfileSummary({ memberId }: IProfileSummary) {
+export default function ProfileSummary({ userId }: IProfileSummary) {
   // TODO: 멤버 정보 조회 (지금은 dummy data)
-  console.log(memberId);
+  console.log(userId);
   const memberInfo = {
     profileImageUrl: "/logo.svg",
     nickname: "미야옹",
