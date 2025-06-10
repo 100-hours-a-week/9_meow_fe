@@ -22,7 +22,7 @@ function App() {
         <Background>
           <div className="w-full flex flex-col bg-background max-w-[430px] mx-auto outline outline-foreground/20 shadow-xl overflow-y-hidden">
             <Header />
-            <div className="flex-1 overflow-y-auto mb-16">
+            <div className="flex-1 overflow-y-auto mb-12">
               <Routes>
                 <Route path="/" element={<MainPage />} />
                 <Route path="/create" element={<CreatePostPage />} />
