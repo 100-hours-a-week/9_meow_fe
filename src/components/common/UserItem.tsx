@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ApiAnimalType } from "@/types/animal";
 import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
+import { useNavigate } from "react-router-dom";
 
 export interface IUserItem {
   userId: number;
@@ -15,9 +16,13 @@ export default function UserItem({
   nickname,
   animalType,
 }: IUserItem) {
-  function handleClick() {
-    console.log(userId);
+  const navigate = useNavigate();
+
+  function handleClick(e: React.MouseEvent<HTMLDivElement>) {
+    e.stopPropagation();
+    navigate(`/member/${userId}`);
   }
+
   return (
     <div className="flex flex-row items-center gap-2" onClick={handleClick}>
       <Avatar>
