@@ -41,6 +41,6 @@ export function convertDisplayToEmotionType(
     case DisplayEmotion.ANGRY:
       return ApiEmotion.ANGRY;
     default:
-      throw new Error(`Unknown display emotion: ${display}`);
+      throw new Error(`Unknown emotion: ${display}`);
   }
 }
