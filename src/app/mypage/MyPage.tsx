@@ -1,3 +1,9 @@
+import { MyProfileSummary } from "@/components/pages";
+
 export default function MyPage() {
-  return <div>MyPage</div>;
+  return (
+    <div>
+      <MyProfileSummary />
+    </div>
+  );
 }
