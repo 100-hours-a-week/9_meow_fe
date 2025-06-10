@@ -1,27 +1,11 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SelectAnimalType from "./SelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
 import { Button } from "@/components/ui/button";
-import { useMutation } from "@tanstack/react-query";
-import useKakaoIdStore from "@/store/useKakaoIdStore";
-import useTokenStore from "@/store/useTokenStore";
-import { signupQueries } from "@/api/queries/signupQueries";
-import { loginQueries } from "@/api/queries/loginQueries";
 
-export default function SignupForm() {
-  const navigate = useNavigate();
-  const { kakaoId, setKakaoId } = useKakaoIdStore();
-  const { token, setToken } = useTokenStore();
-  const { mutate: login, isPending: isLoginPending } = useMutation({
-    ...loginQueries.login({ setToken, navigate }),
-  });
-  const { mutate: signup, isPending: isSignupPending } = useMutation({
-    ...signupQueries.signup({ setKakaoId, login }),
-  });
-
+export default function EditProfileForm() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [nicknameValue, setNicknameValue] = useState<string>("");
   const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
@@ -29,34 +13,14 @@ export default function SignupForm() {
   );
   const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
 
-  const handleSignup = () => {
-    if (!kakaoId) {
-      alert("카카오 로그인을 확인해주세옹");
-    } else {
-      signup({
-        nickname: nicknameValue,
-        animalType: selectedAnimal,
-        profileImage: selectedImage,
-        kakaoId,
-      });
-    }
+  const isSubmitDisabled = isNicknameDuplicate || !nicknameValue.trim();
+  const handleSubmit = () => {
+    console.log("submit");
   };
-
-  const isSubmitDisabled =
-    isSignupPending ||
-    isLoginPending ||
-    isNicknameDuplicate ||
-    !nicknameValue.trim();
-
-  useEffect(() => {
-    if (token) {
-      navigate("/");
-    }
-  }, [token, navigate]);
 
   return (
     <div className="flex flex-col gap-4 items-center pt-8 m-3 pb-16">
-      <h2 className="text-4xl">환영한다냥</h2>
+      <h2 className="text-4xl">프로필 수정할거냥</h2>
       <ProfileImageSelection
         titleText="친구는 어떻게 생겼냐옹"
         selectedImage={selectedImage}
@@ -80,13 +44,12 @@ export default function SignupForm() {
         <Button
           variant="secondarySolid"
           disabled={isSubmitDisabled}
-          onClick={handleSignup}
+          onClick={handleSubmit}
         >
-          {isSignupPending || isLoginPending
-            ? "잠시만 기다려 달라옹..."
-            : "다 적으면 누르라냥!"}
+          다 적으면 누르라냥
         </Button>
       </div>
+      <Button variant="link">탈퇴할거냥</Button>
     </div>
   );
 }

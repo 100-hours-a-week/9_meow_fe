@@ -1,3 +1,5 @@
+import { EditProfileForm } from "@/components/pages";
+
 export default function ProfileEditPage() {
-  return <div>ProfileEditPage</div>;
+  return <EditProfileForm />;
 }
