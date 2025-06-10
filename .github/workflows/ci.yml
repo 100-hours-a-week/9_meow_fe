@@ -163,6 +163,7 @@ jobs:
           context: .
           build-args: 
             VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_CLOUD_FRONTEND_URL=${{ secrets.VITE_CLOUD_FRONTEND_URL }}
           push: true
           tags: |
             ${{ env.IMAGE_URI }}:${{ github.sha }}
