@@ -26,7 +26,7 @@ export default function NavigationBar() {
       {renderIconButton("/create", <img src="/icon/plus.svg" alt="plus" />)}
       {/* {renderIconButton("/chat", <img src="/icon/chat.svg" alt="chat" />)} */}
       {renderIconButton(
-        token ? "/mypage" : "/login",
+        token ? "/mypage/redirect" : "/login",
         <Avatar>
           <AvatarImage src={profileImage?.profileImageUrl ?? "/logo.svg"} />
           <AvatarFallback>미야옹</AvatarFallback>

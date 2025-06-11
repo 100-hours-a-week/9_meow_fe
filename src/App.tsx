@@ -8,7 +8,7 @@ import SignupPage from "./app/signup/SignupPage";
 import NotFoundPage from "./app/not-found/NotFoundPage";
 import RedirectPage from "./app/redirect/RedirectPage";
 import PostEdit from "./app/edit/PostEdit";
-import MyPage from "./app/mypage/MyPage";
+import MyPageRedirectPage from "./app/mypage/redirect/MyPageRedirectPage";
 import ProfileEditPage from "./app/mypage/edit/ProfileEditPage";
 import MemberPage from "./app/member/[userId]/MemberPage";
 import FollowerPage from "./app/member/[userId]/follower/FollowerPage";
@@ -31,7 +31,10 @@ function App() {
                 <Route path="/create" element={<CreatePostPage />} />
                 <Route path="/detail/:postId" element={<DetailPostPage />} />
                 <Route path="/edit/:postId" element={<PostEdit />} />
-                <Route path="/mypage" element={<MyPage />} />
+                <Route
+                  path="/mypage/redirect"
+                  element={<MyPageRedirectPage />}
+                />
                 <Route path="/mypage/edit" element={<ProfileEditPage />} />
                 <Route path="/member/:userId" element={<MemberPage />} />
                 <Route
