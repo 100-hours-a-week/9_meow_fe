@@ -1,9 +1,11 @@
+import { IError } from "@/api/types";
 import {
-  IError,
+  IPostDetailData,
+  ICreatePost,
   IPostEditInfoResponse,
   IPostEditResponse,
   IPostSummaryDataPagination,
-} from "@/api/types";
+} from "@/api/types/post";
 import {
   deletePost,
   getPostDetail,
@@ -18,8 +20,6 @@ import {
   queryOptions,
   UseMutationOptions,
 } from "@tanstack/react-query";
-import { IPostDetailData } from "@/api/types";
-import { ICreatePost } from "../types";
 import { AxiosError } from "axios";
 import { NavigateFunction } from "react-router-dom";
 

@@ -1,7 +1,6 @@
 import { PostCard } from "@/components/common";
 import { IPostContent } from "@/components/common/PostCard/PostContent";
 import { IUserItem } from "@/components/common/UserItem";
-import { IPostSummaryData } from "@/api/types";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
 import { useRef } from "react";
 import { useObserver } from "@/hooks/common/useObserver";
@@ -42,7 +41,7 @@ export default function MainPage() {
   return (
     <div className="pt-2 pb-16 flex flex-col gap-2.5 px-2">
       {data.pages.map((page) =>
-        page.content.map((post: IPostSummaryData) => {
+        page.content.map((post) => {
           const userInfo: IUserItem = {
             userId: post.userId,
             nickname: post.nickname,
