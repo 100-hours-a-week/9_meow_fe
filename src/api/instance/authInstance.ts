@@ -14,9 +14,10 @@ const authInstance = axios.create({
 authInstance.interceptors.request.use(
   (config) => {
     const token = useTokenStore.getState().token;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (!token) {
+      return Promise.reject(new Error("No token available"));
     }
+    config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => {
@@ -40,8 +41,9 @@ authInstance.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return authInstance(originalRequest);
       } catch (refreshError) {
-        alert("토큰 갱신에 실패했다옹... 로그아웃 하고 다시 로그인 해보라냥");
+        alert("토큰 갱신에 실패했다옹... 다시 로그인 해보라냥");
         window.location.href = "/login";
+        useTokenStore.getState().clearToken();
         return Promise.reject(refreshError);
       }
     }
