@@ -1,5 +1,7 @@
 import authInstance from "./instance/authInstance";
+import defaultInstance from "./instance/defaultInstance";
 import {
+  IFollowerDataPagination,
   IProfileInfoResponse,
   IUserIdResponse,
   IUserProfileImageResponse,
@@ -31,5 +33,37 @@ export const postFollow = async ({ userId }: { userId: number }) => {
 
 export const deleteFollow = async ({ userId }: { userId: number }) => {
   const response = await authInstance.delete(`/users/follow/${userId}`);
+  return response.data;
+};
+
+export const getFollowerList = async ({
+  userId,
+  page,
+  size,
+}: {
+  userId: number;
+  page: number;
+  size: number;
+}) => {
+  const response = await defaultInstance.get<IFollowerDataPagination>(
+    `/users/${userId}/followers`,
+    { params: { page, size } },
+  );
+  return response.data;
+};
+
+export const getFollowingList = async ({
+  userId,
+  page,
+  size,
+}: {
+  userId: number;
+  page: number;
+  size: number;
+}) => {
+  const response = await defaultInstance.get<IFollowerDataPagination>(
+    `/users/${userId}/followings`,
+    { params: { page, size } },
+  );
   return response.data;
 };

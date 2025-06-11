@@ -18,3 +18,19 @@ export interface IProfileInfoResponse {
   following: boolean;
   currentUser: boolean;
 }
+
+export interface IFollowerData {
+  userId: number;
+  nickname: string;
+  postType: ApiAnimalType;
+  profileImageUrl: string;
+}
+
+export interface IFollowerDataPagination {
+  content: IFollowerData[];
+  currentPage: number;
+  totalPages: number;
+  totalElements: number;
+  pageSize: number;
+  last: boolean;
+}

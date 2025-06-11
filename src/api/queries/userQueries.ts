@@ -1,16 +1,20 @@
 import {
+  infiniteQueryOptions,
   QueryClient,
   UseMutationOptions,
   UseQueryOptions,
 } from "@tanstack/react-query";
 import {
   deleteFollow,
+  getFollowerList,
+  getFollowingList,
   getProfileInfo,
   getUserId,
   getUserProfileImage,
   postFollow,
 } from "../user";
 import {
+  IFollowerDataPagination,
   IProfileInfoResponse,
   IUserIdResponse,
   IUserProfileImageResponse,
@@ -81,4 +85,26 @@ export const userQueries = {
       }
     },
   }),
+
+  followerList: ({ userId }: { userId: number }) =>
+    infiniteQueryOptions<IFollowerDataPagination, Error>({
+      queryKey: [...userQueries.all(), "followerList", userId],
+      queryFn: ({ pageParam }) =>
+        getFollowerList({ userId, page: pageParam as number, size: 20 }),
+      getNextPageParam: (lastPage: IFollowerDataPagination) => {
+        return lastPage.last ? undefined : lastPage.currentPage + 1;
+      },
+      initialPageParam: 0,
+    }),
+
+  followingList: ({ userId }: { userId: number }) =>
+    infiniteQueryOptions<IFollowerDataPagination, Error>({
+      queryKey: [...userQueries.all(), "followingList", userId],
+      queryFn: ({ pageParam }) =>
+        getFollowingList({ userId, page: pageParam as number, size: 20 }),
+      getNextPageParam: (lastPage: IFollowerDataPagination) => {
+        return lastPage.last ? undefined : lastPage.currentPage + 1;
+      },
+      initialPageParam: 0,
+    }),
 };
