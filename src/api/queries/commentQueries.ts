@@ -1,4 +1,4 @@
-import { ICommentDataPagination, ICreateComment } from "../types";
+import { ICommentDataPagination } from "../types/comment";
 import { IError } from "../types";
 import { AxiosError } from "axios";
 import { getCommentList, postComment } from "../comment";
@@ -20,9 +20,9 @@ export const commentQueries = {
 
   create: (postId: number) => ({
     mutationKey: [...commentQueries.all(), "create", postId],
-    mutationFn: ({ content }: ICreateComment) =>
+    mutationFn: ({ content }: { content: string }) =>
       postComment({
-        comment: { content },
+        content,
         postId,
       }),
     onError: (error: AxiosError<IError>) => {
