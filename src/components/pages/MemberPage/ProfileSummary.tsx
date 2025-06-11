@@ -60,6 +60,7 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
         </Button>
       </div>
       <ProfileInfo
+        userId={userId}
         postCount={profileInfo?.postCount ?? 0}
         followerCount={profileInfo?.followerCount ?? 0}
         followingCount={profileInfo?.followingCount ?? 0}
