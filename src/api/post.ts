@@ -1,5 +1,6 @@
 import { ApiEmotion } from "@/types/Emotion";
 import authInstance from "./instance/authInstance";
+import defaultInstance from "./instance/defaultInstance";
 
 export const getPostList = async ({
   page,
@@ -8,7 +9,7 @@ export const getPostList = async ({
   page: number;
   size: number;
 }) => {
-  const response = await authInstance.get(`/posts`, {
+  const response = await defaultInstance.get(`/posts`, {
     params: {
       page,
       size,
