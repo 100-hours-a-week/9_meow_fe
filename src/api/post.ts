@@ -97,10 +97,7 @@ export const getUserPostList = async ({
   const response = await defaultInstance.get<IPostSummaryDataPagination>(
     `/posts/user/${userId}`,
     {
-      params: {
-        page,
-        size,
-      },
+      params: { page, size },
     },
   );
   return response.data;
