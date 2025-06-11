@@ -49,6 +49,7 @@ export default function FollowerPage() {
           })
         ),
       )}
+      <div ref={lastElementRef} />
     </div>
   );
 }

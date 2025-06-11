@@ -48,6 +48,7 @@ export default function FollowingPage() {
           })
         ),
       )}
+      <div ref={lastElementRef} />
     </div>
   );
 }
