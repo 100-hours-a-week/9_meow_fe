@@ -15,7 +15,7 @@ function renderIconButton(route: string, icon: React.ReactNode) {
 
 export default function NavigationBar() {
   const { data: profileImage } = useQuery({
-    ...userQueries.getUserProfileImage(),
+    ...userQueries.userProfileImage(),
   });
   const { token } = useTokenStore();
 

@@ -9,11 +9,8 @@ import {
 export const userQueries = {
   all: () => ["user"] as const,
 
-  getUserProfileImage: (): UseQueryOptions<
-    IUserProfileImageResponse,
-    Error
-  > => ({
-    queryKey: [...userQueries.all(), "getUserProfileImage"],
+  userProfileImage: (): UseQueryOptions<IUserProfileImageResponse, Error> => ({
+    queryKey: [...userQueries.all(), "userProfileImage"],
     queryFn: getUserProfileImage,
   }),
 
