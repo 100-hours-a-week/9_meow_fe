@@ -8,5 +8,4 @@ export { default as LogoutButton } from "./Login/LogoutButton";
 export { default as CommentItem } from "./Comment/CommentItem";
 export { default as CommentInput } from "./Comment/CommentInput";
 export { default as ProfileSummary } from "./MemberPage/ProfileSummary";
-export { default as MyProfileSummary } from "./MemberPage/MyProfileSummary";
 export { default as MemberItem } from "./MemberPage/MemberItem";
