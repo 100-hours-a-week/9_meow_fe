@@ -74,3 +74,21 @@ export const putPost = async ({
   });
   return response.data;
 };
+
+export const getUserPostList = async ({
+  userId,
+  page,
+  size,
+}: {
+  userId: number;
+  page: number;
+  size: number;
+}) => {
+  const response = await defaultInstance.get(`/posts/user/${userId}`, {
+    params: {
+      page,
+      size,
+    },
+  });
+  return response.data;
+};

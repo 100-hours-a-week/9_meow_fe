@@ -11,6 +11,7 @@ import {
   getPostDetail,
   getPostEditInfo,
   getPostList,
+  getUserPostList,
   postLikePost,
   postPost,
   putPost,
@@ -117,4 +118,15 @@ export const postQueries = {
       navigate(`/detail/${postId}`);
     },
   }),
+
+  userPostList: ({ userId }: { userId: number }) =>
+    infiniteQueryOptions<IPostSummaryDataPagination, Error>({
+      queryKey: [...postQueries.all(), "userPostList", userId],
+      queryFn: ({ pageParam }) =>
+        getUserPostList({ page: pageParam as number, size: 10, userId }),
+      getNextPageParam: (lastPage: IPostSummaryDataPagination) => {
+        return lastPage.last ? undefined : lastPage.currentPage + 1;
+      },
+      initialPageParam: 0,
+    }),
 };
