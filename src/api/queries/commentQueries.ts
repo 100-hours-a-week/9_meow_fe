@@ -1,5 +1,5 @@
 import { ICommentDataPagination } from "../types/comment";
-import { IError } from "../types";
+import { IError } from "../types/common";
 import { AxiosError } from "axios";
 import { getCommentList, postComment } from "../comment";
 import { infiniteQueryOptions } from "@tanstack/react-query";

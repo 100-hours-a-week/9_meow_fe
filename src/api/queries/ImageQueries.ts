@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { uploadImageToS3 } from "../image";
-import { IError } from "../types";
+import { IError } from "../types/common";
 import { UseMutationOptions } from "@tanstack/react-query";
 
 export const imageQueries = {

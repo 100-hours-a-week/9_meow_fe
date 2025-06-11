@@ -1,4 +1,4 @@
-import { IError } from "@/api/types";
+import { IError } from "@/api/types/common";
 import {
   IPostDetailData,
   ICreatePost,
