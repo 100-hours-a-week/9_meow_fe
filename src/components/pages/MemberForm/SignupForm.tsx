@@ -10,20 +10,14 @@ import useKakaoIdStore from "@/store/useKakaoIdStore";
 import useTokenStore from "@/store/useTokenStore";
 import { signupQueries } from "@/api/queries/signupQueries";
 import { loginQueries } from "@/api/queries/loginQueries";
-import useUserProfileImageStore from "@/store/useUserProfileImageStore";
-import { userQueries } from "@/api/queries/userQueries";
 
 export default function SignupForm() {
   const navigate = useNavigate();
   const { kakaoId, setKakaoId } = useKakaoIdStore();
   const { token, setToken } = useTokenStore();
-  const { setProfileImage } = useUserProfileImageStore();
 
-  const { mutate: getProfileImage } = useMutation({
-    ...userQueries.getUserProfileImage({ setProfileImage }),
-  });
   const { mutate: login, isPending: isLoginPending } = useMutation({
-    ...loginQueries.login({ setToken, getProfileImage, navigate }),
+    ...loginQueries.login({ setToken, navigate }),
   });
   const { mutate: signup, isPending: isSignupPending } = useMutation({
     ...signupQueries.signup({ setKakaoId, login }),

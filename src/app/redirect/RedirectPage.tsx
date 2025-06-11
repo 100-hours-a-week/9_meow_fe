@@ -4,8 +4,6 @@ import useKakaoIdStore from "@/store/useKakaoIdStore";
 import { useMutation } from "@tanstack/react-query";
 import useTokenStore from "@/store/useTokenStore";
 import { loginQueries } from "@/api/queries/loginQueries";
-import { userQueries } from "@/api/queries/userQueries";
-import useUserProfileImageStore from "@/store/useUserProfileImageStore";
 
 export default function RedirectPage() {
   const navigate = useNavigate();
@@ -14,13 +12,9 @@ export default function RedirectPage() {
 
   const { setKakaoId } = useKakaoIdStore();
   const { token, setToken } = useTokenStore();
-  const { setProfileImage } = useUserProfileImageStore();
 
-  const { mutate: getProfileImage } = useMutation({
-    ...userQueries.getUserProfileImage({ setProfileImage }),
-  });
   const { mutate: login } = useMutation({
-    ...loginQueries.login({ setToken, getProfileImage, navigate }),
+    ...loginQueries.login({ setToken, navigate }),
   });
 
   const { mutate: getKakao } = useMutation({

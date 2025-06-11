@@ -1,7 +1,8 @@
+import { userQueries } from "@/api/queries/userQueries";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import useTokenStore from "@/store/useTokenStore";
-import useUserProfileImageStore from "@/store/useUserProfileImageStore";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
 function renderIconButton(route: string, icon: React.ReactNode) {
@@ -13,7 +14,9 @@ function renderIconButton(route: string, icon: React.ReactNode) {
 }
 
 export default function NavigationBar() {
-  const { profileImage } = useUserProfileImageStore();
+  const { data: profileImage } = useQuery({
+    ...userQueries.getUserProfileImage(),
+  });
   const { token } = useTokenStore();
 
   return (
@@ -25,7 +28,7 @@ export default function NavigationBar() {
       {renderIconButton(
         token ? "/mypage" : "/login",
         <Avatar>
-          <AvatarImage src={profileImage ?? "/logo.svg"} />
+          <AvatarImage src={profileImage?.profileImageUrl ?? "/logo.svg"} />
           <AvatarFallback>미야옹</AvatarFallback>
         </Avatar>,
       )}
