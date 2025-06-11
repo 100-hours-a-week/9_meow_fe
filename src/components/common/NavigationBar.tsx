@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import useTokenStore from "@/store/useTokenStore";
-import { useState } from "react";
+import useUserProfileImageStore from "@/store/useUserProfileImageStore";
 import { Link } from "react-router-dom";
 
 function renderIconButton(route: string, icon: React.ReactNode) {
@@ -13,8 +13,7 @@ function renderIconButton(route: string, icon: React.ReactNode) {
 }
 
 export default function NavigationBar() {
-  // TODO : 프로필 이미지 추가
-  const [profileImage] = useState<string | undefined>();
+  const { profileImage } = useUserProfileImageStore();
   const { token } = useTokenStore();
 
   return (
