@@ -113,3 +113,7 @@ export interface IImagesPreSignedUrlResponse {
   url: string;
   key: string;
 }
+
+export interface IUserProfileImageResponse {
+  profileImageUrl: string;
+}
