@@ -28,19 +28,25 @@ export default function FollowingPage() {
   return (
     <div className="flex flex-col gap-2 mt-2 mx-2">
       {followingList?.pages.map((page) =>
-        page.content.map((following) => {
-          return (
-            <MemberItem
-              key={following.userId}
-              userInfo={{
-                userId: following.userId,
-                nickname: following.nickname,
-                animalType: following.postType,
-                profileImageUrl: following.profileImageUrl,
-              }}
-            />
-          );
-        }),
+        page.content.length === 0 ? (
+          <p className="text-sm text-foreground/50">
+            아직 아무도 팔로우하고 있지 않다냥...
+          </p>
+        ) : (
+          page.content.map((following) => {
+            return (
+              <MemberItem
+                key={following.userId}
+                userInfo={{
+                  userId: following.userId,
+                  nickname: following.nickname,
+                  animalType: following.postType,
+                  profileImageUrl: following.profileImageUrl,
+                }}
+              />
+            );
+          })
+        ),
       )}
     </div>
   );
