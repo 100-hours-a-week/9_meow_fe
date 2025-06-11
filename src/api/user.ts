@@ -23,3 +23,13 @@ export const getProfileInfo = async ({ userId }: { userId: number }) => {
   );
   return response.data;
 };
+
+export const postFollow = async ({ userId }: { userId: number }) => {
+  const response = await authInstance.post(`/users/follow/${userId}`);
+  return response.data;
+};
+
+export const deleteFollow = async ({ userId }: { userId: number }) => {
+  const response = await authInstance.delete(`/users/follow/${userId}`);
+  return response.data;
+};

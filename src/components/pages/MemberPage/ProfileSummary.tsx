@@ -3,7 +3,7 @@ import MemberInfoSummary from "./ProfileSummary/MemberInfoSummary";
 import { ApiAnimalType } from "@/types/animal";
 import ProfileInfo from "./ProfileSummary/ProfileInfo";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { userQueries } from "@/api/queries/userQueries";
 
 interface IProfileSummary {
@@ -12,9 +12,16 @@ interface IProfileSummary {
 
 export default function ProfileSummary({ userId }: IProfileSummary) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { data: profileInfo } = useQuery({
     ...userQueries.profileInfo({ userId }),
+  });
+  const { mutate: follow } = useMutation({
+    ...userQueries.follow({ userId, queryClient }),
+  });
+  const { mutate: unfollow } = useMutation({
+    ...userQueries.unfollow({ userId, queryClient }),
   });
 
   return (
@@ -34,8 +41,18 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
             프로필 편집
           </Button>
         ) : (
-          <Button variant="primaryOutline" className="w-36 text-lg">
-            팔로우
+          <Button
+            variant={profileInfo?.following ? "primarySolid" : "primaryOutline"}
+            className="w-36 text-lg"
+            onClick={() => {
+              if (profileInfo?.following) {
+                unfollow();
+              } else {
+                follow();
+              }
+            }}
+          >
+            {profileInfo?.following ? "팔로잉" : "팔로우"}
           </Button>
         )}
         <Button variant="primarySolid" className="w-36 text-lg">
