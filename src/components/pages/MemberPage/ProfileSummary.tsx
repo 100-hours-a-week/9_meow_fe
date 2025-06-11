@@ -42,7 +42,11 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
           프로필 공유
         </Button>
       </div>
-      <ProfileInfo postCount={900} followerCount={12} followingCount={130} />
+      <ProfileInfo
+        postCount={profileInfo?.postCount ?? 0}
+        followerCount={profileInfo?.followerCount ?? 0}
+        followingCount={profileInfo?.followingCount ?? 0}
+      />
       {/* TODO: 이벤트 추가되면 주석 풀기 */}
       {/* <ProfileTab /> */}
     </div>
