@@ -3,6 +3,8 @@ import MemberInfoSummary from "./ProfileSummary/MemberInfoSummary";
 import { ApiAnimalType } from "@/types/animal";
 import ProfileInfo from "./ProfileSummary/ProfileInfo";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { userQueries } from "@/api/queries/userQueries";
 
 interface IProfileSummary {
   userId: number;
@@ -11,20 +13,19 @@ interface IProfileSummary {
 export default function ProfileSummary({ userId }: IProfileSummary) {
   const navigate = useNavigate();
 
-  // TODO: 멤버 정보 조회 (지금은 dummy data)
-  console.log(userId);
-  const memberInfo = {
-    profileImageUrl: "/logo.svg",
-    nickname: "미야옹",
-    animalType: ApiAnimalType.CAT,
-    currentUser: false,
-  };
+  const { data: profileInfo } = useQuery({
+    ...userQueries.profileInfo({ userId }),
+  });
 
   return (
     <div className="w-full flex flex-col gap-4 items-center">
-      <MemberInfoSummary {...memberInfo} />
+      <MemberInfoSummary
+        profileImageUrl={profileInfo?.profileImageUrl}
+        nickname={profileInfo?.nickname ?? ""}
+        animalType={profileInfo?.animalType ?? ApiAnimalType.CAT}
+      />
       <div className="flex flex-row gap-5">
-        {memberInfo.currentUser ? (
+        {profileInfo?.currentUser ? (
           <Button
             variant="primarySolid"
             className="w-36 text-lg"

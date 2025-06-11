@@ -1,6 +1,10 @@
 import { UseQueryOptions } from "@tanstack/react-query";
-import { getUserId, getUserProfileImage } from "../user";
-import { IUserIdResponse, IUserProfileImageResponse } from "../types/user";
+import { getProfileInfo, getUserId, getUserProfileImage } from "../user";
+import {
+  IProfileInfoResponse,
+  IUserIdResponse,
+  IUserProfileImageResponse,
+} from "../types/user";
 
 export const userQueries = {
   all: () => ["user"] as const,
@@ -16,5 +20,14 @@ export const userQueries = {
   userId: (): UseQueryOptions<IUserIdResponse, Error> => ({
     queryKey: [...userQueries.all(), "userId"],
     queryFn: getUserId,
+  }),
+
+  profileInfo: ({
+    userId,
+  }: {
+    userId: number;
+  }): UseQueryOptions<IProfileInfoResponse, Error> => ({
+    queryKey: [...userQueries.all(), "profileInfo", userId],
+    queryFn: () => getProfileInfo({ userId }),
   }),
 };
