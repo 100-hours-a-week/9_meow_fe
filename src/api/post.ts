@@ -1,5 +1,10 @@
 import { ApiEmotion } from "@/types/Emotion";
-import { ICreatePost } from "./types/post";
+import {
+  ICreatePost,
+  IPostDetailData,
+  IPostEditInfoResponse,
+  IPostSummaryDataPagination,
+} from "./types/post";
 import authInstance from "./instance/authInstance";
 import defaultInstance from "./instance/defaultInstance";
 
@@ -10,12 +15,15 @@ export const getPostList = async ({
   page: number;
   size: number;
 }) => {
-  const response = await defaultInstance.get(`/posts`, {
-    params: {
-      page,
-      size,
+  const response = await defaultInstance.get<IPostSummaryDataPagination>(
+    `/posts`,
+    {
+      params: {
+        page,
+        size,
+      },
     },
-  });
+  );
   return response.data;
 };
 
@@ -29,7 +37,7 @@ export const postPost = async (post: ICreatePost) => {
 };
 
 export const getPostDetail = async (postId: number) => {
-  const response = await authInstance.get(`/posts/${postId}`);
+  const response = await authInstance.get<IPostDetailData>(`/posts/${postId}`);
   return response.data;
 };
 
@@ -52,7 +60,9 @@ export const deletePost = async (postId: number) => {
 };
 
 export const getPostEditInfo = async (postId: number) => {
-  const response = await authInstance.get(`/posts/${postId}/edit`);
+  const response = await authInstance.get<IPostEditInfoResponse>(
+    `/posts/${postId}/edit`,
+  );
   return response.data;
 };
 
@@ -84,11 +94,14 @@ export const getUserPostList = async ({
   page: number;
   size: number;
 }) => {
-  const response = await defaultInstance.get(`/posts/user/${userId}`, {
-    params: {
-      page,
-      size,
+  const response = await defaultInstance.get<IPostSummaryDataPagination>(
+    `/posts/user/${userId}`,
+    {
+      params: {
+        page,
+        size,
+      },
     },
-  });
+  );
   return response.data;
 };

@@ -1,4 +1,5 @@
 import defaultInstance from "./instance/defaultInstance";
+import { IKakaoAuthResponse } from "./types/login";
 
 export const getKakaoUrl = async () => {
   const response = await defaultInstance.get("/auth/url");
@@ -6,11 +7,14 @@ export const getKakaoUrl = async () => {
 };
 
 export const getKakaoId = async (code: string) => {
-  const response = await defaultInstance.get("/auth/kakao/callback", {
-    params: {
-      code,
+  const response = await defaultInstance.get<IKakaoAuthResponse>(
+    "/auth/kakao/callback",
+    {
+      params: {
+        code,
+      },
     },
-  });
+  );
   return response.data;
 };
 

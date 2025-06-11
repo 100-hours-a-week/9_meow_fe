@@ -17,7 +17,7 @@ export const postUsers = async (user: ISignupUserRequest) => {
 };
 
 export const getDuplicateNickname = async (nickname: string) => {
-  const response = await formInstance.get(
+  const response = await formInstance.get<boolean>(
     `/users/check-nickname?nickname=${nickname}`,
   );
   return response.data;
