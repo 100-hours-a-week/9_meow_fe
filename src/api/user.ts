@@ -4,3 +4,8 @@ export const getUserProfileImage = async () => {
   const response = await authInstance.get("/users/profileimage");
   return response.data;
 };
+
+export const getUserId = async () => {
+  const response = await authInstance.get("/users/my-profile");
+  return response.data;
+};
