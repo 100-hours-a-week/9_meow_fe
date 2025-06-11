@@ -18,13 +18,6 @@ export interface ILoginResponse {
   accessToken: string;
 }
 
-export interface IUserRequest {
-  kakaoId: number;
-  nickname: string;
-  animalType: string;
-  profileImage: File | null;
-}
-
 export interface ICommentData {
   id: number;
   userId: number;
