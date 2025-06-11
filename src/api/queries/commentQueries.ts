@@ -1,5 +1,5 @@
-import { ICommentDataPagination, ICreateComment } from "../types";
-import { IError } from "../types";
+import { ICommentDataPagination } from "../types/comment";
+import { IError } from "../types/common";
 import { AxiosError } from "axios";
 import { getCommentList, postComment } from "../comment";
 import { infiniteQueryOptions } from "@tanstack/react-query";
@@ -20,9 +20,9 @@ export const commentQueries = {
 
   create: (postId: number) => ({
     mutationKey: [...commentQueries.all(), "create", postId],
-    mutationFn: ({ content }: ICreateComment) =>
+    mutationFn: ({ content }: { content: string }) =>
       postComment({
-        comment: { content },
+        content,
         postId,
       }),
     onError: (error: AxiosError<IError>) => {

@@ -1,14 +1,17 @@
+import { IError } from "@/api/types/common";
 import {
-  IError,
+  IPostDetailData,
+  ICreatePost,
   IPostEditInfoResponse,
   IPostEditResponse,
   IPostSummaryDataPagination,
-} from "@/api/types";
+} from "@/api/types/post";
 import {
   deletePost,
   getPostDetail,
   getPostEditInfo,
   getPostList,
+  getUserPostList,
   postLikePost,
   postPost,
   putPost,
@@ -18,8 +21,6 @@ import {
   queryOptions,
   UseMutationOptions,
 } from "@tanstack/react-query";
-import { IPostDetailData } from "@/api/types";
-import { ICreatePost } from "../types";
 import { AxiosError } from "axios";
 import { NavigateFunction } from "react-router-dom";
 
@@ -117,4 +118,15 @@ export const postQueries = {
       navigate(`/detail/${postId}`);
     },
   }),
+
+  userPostList: ({ userId }: { userId: number }) =>
+    infiniteQueryOptions<IPostSummaryDataPagination, Error>({
+      queryKey: [...postQueries.all(), "userPostList", userId],
+      queryFn: ({ pageParam }) =>
+        getUserPostList({ page: pageParam as number, size: 10, userId }),
+      getNextPageParam: (lastPage: IPostSummaryDataPagination) => {
+        return lastPage.last ? undefined : lastPage.currentPage + 1;
+      },
+      initialPageParam: 0,
+    }),
 };

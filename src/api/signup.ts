@@ -1,7 +1,7 @@
 import formInstance from "./instance/formInstance";
-import { IUserRequest } from "./types";
+import { ISignupUserRequest } from "./types/signup";
 
-export const postUsers = async (user: IUserRequest) => {
+export const postUsers = async (user: ISignupUserRequest) => {
   const formData = new FormData();
 
   if (user.profileImage) {

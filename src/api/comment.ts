@@ -1,5 +1,4 @@
 import authInstance from "./instance/authInstance";
-import { ICreateComment } from "./types";
 
 export const getCommentList = async ({
   page,
@@ -20,14 +19,14 @@ export const getCommentList = async ({
 };
 
 export const postComment = async ({
-  comment,
+  content,
   postId,
 }: {
-  comment: ICreateComment;
+  content: string;
   postId: number;
 }) => {
   const response = await authInstance.post(`/posts/${postId}/comments`, {
-    content: comment.content,
+    content,
   });
   return response.data;
 };

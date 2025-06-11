@@ -1,7 +1,8 @@
+import { userQueries } from "@/api/queries/userQueries";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import useTokenStore from "@/store/useTokenStore";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
 function renderIconButton(route: string, icon: React.ReactNode) {
@@ -13,8 +14,9 @@ function renderIconButton(route: string, icon: React.ReactNode) {
 }
 
 export default function NavigationBar() {
-  // TODO : 프로필 이미지 추가
-  const [profileImage] = useState<string | undefined>();
+  const { data: profileImage } = useQuery({
+    ...userQueries.userProfileImage(),
+  });
   const { token } = useTokenStore();
 
   return (
@@ -24,9 +26,9 @@ export default function NavigationBar() {
       {renderIconButton("/create", <img src="/icon/plus.svg" alt="plus" />)}
       {/* {renderIconButton("/chat", <img src="/icon/chat.svg" alt="chat" />)} */}
       {renderIconButton(
-        token ? "/mypage" : "/login",
+        token ? "/mypage/redirect" : "/login",
         <Avatar>
-          <AvatarImage src={profileImage ?? "/logo.svg"} />
+          <AvatarImage src={profileImage?.profileImageUrl ?? "/logo.svg"} />
           <AvatarFallback>미야옹</AvatarFallback>
         </Avatar>,
       )}

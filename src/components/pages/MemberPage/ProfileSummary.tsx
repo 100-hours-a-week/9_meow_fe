@@ -2,31 +2,51 @@ import { Button } from "@/components/ui/button";
 import MemberInfoSummary from "./ProfileSummary/MemberInfoSummary";
 import { ApiAnimalType } from "@/types/animal";
 import ProfileInfo from "./ProfileSummary/ProfileInfo";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { userQueries } from "@/api/queries/userQueries";
 
 interface IProfileSummary {
   userId: number;
 }
 
 export default function ProfileSummary({ userId }: IProfileSummary) {
-  // TODO: 멤버 정보 조회 (지금은 dummy data)
-  console.log(userId);
-  const memberInfo = {
-    profileImageUrl: "/logo.svg",
-    nickname: "미야옹",
-    animalType: ApiAnimalType.CAT,
-  };
+  const navigate = useNavigate();
+
+  const { data: profileInfo } = useQuery({
+    ...userQueries.profileInfo({ userId }),
+  });
+
   return (
     <div className="w-full flex flex-col gap-4 items-center">
-      <MemberInfoSummary {...memberInfo} />
+      <MemberInfoSummary
+        profileImageUrl={profileInfo?.profileImageUrl}
+        nickname={profileInfo?.nickname ?? ""}
+        animalType={profileInfo?.animalType ?? ApiAnimalType.CAT}
+      />
       <div className="flex flex-row gap-5">
-        <Button variant="primaryOutline" className="w-36 text-lg">
-          팔로우
-        </Button>
+        {profileInfo?.currentUser ? (
+          <Button
+            variant="primarySolid"
+            className="w-36 text-lg"
+            onClick={() => navigate("/mypage/edit")}
+          >
+            프로필 편집
+          </Button>
+        ) : (
+          <Button variant="primaryOutline" className="w-36 text-lg">
+            팔로우
+          </Button>
+        )}
         <Button variant="primarySolid" className="w-36 text-lg">
           프로필 공유
         </Button>
       </div>
-      <ProfileInfo postCount={900} followerCount={12} followingCount={130} />
+      <ProfileInfo
+        postCount={profileInfo?.postCount ?? 0}
+        followerCount={profileInfo?.followerCount ?? 0}
+        followingCount={profileInfo?.followingCount ?? 0}
+      />
       {/* TODO: 이벤트 추가되면 주석 풀기 */}
       {/* <ProfileTab /> */}
     </div>

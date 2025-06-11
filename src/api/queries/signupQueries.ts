@@ -1,6 +1,6 @@
 import { UseMutationOptions } from "@tanstack/react-query";
 import { getDuplicateNickname, postUsers } from "@/api/signup";
-import { IUserRequest } from "@/api/types";
+import { ISignupUserRequest } from "@/api/types/signup";
 
 export const signupQueries = {
   all: () => ["signup"] as const,
@@ -36,7 +36,7 @@ export const signupQueries = {
     login: (id: number) => void;
   }) => ({
     mutationKey: [...signupQueries.all(), "signup"],
-    mutationFn: (data: IUserRequest) => postUsers(data),
+    mutationFn: (data: ISignupUserRequest) => postUsers(data),
     onSuccess: (data: number) => {
       setKakaoId(data);
       login(data);

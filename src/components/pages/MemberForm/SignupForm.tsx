@@ -15,6 +15,7 @@ export default function SignupForm() {
   const navigate = useNavigate();
   const { kakaoId, setKakaoId } = useKakaoIdStore();
   const { token, setToken } = useTokenStore();
+
   const { mutate: login, isPending: isLoginPending } = useMutation({
     ...loginQueries.login({ setToken, navigate }),
   });

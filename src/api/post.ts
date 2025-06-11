@@ -1,5 +1,7 @@
 import { ApiEmotion } from "@/types/Emotion";
+import { ICreatePost } from "./types/post";
 import authInstance from "./instance/authInstance";
+import defaultInstance from "./instance/defaultInstance";
 
 export const getPostList = async ({
   page,
@@ -8,7 +10,7 @@ export const getPostList = async ({
   page: number;
   size: number;
 }) => {
-  const response = await authInstance.get(`/posts`, {
+  const response = await defaultInstance.get(`/posts`, {
     params: {
       page,
       size,
@@ -17,13 +19,7 @@ export const getPostList = async ({
   return response.data;
 };
 
-interface IPost {
-  imageUrls: string[];
-  emotion: ApiEmotion;
-  content: string;
-}
-
-export const postPost = async (post: IPost) => {
+export const postPost = async (post: ICreatePost) => {
   const response = await authInstance.post("/posts", {
     imageUrls: post.imageUrls,
     content: post.content,
@@ -75,6 +71,24 @@ export const putPost = async ({
     imageUrls,
     content,
     emotion,
+  });
+  return response.data;
+};
+
+export const getUserPostList = async ({
+  userId,
+  page,
+  size,
+}: {
+  userId: number;
+  page: number;
+  size: number;
+}) => {
+  const response = await defaultInstance.get(`/posts/user/${userId}`, {
+    params: {
+      page,
+      size,
+    },
   });
   return response.data;
 };

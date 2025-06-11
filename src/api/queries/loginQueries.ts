@@ -1,5 +1,9 @@
 import { queryOptions } from "@tanstack/react-query";
-import { IKakaoAuthResponse, ILoginCode, ILoginResponse } from "@/api/types";
+import {
+  IKakaoAuthResponse,
+  ILoginCode,
+  ILoginResponse,
+} from "@/api/types/login";
 import { getKakaoId, getKakaoUrl, postLogin } from "@/api/login";
 import { NavigateFunction } from "react-router-dom";
 
