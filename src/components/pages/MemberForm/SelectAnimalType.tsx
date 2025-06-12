@@ -31,7 +31,7 @@ export default function SelectAnimalType({
         </Label>
       )}
       <RadioGroup
-        defaultValue={selectedAnimal}
+        value={selectedAnimal}
         className="flex flex-row gap-2 flex-wrap"
       >
         {animals.map((animal, index) => (
