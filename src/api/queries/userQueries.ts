@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {
   deleteFollow,
+  editProfile,
   getEditProfileInfo,
   getFollowerList,
   getFollowingList,
@@ -16,6 +17,7 @@ import {
 } from "../user";
 import {
   IEditProfileInfoResponse,
+  IEditProfileRequest,
   IFollowerDataPagination,
   IProfileInfoResponse,
   IUserIdResponse,
@@ -23,6 +25,7 @@ import {
 } from "../types/user";
 import { IError } from "../types/common";
 import { AxiosError } from "axios";
+import { NavigateFunction } from "react-router-dom";
 
 export const userQueries = {
   all: () => ["user"] as const,
@@ -49,6 +52,23 @@ export const userQueries = {
   editProfileInfo: (): UseQueryOptions<IEditProfileInfoResponse, Error> => ({
     queryKey: [...userQueries.all(), "editProfileInfo"],
     queryFn: getEditProfileInfo,
+  }),
+
+  editProfile: ({
+    navigate,
+  }: {
+    navigate: NavigateFunction;
+  }): UseMutationOptions<
+    IEditProfileInfoResponse,
+    AxiosError<IError>,
+    IEditProfileRequest
+  > => ({
+    mutationKey: [...userQueries.all(), "editProfile"],
+    mutationFn: (data) => editProfile(data),
+    onSuccess: () => {
+      alert("프로필 수정에 성공했다옹...");
+      navigate("/mypage/redirect");
+    },
   }),
 
   follow: ({

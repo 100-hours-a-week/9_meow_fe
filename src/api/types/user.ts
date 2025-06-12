@@ -25,6 +25,12 @@ export interface IEditProfileInfoResponse {
   profileImageUrl: string;
 }
 
+export interface IEditProfileRequest {
+  nickname: string;
+  profileImageUrl: string;
+  postType: ApiAnimalType;
+}
+
 export interface IFollowerData {
   userId: number;
   nickname: string;
