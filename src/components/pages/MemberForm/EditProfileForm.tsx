@@ -5,9 +5,13 @@ import SelectAnimalType from "./SelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
 import { Button } from "@/components/ui/button";
 import { userQueries } from "@/api/queries/userQueries";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { imageQueries } from "@/api/queries/ImageQueries";
 
 export default function EditProfileForm() {
+  const navigate = useNavigate();
+
   const [selectedImage, setSelectedImage] = useState<File | string | null>(
     null,
   );
@@ -16,8 +20,15 @@ export default function EditProfileForm() {
     ApiAnimalType.CAT,
   );
   const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
+
   const { data: editProfileInfo } = useQuery({
     ...userQueries.editProfileInfo(),
+  });
+  const { mutateAsync: uploadImageToS3 } = useMutation({
+    ...imageQueries.uploadImageToS3(),
+  });
+  const { mutate: editProfile } = useMutation({
+    ...userQueries.editProfile({ navigate }),
   });
 
   useEffect(() => {
@@ -35,8 +46,14 @@ export default function EditProfileForm() {
       selectedAnimal === editProfileInfo?.postType &&
       selectedImage === editProfileInfo?.profileImageUrl);
 
-  const handleSubmit = () => {
-    console.log("submit");
+  const handleSubmit = async () => {
+    const finalImageUrl = await uploadImageToS3(selectedImage as File);
+
+    editProfile({
+      nickname: nicknameValue,
+      profileImageUrl: finalImageUrl,
+      postType: selectedAnimal,
+    });
   };
 
   return (
