@@ -29,7 +29,7 @@ export default function EditProfileForm() {
   }, [editProfileInfo]);
 
   const isSubmitDisabled =
-    isNicknameDuplicate ||
+    (nicknameValue !== editProfileInfo?.nickname && isNicknameDuplicate) ||
     !nicknameValue.trim() ||
     (nicknameValue === editProfileInfo?.nickname &&
       selectedAnimal === editProfileInfo?.postType &&
