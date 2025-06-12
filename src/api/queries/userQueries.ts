@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {
   deleteFollow,
+  getEditProfileInfo,
   getFollowerList,
   getFollowingList,
   getProfileInfo,
@@ -14,6 +15,7 @@ import {
   postFollow,
 } from "../user";
 import {
+  IEditProfileInfoResponse,
   IFollowerDataPagination,
   IProfileInfoResponse,
   IUserIdResponse,
@@ -42,6 +44,11 @@ export const userQueries = {
   }): UseQueryOptions<IProfileInfoResponse, Error> => ({
     queryKey: [...userQueries.all(), "profileInfo", userId],
     queryFn: () => getProfileInfo({ userId }),
+  }),
+
+  editProfileInfo: (): UseQueryOptions<IEditProfileInfoResponse, Error> => ({
+    queryKey: [...userQueries.all(), "editProfileInfo"],
+    queryFn: getEditProfileInfo,
   }),
 
   follow: ({

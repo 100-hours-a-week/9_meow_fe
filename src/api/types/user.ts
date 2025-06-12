@@ -19,6 +19,12 @@ export interface IProfileInfoResponse {
   currentUser: boolean;
 }
 
+export interface IEditProfileInfoResponse {
+  nickname: string;
+  postType: ApiAnimalType;
+  profileImageUrl: string;
+}
+
 export interface IFollowerData {
   userId: number;
   nickname: string;

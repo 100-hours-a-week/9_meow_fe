@@ -1,6 +1,7 @@
 import authInstance from "./instance/authInstance";
 import defaultInstance from "./instance/defaultInstance";
 import {
+  IEditProfileInfoResponse,
   IFollowerDataPagination,
   IProfileInfoResponse,
   IUserIdResponse,
@@ -22,6 +23,13 @@ export const getUserId = async () => {
 export const getProfileInfo = async ({ userId }: { userId: number }) => {
   const response = await authInstance.get<IProfileInfoResponse>(
     `/users/profile/${userId}`,
+  );
+  return response.data;
+};
+
+export const getEditProfileInfo = async () => {
+  const response = await authInstance.get<IEditProfileInfoResponse>(
+    "/users/edit-profile",
   );
   return response.data;
 };
