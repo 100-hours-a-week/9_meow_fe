@@ -43,10 +43,8 @@ export const useImageUpload = () => {
     try {
       const imageUrls = await Promise.all(
         selectedImages.map(async (image) => {
-          const key = await uploadImageToS3(image.file);
-
-          const cloudFrontUrl = import.meta.env.VITE_CLOUDFRONT_URL;
-          return `${cloudFrontUrl}${key}`;
+          const imageUrl = await uploadImageToS3(image.file);
+          return imageUrl;
         }),
       );
 

@@ -24,5 +24,6 @@ export const uploadImageToS3 = async ({
     throw new Error("이미지 업로드 실패");
   }
 
-  return data.key;
+  const cloudFrontUrl = import.meta.env.VITE_CLOUDFRONT_URL;
+  return `${cloudFrontUrl}${data.key}`;
 };
