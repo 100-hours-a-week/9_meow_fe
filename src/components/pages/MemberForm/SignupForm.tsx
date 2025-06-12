@@ -10,6 +10,7 @@ import useKakaoIdStore from "@/store/useKakaoIdStore";
 import useTokenStore from "@/store/useTokenStore";
 import { signupQueries } from "@/api/queries/signupQueries";
 import { loginQueries } from "@/api/queries/loginQueries";
+import { imageQueries } from "@/api/queries/ImageQueries";
 
 export default function SignupForm() {
   const navigate = useNavigate();
@@ -22,6 +23,9 @@ export default function SignupForm() {
   const { mutate: signup, isPending: isSignupPending } = useMutation({
     ...signupQueries.signup({ setKakaoId, login }),
   });
+  const { mutateAsync: uploadImageToS3 } = useMutation({
+    ...imageQueries.uploadImageToS3(),
+  });
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [nicknameValue, setNicknameValue] = useState<string>("");
@@ -30,15 +34,19 @@ export default function SignupForm() {
   );
   const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (!kakaoId) {
       alert("카카오 로그인을 확인해주세옹");
     } else {
+      const imageUrl = selectedImage
+        ? await uploadImageToS3(selectedImage as File)
+        : undefined;
+
       signup({
         nickname: nicknameValue,
         animalType: selectedAnimal,
-        profileImage: selectedImage,
-        kakaoId,
+        profileImage: imageUrl,
+        kakaoId: kakaoId ?? 0,
       });
     }
   };
