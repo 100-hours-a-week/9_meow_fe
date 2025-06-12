@@ -47,7 +47,10 @@ export default function EditProfileForm() {
       selectedImage === editProfileInfo?.profileImageUrl);
 
   const handleSubmit = async () => {
-    const finalImageUrl = await uploadImageToS3(selectedImage as File);
+    const finalImageUrl =
+      selectedImage instanceof File
+        ? await uploadImageToS3(selectedImage)
+        : (selectedImage as string);
 
     editProfile({
       nickname: nicknameValue,
