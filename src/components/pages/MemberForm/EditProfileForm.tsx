@@ -1,19 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SelectAnimalType from "./SelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
 import { Button } from "@/components/ui/button";
+import { userQueries } from "@/api/queries/userQueries";
+import { useQuery } from "@tanstack/react-query";
 
 export default function EditProfileForm() {
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | string | null>(
+    null,
+  );
   const [nicknameValue, setNicknameValue] = useState<string>("");
   const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
     ApiAnimalType.CAT,
   );
   const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
+  const { data: editProfileInfo } = useQuery({
+    ...userQueries.editProfileInfo(),
+  });
 
-  const isSubmitDisabled = isNicknameDuplicate || !nicknameValue.trim();
+  useEffect(() => {
+    if (editProfileInfo) {
+      setNicknameValue(editProfileInfo.nickname);
+      setSelectedAnimal(editProfileInfo.postType);
+      setSelectedImage(editProfileInfo.profileImageUrl);
+    }
+  }, [editProfileInfo]);
+
+  const isSubmitDisabled =
+    isNicknameDuplicate ||
+    !nicknameValue.trim() ||
+    (nicknameValue === editProfileInfo?.nickname &&
+      selectedAnimal === editProfileInfo?.postType &&
+      selectedImage === editProfileInfo?.profileImageUrl);
+
   const handleSubmit = () => {
     console.log("submit");
   };
