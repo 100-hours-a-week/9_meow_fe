@@ -27,7 +27,7 @@ export interface IEditProfileInfoResponse {
 
 export interface IEditProfileRequest {
   nickname: string;
-  profileImageUrl: string;
+  profileImageUrl?: string;
   postType: ApiAnimalType;
 }
 
