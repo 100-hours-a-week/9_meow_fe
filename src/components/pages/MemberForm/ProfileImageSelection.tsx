@@ -5,7 +5,7 @@ import { Label } from "@radix-ui/react-label";
 interface IProfileImageSelection {
   titleText?: string;
   isRequired?: boolean;
-  selectedImage: File | null;
+  selectedImage: File | string | null;
   setSelectedImage: (image: File) => void;
 }
 

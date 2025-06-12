@@ -1,6 +1,8 @@
 import authInstance from "./instance/authInstance";
 import defaultInstance from "./instance/defaultInstance";
 import {
+  IEditProfileInfoResponse,
+  IEditProfileRequest,
   IFollowerDataPagination,
   IProfileInfoResponse,
   IUserIdResponse,
@@ -23,6 +25,31 @@ export const getProfileInfo = async ({ userId }: { userId: number }) => {
   const response = await authInstance.get<IProfileInfoResponse>(
     `/users/profile/${userId}`,
   );
+  return response.data;
+};
+
+export const getEditProfileInfo = async () => {
+  const response = await authInstance.get<IEditProfileInfoResponse>(
+    "/users/edit-profile",
+  );
+  return response.data;
+};
+
+export const editProfile = async ({
+  nickname,
+  profileImageUrl,
+  postType,
+}: IEditProfileRequest) => {
+  const response = await authInstance.patch("/users", {
+    nickname,
+    profileImageUrl,
+    postType,
+  });
+  return response.data;
+};
+
+export const deleteProfile = async () => {
+  const response = await authInstance.delete("/users");
   return response.data;
 };
 

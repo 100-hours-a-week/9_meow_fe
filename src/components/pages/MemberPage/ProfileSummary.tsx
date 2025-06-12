@@ -24,6 +24,17 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
     ...userQueries.unfollow({ userId, queryClient }),
   });
 
+  const handleShareClick = async () => {
+    const url = `${window.location.origin}/member/${userId}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      alert("링크를 클립보드에 복사했다냥.");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      alert("링크 복사에 실패했다옹...");
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-4 items-center">
       <MemberInfoSummary
@@ -55,7 +66,11 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
             {profileInfo?.following ? "팔로잉" : "팔로우"}
           </Button>
         )}
-        <Button variant="primarySolid" className="w-36 text-lg">
+        <Button
+          variant="primarySolid"
+          className="w-36 text-lg"
+          onClick={handleShareClick}
+        >
           프로필 공유
         </Button>
       </div>
