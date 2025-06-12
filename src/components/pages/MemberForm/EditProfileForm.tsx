@@ -5,12 +5,13 @@ import SelectAnimalType from "./SelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
 import { Button } from "@/components/ui/button";
 import { userQueries } from "@/api/queries/userQueries";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { imageQueries } from "@/api/queries/ImageQueries";
 
 export default function EditProfileForm() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const [selectedImage, setSelectedImage] = useState<File | string | null>(
     null,
@@ -28,7 +29,7 @@ export default function EditProfileForm() {
     ...imageQueries.uploadImageToS3(),
   });
   const { mutate: editProfile } = useMutation({
-    ...userQueries.editProfile({ navigate }),
+    ...userQueries.editProfile({ navigate, queryClient }),
   });
 
   useEffect(() => {

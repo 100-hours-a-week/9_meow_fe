@@ -56,8 +56,10 @@ export const userQueries = {
 
   editProfile: ({
     navigate,
+    queryClient,
   }: {
     navigate: NavigateFunction;
+    queryClient: QueryClient;
   }): UseMutationOptions<
     IEditProfileInfoResponse,
     AxiosError<IError>,
@@ -67,6 +69,9 @@ export const userQueries = {
     mutationFn: (data) => editProfile(data),
     onSuccess: () => {
       alert("프로필 수정에 성공했다옹...");
+      queryClient.invalidateQueries({
+        queryKey: [...userQueries.all(), "userProfileImage"],
+      });
       navigate("/mypage/redirect");
     },
   }),
