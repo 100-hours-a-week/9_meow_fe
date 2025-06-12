@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {
   deleteFollow,
+  deleteProfile,
   editProfile,
   getEditProfileInfo,
   getFollowerList,
@@ -73,6 +74,19 @@ export const userQueries = {
         queryKey: [...userQueries.all(), "userProfileImage"],
       });
       navigate("/mypage/redirect");
+    },
+  }),
+
+  deleteProfile: ({
+    navigate,
+  }: {
+    navigate: NavigateFunction;
+  }): UseMutationOptions<void, AxiosError<IError>, void> => ({
+    mutationKey: [...userQueries.all(), "deleteProfile"],
+    mutationFn: () => deleteProfile(),
+    onSuccess: () => {
+      alert("프로필 삭제에 성공했다옹...");
+      navigate("/login");
     },
   }),
 

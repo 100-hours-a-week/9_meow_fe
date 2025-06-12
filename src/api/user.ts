@@ -48,6 +48,11 @@ export const editProfile = async ({
   return response.data;
 };
 
+export const deleteProfile = async () => {
+  const response = await authInstance.delete("/users");
+  return response.data;
+};
+
 export const postFollow = async ({ userId }: { userId: number }) => {
   const response = await authInstance.post(`/users/follow/${userId}`);
   return response.data;

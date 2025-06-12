@@ -31,6 +31,9 @@ export default function EditProfileForm() {
   const { mutate: editProfile } = useMutation({
     ...userQueries.editProfile({ navigate, queryClient }),
   });
+  const { mutate: deleteProfile } = useMutation({
+    ...userQueries.deleteProfile({ navigate }),
+  });
 
   useEffect(() => {
     if (editProfileInfo) {
@@ -58,6 +61,12 @@ export default function EditProfileForm() {
       profileImageUrl: selectedImage instanceof File ? imageUrl : undefined,
       postType: selectedAnimal,
     });
+  };
+
+  const handleDeleteProfile = () => {
+    if (window.confirm("정말 탈퇴할거냥?")) {
+      deleteProfile();
+    }
   };
 
   return (
@@ -91,7 +100,9 @@ export default function EditProfileForm() {
           다 적으면 누르라냥
         </Button>
       </div>
-      <Button variant="link">탈퇴할거냥</Button>
+      <Button variant="link" onClick={handleDeleteProfile}>
+        탈퇴할거냥
+      </Button>
     </div>
   );
 }
