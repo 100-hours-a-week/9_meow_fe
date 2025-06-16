@@ -1,6 +1,7 @@
 import { userQueries } from "@/api/queries/userQueries";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import useTokenStore from "@/store/useTokenStore";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
@@ -27,7 +28,12 @@ export default function NavigationBar() {
       {/* {renderIconButton("/chat", <img src="/icon/chat.svg" alt="chat" />)} */}
       {renderIconButton(
         token ? "/mypage/redirect" : "/login",
-        <Avatar className="border border-muted-foreground">
+        <Avatar
+          className={cn(
+            "border border-muted-foreground",
+            profileImage?.profileImageUrl ?? "bg-foreground",
+          )}
+        >
           <AvatarImage src={profileImage?.profileImageUrl ?? "/logo.svg"} />
           <AvatarFallback>미야옹</AvatarFallback>
         </Avatar>,

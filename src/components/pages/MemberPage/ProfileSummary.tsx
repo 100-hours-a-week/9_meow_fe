@@ -5,6 +5,7 @@ import ProfileInfo from "./ProfileSummary/ProfileInfo";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { userQueries } from "@/api/queries/userQueries";
+import useTokenStore from "@/store/useTokenStore";
 
 interface IProfileSummary {
   userId: number;
@@ -13,6 +14,7 @@ interface IProfileSummary {
 export default function ProfileSummary({ userId }: IProfileSummary) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { clearToken } = useTokenStore();
 
   const { data: profileInfo } = useQuery({
     ...userQueries.profileInfo({ userId }),
@@ -35,14 +37,31 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
     }
   };
 
+  const handleLogout = () => {
+    if (confirm("로그아웃 하시겠습니까?")) {
+      clearToken();
+      navigate("/login");
+    }
+  };
+
   return (
-    <div className="w-full flex flex-col gap-4 items-center">
+    <div className="relative w-full flex flex-col gap-4 items-center">
       <MemberInfoSummary
         profileImageUrl={profileInfo?.profileImageUrl}
         nickname={profileInfo?.nickname ?? ""}
         animalType={profileInfo?.animalType ?? ApiAnimalType.CAT}
       />
-      <div className="flex flex-row gap-5">
+      {profileInfo?.currentUser && (
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleLogout}
+          className="absolute top-3 right-3"
+        >
+          <img src="/icon/logout.svg" alt="logout" className="size-5" />
+        </Button>
+      )}
+      <div className="w-full flex flex-row gap-5 justify-center">
         {profileInfo?.currentUser ? (
           <Button
             variant="primarySolid"

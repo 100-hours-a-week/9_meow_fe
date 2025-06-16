@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
 import { ApiAnimalType } from "@/types/animal";
 import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +26,12 @@ export default function UserItem({
 
   return (
     <div className="flex flex-row items-center gap-2" onClick={handleClick}>
-      <Avatar className="border border-muted-foreground">
+      <Avatar
+        className={cn(
+          "border border-muted-foreground",
+          profileImageUrl ?? "bg-foreground",
+        )}
+      >
         <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
         <AvatarFallback>미야옹</AvatarFallback>
       </Avatar>
