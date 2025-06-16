@@ -1,33 +1,8 @@
 import { ApiAnimalType } from "@/types/animal";
 import { ApiEmotion } from "@/types/Emotion";
 
-export interface IError {
-  statusCode: number;
-  data: unknown | null;
-}
-
-export interface ILoginCode {
-  code: string;
-}
-
-export interface IKakaoAuthResponse {
-  kakaoId: number;
-  isMember: boolean;
-}
-
-export interface ILoginResponse {
-  accessToken: string;
-}
-
-export interface IUserRequest {
-  kakaoId: number;
-  nickname: string;
-  animalType: string;
-  profileImage: File | null;
-}
-
 export interface ICreatePost {
-  images: File[];
+  imageUrls: string[];
   content: string;
   emotion: ApiEmotion;
 }
@@ -43,9 +18,11 @@ export interface IPostDetailData {
   imageUrls: string[];
   commentCount: number;
   likeCount: number;
-  liked: boolean;
   createdAt: string;
   updatedAt: string;
+  liked: boolean;
+  myPost: boolean;
+  following: boolean;
 }
 
 export interface IPostSummaryData {
@@ -59,9 +36,11 @@ export interface IPostSummaryData {
   thumbnailUrl: string | null;
   commentCount: number;
   likeCount: number;
-  liked: boolean;
   createdAt: string;
   updatedAt: string;
+  liked: boolean;
+  myPost: boolean;
+  following: boolean;
 }
 
 export interface IPostSummaryDataPagination {
@@ -73,24 +52,15 @@ export interface IPostSummaryDataPagination {
   content: IPostSummaryData[];
 }
 
-export interface ICommentData {
+export interface IPostEditInfoResponse {
   id: number;
-  userId: number;
-  nickname: string;
+  username: string;
   profileImageUrl: string;
-  transformedContent: string;
-  postType: ApiAnimalType;
-  createdAt: string;
+  content: string;
+  emotion: ApiEmotion;
+  imageUrls: string[];
 }
 
-export interface ICommentDataPagination {
-  content: ICommentData[];
-  currentPage: number;
-  totalPages: number;
-  totalElements: number;
-  pageSize: number;
-  last: boolean;
-}
-export interface ICreateComment {
-  content: string;
+export interface IPostEditResponse {
+  postId: number;
 }

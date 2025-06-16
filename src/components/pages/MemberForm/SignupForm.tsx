@@ -10,16 +10,21 @@ import useKakaoIdStore from "@/store/useKakaoIdStore";
 import useTokenStore from "@/store/useTokenStore";
 import { signupQueries } from "@/api/queries/signupQueries";
 import { loginQueries } from "@/api/queries/loginQueries";
+import { imageQueries } from "@/api/queries/ImageQueries";
 
 export default function SignupForm() {
   const navigate = useNavigate();
   const { kakaoId, setKakaoId } = useKakaoIdStore();
   const { token, setToken } = useTokenStore();
+
   const { mutate: login, isPending: isLoginPending } = useMutation({
     ...loginQueries.login({ setToken, navigate }),
   });
   const { mutate: signup, isPending: isSignupPending } = useMutation({
     ...signupQueries.signup({ setKakaoId, login }),
+  });
+  const { mutateAsync: uploadImageToS3 } = useMutation({
+    ...imageQueries.uploadImageToS3(),
   });
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -29,15 +34,19 @@ export default function SignupForm() {
   );
   const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (!kakaoId) {
       alert("카카오 로그인을 확인해주세옹");
     } else {
+      const imageUrl = selectedImage
+        ? await uploadImageToS3(selectedImage as File)
+        : undefined;
+
       signup({
         nickname: nicknameValue,
         animalType: selectedAnimal,
-        profileImage: selectedImage,
-        kakaoId,
+        profileImage: imageUrl,
+        kakaoId: kakaoId ?? 0,
       });
     }
   };
@@ -66,7 +75,7 @@ export default function SignupForm() {
         isRequired={true}
         nicknameValue={nicknameValue}
         setNicknameValue={setNicknameValue}
-        onDuplicateCheck={setIsNicknameDuplicate}
+        setIsNicknameDuplicate={setIsNicknameDuplicate}
       />
       <SelectAnimalType
         titleText="어떤 동물이냐옹"
@@ -87,7 +96,6 @@ export default function SignupForm() {
             : "다 적으면 누르라냥!"}
         </Button>
       </div>
-      <Button variant="link">탈퇴할거냥</Button>
     </div>
   );
 }

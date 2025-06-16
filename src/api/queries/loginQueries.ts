@@ -1,5 +1,9 @@
 import { queryOptions } from "@tanstack/react-query";
-import { IKakaoAuthResponse, ILoginCode, ILoginResponse } from "@/api/types";
+import {
+  IKakaoAuthResponse,
+  ILoginCode,
+  ILoginResponse,
+} from "@/api/types/login";
 import { getKakaoId, getKakaoUrl, postLogin } from "@/api/login";
 import { NavigateFunction } from "react-router-dom";
 
@@ -25,10 +29,8 @@ export const loginQueries = {
     mutationFn: ({ code }: ILoginCode) => getKakaoId(code),
     onSuccess: (data: IKakaoAuthResponse) => {
       setKakaoId(data.kakaoId);
-
       if (data.isMember) {
         login(data.kakaoId);
-        navigate("/");
       } else {
         navigate("/signup");
       }
@@ -46,7 +48,7 @@ export const loginQueries = {
     mutationFn: (kakaoId: number) => postLogin(kakaoId),
     onSuccess: (data: ILoginResponse) => {
       setToken(data.accessToken);
-      navigate("/");
+      navigate(-2);
     },
     onError: (error: Error) => {
       console.error("Login failed:", error);

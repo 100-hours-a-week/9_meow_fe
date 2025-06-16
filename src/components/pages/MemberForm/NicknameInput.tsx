@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { signupQueries } from "@/api/queries/signupQueries";
 import { validateNickname } from "./validation/validateNickname";
@@ -10,25 +10,25 @@ export interface INicknameInput {
   isRequired?: boolean;
   nicknameValue: string;
   setNicknameValue: (value: string) => void;
-  onDuplicateCheck?: (isDuplicate: boolean) => void;
+  setIsNicknameDuplicate?: (isDuplicate: boolean) => void;
 }
 
 export default function NicknameInput({
   isRequired = false,
   nicknameValue,
   setNicknameValue,
-  onDuplicateCheck,
+  setIsNicknameDuplicate,
 }: INicknameInput) {
-  const [error, setError] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const {
-    mutate: checkNickname,
-    data: isDuplicate,
-    isPending,
-    isError,
-    isSuccess,
-  } = useMutation({ ...signupQueries.checkNickname() });
+  const { mutate: checkNickname, isPending } = useMutation({
+    ...signupQueries.checkNickname({
+      setIsNicknameDuplicate,
+      setErrorMessage,
+      setSuccessMessage,
+    }),
+  });
 
   const handleCheckNickname = () => {
     if (nicknameValue.trim()) {
@@ -40,37 +40,15 @@ export default function NicknameInput({
     const value = e.target.value;
     setNicknameValue(value);
     setSuccessMessage(null);
-    onDuplicateCheck?.(true); // Reset duplicate check status when nickname changes
+    setIsNicknameDuplicate?.(true);
 
     const { isValid, message } = validateNickname(value);
     if (!isValid) {
-      setError(message);
+      setErrorMessage(message);
     } else {
-      setError(null);
+      setErrorMessage(null);
     }
   };
-
-  useEffect(() => {
-    if (isError) {
-      setError("문제 생겼다옹... 잠시 후 다시 시도해라옹");
-      setSuccessMessage(null);
-      onDuplicateCheck?.(true);
-    } else {
-      setError(null);
-    }
-
-    if (isSuccess) {
-      if (isDuplicate) {
-        setError("중복된 닉네임이 있다옹");
-        setSuccessMessage(null);
-        onDuplicateCheck?.(true);
-      } else {
-        setError(null);
-        setSuccessMessage("사용 가능한 닉네임이다옹!");
-        onDuplicateCheck?.(false);
-      }
-    }
-  }, [isError, isDuplicate, onDuplicateCheck, isSuccess]);
 
   return (
     <div className="flex flex-col gap-1 w-full max-w-[400px]">
@@ -81,7 +59,7 @@ export default function NicknameInput({
         <input
           className={cn(
             "flex-1 h-full rounded-xl border-2 border-foreground/30 px-4 text-foreground text-lg placeholder:text-foreground/50 placeholder:opacity-70 focus:outline-none focus:ring-primary focus:border-primary",
-            error &&
+            errorMessage &&
               "border-destructive ring-destructive focus:border-destructive focus:ring-destructive",
           )}
           placeholder="닉네임을 입력하세야옹..."
@@ -99,8 +77,10 @@ export default function NicknameInput({
         </Button>
       </div>
       <div className="w-full h-6">
-        {error && (
-          <span className="text-sm text-destructive font-bold">{error}</span>
+        {errorMessage && (
+          <span className="text-sm text-destructive font-bold">
+            {errorMessage}
+          </span>
         )}
         {successMessage && (
           <span className="text-sm text-green-500 font-bold">

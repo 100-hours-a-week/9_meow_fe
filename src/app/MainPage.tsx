@@ -1,7 +1,6 @@
 import { PostCard } from "@/components/common";
 import { IPostContent } from "@/components/common/PostCard/PostContent";
 import { IUserItem } from "@/components/common/UserItem";
-import { IPostSummaryData } from "@/api/types";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
 import { useRef } from "react";
 import { useObserver } from "@/hooks/common/useObserver";
@@ -42,7 +41,7 @@ export default function MainPage() {
   return (
     <div className="pt-2 pb-16 flex flex-col gap-2.5 px-2">
       {data.pages.map((page) =>
-        page.content.map((post: IPostSummaryData) => {
+        page.content.map((post) => {
           const userInfo: IUserItem = {
             userId: post.userId,
             nickname: post.nickname,
@@ -50,7 +49,6 @@ export default function MainPage() {
             profileImageUrl: post.profileImageUrl ?? undefined,
           };
           const postContent: IPostContent = {
-            postId: post.id,
             thumbnailUrl: post.thumbnailUrl,
             content: post.transformedContent,
           };
@@ -63,8 +61,13 @@ export default function MainPage() {
             emotion: post.emotion,
           };
           return (
-            <PostCard key={`post-${post.id}`}>
-              <PostCard.Header userInfo={userInfo} />
+            <PostCard key={`post-${post.id}`} postId={post.id}>
+              <PostCard.Header
+                userInfo={userInfo}
+                isMyPost={post.myPost}
+                postId={post.id}
+                isFollowing={post.following}
+              />
               <PostCard.Content {...postContent} />
               <PostCard.Footer {...postInfo} />
             </PostCard>

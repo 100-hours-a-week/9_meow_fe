@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface IUseImagePreview {
-  initialImage: File | null;
+  initialImage: File | string | null;
 }
 
 export const useImagePreview = ({ initialImage }: IUseImagePreview) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const createPreview = (file: File | null) => {
+  const createPreview = (file: File | string | null) => {
     if (!file) {
       setPreviewUrl(null);
+      return;
+    }
+
+    if (typeof file === "string") {
+      setPreviewUrl(file);
       return;
     }
 
@@ -20,9 +25,11 @@ export const useImagePreview = ({ initialImage }: IUseImagePreview) => {
     reader.readAsDataURL(file);
   };
 
-  if (initialImage) {
-    createPreview(initialImage);
-  }
+  useEffect(() => {
+    if (initialImage) {
+      createPreview(initialImage);
+    }
+  }, [initialImage]);
 
   return {
     previewUrl,

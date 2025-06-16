@@ -5,6 +5,7 @@ import { Label } from "@radix-ui/react-label";
 interface IProfileImageSelection {
   titleText?: string;
   isRequired?: boolean;
+  initialImage?: string;
   selectedImage: File | null;
   setSelectedImage: (image: File) => void;
 }
@@ -12,11 +13,12 @@ interface IProfileImageSelection {
 export default function ProfileImageSelection({
   titleText,
   isRequired = false,
+  initialImage,
   selectedImage,
   setSelectedImage,
 }: IProfileImageSelection) {
   const { previewUrl, createPreview } = useImagePreview({
-    initialImage: selectedImage,
+    initialImage: initialImage ?? selectedImage,
   });
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {

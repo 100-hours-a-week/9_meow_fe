@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
 import SelectEmotion from "./SelectEmotion";
@@ -11,14 +11,18 @@ import { useMutation } from "@tanstack/react-query";
 
 export default function CreatePostForm() {
   const navigate = useNavigate();
-  const {
-    mutate: createPost,
-    isPending,
-    isSuccess,
-    isError,
-  } = useMutation({ ...postQueries.create() });
+  const { mutate: createPost, isPending } = useMutation({
+    ...postQueries.create({ navigate }),
+  });
 
-  const { selectedImages, addImages, removeImage, error } = useImageUpload();
+  const {
+    selectedImages,
+    addImage,
+    removeImage,
+    isUploading,
+    uploadImagesToS3,
+  } = useImageUpload();
+
   const [content, setContent] = useState("");
   const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
     ApiEmotion.NORMAL,
@@ -33,28 +37,24 @@ export default function CreatePostForm() {
       navigate("/");
     }
   };
-  const handlePostSubmit = () => {
-    createPost({
-      images: selectedImages.map((img) => img.file),
-      content,
-      emotion: selectedEmotion,
-    });
-  };
 
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/");
+  const handlePostSubmit = async () => {
+    try {
+      const imageUrls = await uploadImagesToS3();
+      createPost({ imageUrls, content, emotion: selectedEmotion });
+    } catch (error) {
+      console.error("포스트 생성 중 오류 발생:", error);
+      alert("포스트 생성에 실패했습니다. 다시 시도해주세요.");
     }
-  }, [isSuccess, isError, navigate]);
+  };
 
   return (
     <div className="flex flex-col gap-4 items-center p-5 pb-16">
       <h1 className="text-3xl font-bold">오늘은 무슨 일이 있었냥</h1>
       <ImageInput
         selectedImages={selectedImages}
-        addImages={addImages}
+        addImage={addImage}
         removeImage={removeImage}
-        error={error}
       />
       <PostContentInput
         content={content}
@@ -71,10 +71,12 @@ export default function CreatePostForm() {
         </Button>
         <Button
           variant="secondarySolid"
-          disabled={isPending || isSubmitDisabled}
+          disabled={isPending || isSubmitDisabled || isUploading}
           onClick={handlePostSubmit}
         >
-          {isPending ? "잠시만 기다려주세옹" : "다 적으면 누르라냥!"}
+          {isPending || isUploading
+            ? "잠시만 기다려주세옹"
+            : "다 적으면 누르라냥!"}
         </Button>
       </div>
     </div>

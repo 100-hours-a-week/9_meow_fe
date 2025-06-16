@@ -7,11 +7,11 @@ import { loginQueries } from "@/api/queries/loginQueries";
 
 export default function RedirectPage() {
   const navigate = useNavigate();
-  const { setKakaoId } = useKakaoIdStore();
-  const { token, setToken } = useTokenStore();
-
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
+
+  const { setKakaoId } = useKakaoIdStore();
+  const { token, setToken } = useTokenStore();
 
   const { mutate: login } = useMutation({
     ...loginQueries.login({ setToken, navigate }),

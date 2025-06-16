@@ -19,7 +19,7 @@ export default function SelectEmotion({
     <div className="flex flex-col gap-2 w-full">
       <p className="text-sm">오늘 기분은 어떠냥</p>
       <RadioGroup
-        defaultValue={selectedEmotion}
+        value={selectedEmotion}
         className="flex flex-row gap-2 flex-wrap"
       >
         {Object.entries(ApiEmotion).map(([key, value], index) => (

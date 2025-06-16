@@ -160,9 +160,10 @@ jobs:
       - name: Build & Push Docker Image
         uses: docker/build-push-action@v4
         with:
-          context: .
-          build-args: 
+          context: 
+          build-args: | 
             VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_CLOUDFRONT_URL=${{ secrets.VITE_CLOUDFRONT_URL }}
           push: true
           tags: |
             ${{ env.IMAGE_URI }}:${{ github.sha }}

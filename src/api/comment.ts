@@ -1,5 +1,5 @@
 import authInstance from "./instance/authInstance";
-import { ICreateComment } from "./types";
+import { ICommentData, ICommentDataPagination } from "./types/comment";
 
 export const getCommentList = async ({
   page,
@@ -10,24 +10,30 @@ export const getCommentList = async ({
   size: number;
   postId: number;
 }) => {
-  const response = await authInstance.get(`/posts/${postId}/comments`, {
-    params: {
-      page,
-      size,
+  const response = await authInstance.get<ICommentDataPagination>(
+    `/posts/${postId}/comments`,
+    {
+      params: {
+        page,
+        size,
+      },
     },
-  });
+  );
   return response.data;
 };
 
 export const postComment = async ({
-  comment,
+  content,
   postId,
 }: {
-  comment: ICreateComment;
+  content: string;
   postId: number;
 }) => {
-  const response = await authInstance.post(`/posts/${postId}/comments`, {
-    content: comment.content,
-  });
+  const response = await authInstance.post<ICommentData>(
+    `/posts/${postId}/comments`,
+    {
+      content,
+    },
+  );
   return response.data;
 };

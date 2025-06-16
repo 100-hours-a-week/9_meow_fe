@@ -1,53 +1,32 @@
-import { validateFileLength } from "@/components/pages/PostForm/validation/validateFileLength";
-import { validateFileSize } from "@/components/pages/PostForm/validation/validateFileSize";
-import { ValidationReturnType } from "@/types/ValidationReturnType";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { imageQueries } from "@/api/queries/ImageQueries";
 
-export interface PreviewImage {
+export interface IPreviewImage {
   file: File;
   preview: string;
 }
 
 export const useImageUpload = () => {
-  const [selectedImages, setSelectedImages] = useState<PreviewImage[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [selectedImages, setSelectedImages] = useState<IPreviewImage[]>([]);
 
-  const addImages = async (files: File[]) => {
-    const totalImages = selectedImages.length + files.length;
+  const { mutateAsync: uploadImageToS3, isPending: isUploading } = useMutation({
+    ...imageQueries.uploadImageToS3(),
+  });
 
-    const lengthError: ValidationReturnType = validateFileLength(totalImages);
-    if (!lengthError.isValid) {
-      setError(lengthError.message);
-      return;
-    }
+  const addImage = async (file: File) => {
+    const newImage = await new Promise<IPreviewImage>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const result = e.target?.result;
+        if (result && typeof result === "string") {
+          resolve({ file, preview: result });
+        }
+      };
+      reader.readAsDataURL(file);
+    });
 
-    for (const file of files) {
-      const sizeError: ValidationReturnType = validateFileSize(file);
-      if (!sizeError.isValid) {
-        setError(sizeError.message);
-        return;
-      }
-    }
-
-    setError(null);
-
-    const newImages = await Promise.all(
-      files.map(
-        (file) =>
-          new Promise<PreviewImage>((resolve) => {
-            const reader = new FileReader();
-            reader.onload = (e: ProgressEvent<FileReader>) => {
-              const result = e.target?.result;
-              if (result && typeof result === "string") {
-                resolve({ file, preview: result });
-              }
-            };
-            reader.readAsDataURL(file);
-          })
-      )
-    );
-
-    setSelectedImages((prev) => [...prev, ...newImages]);
+    setSelectedImages((prev) => [...prev, newImage]);
   };
 
   const removeImage = (index: number) => {
@@ -56,14 +35,32 @@ export const useImageUpload = () => {
       newImages.splice(index, 1);
       return newImages;
     });
-    setError(null);
+  };
+
+  const uploadImagesToS3 = async (): Promise<string[]> => {
+    if (selectedImages.length === 0) return [];
+
+    try {
+      const imageUrls = await Promise.all(
+        selectedImages.map(async (image) => {
+          const imageUrl = await uploadImageToS3(image.file);
+          return imageUrl;
+        }),
+      );
+
+      return imageUrls;
+    } catch (error) {
+      console.error("이미지 업로드 중 오류 발생:", error);
+      throw new Error("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return {
     selectedImages,
-    error,
-    addImages,
+    setSelectedImages,
+    addImage,
     removeImage,
-    setError,
+    isUploading,
+    uploadImagesToS3,
   };
 };
