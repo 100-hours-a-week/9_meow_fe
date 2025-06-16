@@ -51,16 +51,21 @@ export default function EditProfileForm() {
     (!isNicknameChanged && !isAnimalChanged && !isImageChanged);
 
   const handleSubmit = async () => {
-    const imageUrl =
-      selectedImage instanceof File
-        ? await uploadImageToS3(selectedImage)
-        : (selectedImage as string);
+    try {
+      const imageUrl =
+        selectedImage instanceof File
+          ? await uploadImageToS3(selectedImage)
+          : (selectedImage as string);
 
-    editProfile({
-      nickname: nicknameValue,
-      profileImageUrl: selectedImage instanceof File ? imageUrl : undefined,
-      postType: selectedAnimal,
-    });
+      editProfile({
+        nickname: nicknameValue,
+        profileImageUrl: selectedImage instanceof File ? imageUrl : undefined,
+        postType: selectedAnimal,
+      });
+    } catch (error) {
+      alert("프로필 수정에 실패했다옹");
+      console.error(error);
+    }
   };
 
   const handleDeleteProfile = () => {
