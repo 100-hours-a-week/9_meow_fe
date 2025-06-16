@@ -55,6 +55,7 @@ function DetailPostPage() {
               }}
               isMyPost={data.myPost}
               postId={Number(postId)}
+              isFollowing={data.following}
             />
             {data.imageUrls.length > 0 && (
               <ImageCarousel images={data.imageUrls} />

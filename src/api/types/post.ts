@@ -22,6 +22,7 @@ export interface IPostDetailData {
   updatedAt: string;
   liked: boolean;
   myPost: boolean;
+  following: boolean;
 }
 
 export interface IPostSummaryData {
@@ -39,6 +40,7 @@ export interface IPostSummaryData {
   updatedAt: string;
   liked: boolean;
   myPost: boolean;
+  following: boolean;
 }
 
 export interface IPostSummaryDataPagination {
