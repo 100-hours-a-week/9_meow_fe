@@ -4,6 +4,7 @@ import { ApiEmotion } from "@/types/Emotion";
 import { convertEmotionTypeToDisplay } from "@/utils/convertEmotion";
 import { convertTimestamp } from "@/utils/convertTimestamp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 export interface IPostFooter {
   postId: number;
@@ -23,6 +24,7 @@ export default function PostFooter({
   emotion,
 }: IPostFooter) {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { mutate: likePost, isPending } = useMutation({
     ...postQueries.like({
@@ -34,6 +36,7 @@ export default function PostFooter({
           queryKey: [...postQueries.all(), "list"],
         });
       },
+      navigate,
     }),
   });
 
