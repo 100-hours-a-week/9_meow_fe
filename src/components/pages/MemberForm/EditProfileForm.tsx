@@ -43,12 +43,12 @@ export default function EditProfileForm() {
     }
   }, [editProfileInfo]);
 
+  const isNicknameChanged = nicknameValue !== editProfileInfo?.nickname;
+  const isAnimalChanged = selectedAnimal !== editProfileInfo?.postType;
+  const isImageChanged = selectedImage !== editProfileInfo?.profileImageUrl;
   const isSubmitDisabled =
-    (nicknameValue !== editProfileInfo?.nickname && isNicknameDuplicate) ||
-    !nicknameValue.trim() ||
-    (nicknameValue === editProfileInfo?.nickname &&
-      selectedAnimal === editProfileInfo?.postType &&
-      selectedImage === editProfileInfo?.profileImageUrl);
+    (isNicknameChanged && isNicknameDuplicate) ||
+    (!isNicknameChanged && !isAnimalChanged && !isImageChanged);
 
   const handleSubmit = async () => {
     const imageUrl =
