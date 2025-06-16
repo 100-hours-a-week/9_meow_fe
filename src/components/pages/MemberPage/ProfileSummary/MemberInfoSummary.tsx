@@ -15,7 +15,7 @@ export default function MemberInfoSummary({
 }: IMemberInfoSummary) {
   return (
     <div className="flex flex-col items-center gap-2 mt-10">
-      <Avatar className="size-20">
+      <Avatar className="size-20 border border-muted-foreground">
         <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
         <AvatarFallback>미야옹</AvatarFallback>
       </Avatar>
