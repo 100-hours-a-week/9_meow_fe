@@ -11,7 +11,7 @@ export const imageQueries = {
     AxiosError<IError>,
     File
   > => ({
-    mutationKey: [...imageQueries.all(), "getPreSignedUrl"],
+    mutationKey: [...imageQueries.all(), "uploadImageToS3"],
     mutationFn: async (file: File) => {
       const url = await uploadImageToS3({ file });
       return url;
