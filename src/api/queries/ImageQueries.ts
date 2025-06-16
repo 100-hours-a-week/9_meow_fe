@@ -11,8 +11,11 @@ export const imageQueries = {
     AxiosError<IError>,
     File
   > => ({
-    mutationKey: [...imageQueries.all(), "getPreSignedUrl"],
-    mutationFn: (file: File) => uploadImageToS3({ file }),
+    mutationKey: [...imageQueries.all(), "uploadImageToS3"],
+    mutationFn: async (file: File) => {
+      const url = await uploadImageToS3({ file });
+      return url;
+    },
     onError: (error: AxiosError<IError>) => {
       if (error.response?.status !== 401) {
         alert("이미지 업로드에 실패했다옹. 잠시 후 다시 시도해보냥");

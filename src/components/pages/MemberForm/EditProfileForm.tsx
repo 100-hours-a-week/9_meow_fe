@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SelectAnimalType from "./SelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
 import { Button } from "@/components/ui/button";
+import { userQueries } from "@/api/queries/userQueries";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { imageQueries } from "@/api/queries/ImageQueries";
 
 export default function EditProfileForm() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const [initialImage, setInitialImage] = useState<string>("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [nicknameValue, setNicknameValue] = useState<string>("");
   const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
@@ -13,9 +21,56 @@ export default function EditProfileForm() {
   );
   const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
 
-  const isSubmitDisabled = isNicknameDuplicate || !nicknameValue.trim();
-  const handleSubmit = () => {
-    console.log("submit");
+  const { data: editProfileInfo } = useQuery({
+    ...userQueries.editProfileInfo(),
+  });
+  const { mutateAsync: uploadImageToS3 } = useMutation({
+    ...imageQueries.uploadImageToS3(),
+  });
+  const { mutate: editProfile } = useMutation({
+    ...userQueries.editProfile({ navigate, queryClient }),
+  });
+  const { mutate: deleteProfile } = useMutation({
+    ...userQueries.deleteProfile({ navigate }),
+  });
+
+  useEffect(() => {
+    if (editProfileInfo) {
+      setNicknameValue(editProfileInfo.nickname);
+      setSelectedAnimal(editProfileInfo.postType);
+      setInitialImage(editProfileInfo.profileImageUrl);
+    }
+  }, [editProfileInfo]);
+
+  const isNicknameChanged = nicknameValue !== editProfileInfo?.nickname;
+  const isAnimalChanged = selectedAnimal !== editProfileInfo?.postType;
+  const isImageChanged = selectedImage !== null;
+  const isSubmitDisabled =
+    (isNicknameChanged && isNicknameDuplicate) ||
+    (!isNicknameChanged && !isAnimalChanged && !isImageChanged);
+
+  const handleSubmit = async () => {
+    try {
+      const imageUrl =
+        selectedImage instanceof File
+          ? await uploadImageToS3(selectedImage)
+          : (initialImage ?? undefined);
+
+      editProfile({
+        nickname: nicknameValue,
+        profileImageUrl: imageUrl,
+        postType: selectedAnimal,
+      });
+    } catch (error) {
+      alert("프로필 수정에 실패했다옹");
+      console.error(error);
+    }
+  };
+
+  const handleDeleteProfile = () => {
+    if (window.confirm("정말 탈퇴할거냥?")) {
+      deleteProfile();
+    }
   };
 
   return (
@@ -23,6 +78,7 @@ export default function EditProfileForm() {
       <h2 className="text-4xl">프로필 수정할거냥</h2>
       <ProfileImageSelection
         titleText="친구는 어떻게 생겼냐옹"
+        initialImage={initialImage ?? undefined}
         selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
       />
@@ -49,7 +105,9 @@ export default function EditProfileForm() {
           다 적으면 누르라냥
         </Button>
       </div>
-      <Button variant="link">탈퇴할거냥</Button>
+      <Button variant="link" onClick={handleDeleteProfile}>
+        탈퇴할거냥
+      </Button>
     </div>
   );
 }

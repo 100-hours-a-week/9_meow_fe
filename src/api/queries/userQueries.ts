@@ -6,6 +6,9 @@ import {
 } from "@tanstack/react-query";
 import {
   deleteFollow,
+  deleteProfile,
+  editProfile,
+  getEditProfileInfo,
   getFollowerList,
   getFollowingList,
   getProfileInfo,
@@ -14,6 +17,8 @@ import {
   postFollow,
 } from "../user";
 import {
+  IEditProfileInfoResponse,
+  IEditProfileRequest,
   IFollowerDataPagination,
   IProfileInfoResponse,
   IUserIdResponse,
@@ -21,6 +26,7 @@ import {
 } from "../types/user";
 import { IError } from "../types/common";
 import { AxiosError } from "axios";
+import { NavigateFunction } from "react-router-dom";
 
 export const userQueries = {
   all: () => ["user"] as const,
@@ -42,6 +48,46 @@ export const userQueries = {
   }): UseQueryOptions<IProfileInfoResponse, Error> => ({
     queryKey: [...userQueries.all(), "profileInfo", userId],
     queryFn: () => getProfileInfo({ userId }),
+  }),
+
+  editProfileInfo: (): UseQueryOptions<IEditProfileInfoResponse, Error> => ({
+    queryKey: [...userQueries.all(), "editProfileInfo"],
+    queryFn: getEditProfileInfo,
+  }),
+
+  editProfile: ({
+    navigate,
+    queryClient,
+  }: {
+    navigate: NavigateFunction;
+    queryClient: QueryClient;
+  }): UseMutationOptions<
+    IEditProfileInfoResponse,
+    AxiosError<IError>,
+    IEditProfileRequest
+  > => ({
+    mutationKey: [...userQueries.all(), "editProfile"],
+    mutationFn: (data) => editProfile(data),
+    onSuccess: () => {
+      alert("프로필 수정에 성공했다옹...");
+      queryClient.invalidateQueries({
+        queryKey: [...userQueries.all(), "userProfileImage"],
+      });
+      navigate("/mypage/redirect");
+    },
+  }),
+
+  deleteProfile: ({
+    navigate,
+  }: {
+    navigate: NavigateFunction;
+  }): UseMutationOptions<void, AxiosError<IError>, void> => ({
+    mutationKey: [...userQueries.all(), "deleteProfile"],
+    mutationFn: () => deleteProfile(),
+    onSuccess: () => {
+      alert("프로필 삭제에 성공했다옹...");
+      navigate("/login");
+    },
   }),
 
   follow: ({
