@@ -13,9 +13,8 @@ export default function EditProfileForm() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const [selectedImage, setSelectedImage] = useState<File | string | null>(
-    null,
-  );
+  const [initialImage, setInitialImage] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [nicknameValue, setNicknameValue] = useState<string>("");
   const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
     ApiAnimalType.CAT,
@@ -39,13 +38,13 @@ export default function EditProfileForm() {
     if (editProfileInfo) {
       setNicknameValue(editProfileInfo.nickname);
       setSelectedAnimal(editProfileInfo.postType);
-      setSelectedImage(editProfileInfo.profileImageUrl);
+      setInitialImage(editProfileInfo.profileImageUrl);
     }
   }, [editProfileInfo]);
 
   const isNicknameChanged = nicknameValue !== editProfileInfo?.nickname;
   const isAnimalChanged = selectedAnimal !== editProfileInfo?.postType;
-  const isImageChanged = selectedImage !== editProfileInfo?.profileImageUrl;
+  const isImageChanged = selectedImage !== null;
   const isSubmitDisabled =
     (isNicknameChanged && isNicknameDuplicate) ||
     (!isNicknameChanged && !isAnimalChanged && !isImageChanged);
@@ -55,11 +54,11 @@ export default function EditProfileForm() {
       const imageUrl =
         selectedImage instanceof File
           ? await uploadImageToS3(selectedImage)
-          : (selectedImage as string);
+          : (initialImage ?? undefined);
 
       editProfile({
         nickname: nicknameValue,
-        profileImageUrl: selectedImage instanceof File ? imageUrl : undefined,
+        profileImageUrl: imageUrl,
         postType: selectedAnimal,
       });
     } catch (error) {
@@ -79,6 +78,7 @@ export default function EditProfileForm() {
       <h2 className="text-4xl">프로필 수정할거냥</h2>
       <ProfileImageSelection
         titleText="친구는 어떻게 생겼냐옹"
+        initialImage={initialImage ?? undefined}
         selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
       />
