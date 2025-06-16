@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MAX_LENGTH = 50;
 
@@ -15,8 +16,10 @@ export default function CommentInput({ postId }: ICommentInput) {
   const [value, setValue] = useState("");
 
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const { mutate: createComment, isPending } = useMutation({
-    ...commentQueries.create(postId),
+    ...commentQueries.create({ postId, navigate }),
     onSuccess: () => {
       setValue("");
       queryClient.invalidateQueries({

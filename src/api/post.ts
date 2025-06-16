@@ -37,7 +37,9 @@ export const postPost = async (post: ICreatePost) => {
 };
 
 export const getPostDetail = async (postId: number) => {
-  const response = await authInstance.get<IPostDetailData>(`/posts/${postId}`);
+  const response = await defaultInstance.get<IPostDetailData>(
+    `/posts/${postId}`,
+  );
   return response.data;
 };
 

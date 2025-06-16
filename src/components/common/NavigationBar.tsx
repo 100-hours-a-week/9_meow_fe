@@ -15,10 +15,10 @@ function renderIconButton(route: string, icon: React.ReactNode) {
 }
 
 export default function NavigationBar() {
+  const { token } = useTokenStore();
   const { data: profileImage } = useQuery({
     ...userQueries.userProfileImage(),
   });
-  const { token } = useTokenStore();
 
   return (
     <div className="flex justify-between items-center border-t border-border/30 px-5 py-1 fixed bottom-0 w-full bg-background max-w-[430px] mx-auto">
@@ -31,10 +31,12 @@ export default function NavigationBar() {
         <Avatar
           className={cn(
             "border border-muted-foreground",
-            profileImage?.profileImageUrl ?? "bg-foreground",
+            !token && "bg-foreground",
           )}
         >
-          <AvatarImage src={profileImage?.profileImageUrl ?? "/logo.svg"} />
+          <AvatarImage
+            src={token ? profileImage?.profileImageUrl : "/logo.svg"}
+          />
           <AvatarFallback>미야옹</AvatarFallback>
         </Avatar>,
       )}

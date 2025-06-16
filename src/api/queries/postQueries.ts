@@ -63,7 +63,13 @@ export const postQueries = {
     },
   }),
 
-  like: ({ onLikeSuccess }: { onLikeSuccess?: () => void }) => ({
+  like: ({
+    onLikeSuccess,
+    navigate,
+  }: {
+    onLikeSuccess?: () => void;
+    navigate: NavigateFunction;
+  }) => ({
     mutationKey: [...postQueries.all(), "like"],
     mutationFn: ({ postId, isLiked }: { postId: number; isLiked: boolean }) =>
       postLikePost({ postId, isLiked }),
@@ -72,7 +78,13 @@ export const postQueries = {
       onLikeSuccess?.();
     },
     onError: (error: AxiosError<IError>) => {
-      if (error.response?.status !== 401) {
+      if (error.message === "No token available") {
+        if (
+          window.confirm("로그인 해야 좋아요 누를 수 있다옹. 로그인 하겠냥?")
+        ) {
+          navigate("/login");
+        }
+      } else if (error.response?.status !== 401) {
         alert("좋아요에 실패했다옹...");
       }
     },

@@ -48,7 +48,7 @@ export const loginQueries = {
     mutationFn: (kakaoId: number) => postLogin(kakaoId),
     onSuccess: (data: ILoginResponse) => {
       setToken(data.accessToken);
-      navigate("/");
+      navigate(-2);
     },
     onError: (error: Error) => {
       console.error("Login failed:", error);
