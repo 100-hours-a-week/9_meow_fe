@@ -92,6 +92,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+            fetch-depth: 0  # Ensure full history is available for deployments
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -141,6 +143,16 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ env.ENV }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-${{ env.ENV }}-
+      - name: Fetch all Git Tags
+        run: git fetch --tags --quiet
+
+      - name: Determine version tag
+        id: get_version
+        shell: bash
+        run: |
+          # If head commit is tagged, use that tag or use the latest tag
+          VERSION=&(git describe --tags --exact-match 2>/dev/null || echo "latest")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Build & Push Docker Image
         uses: docker/build-push-action@v4
@@ -151,7 +163,7 @@ jobs:
             VITE_CLOUDFRONT_URL=${{ secrets.VITE_CLOUDFRONT_URL }}
           push: true
           tags: |
-            ${{ env.IMAGE_URI }}:${{ github.sha }}
+            ${{ env.IMAGE_URI }}:${{ env.VERSION }}
             ${{ env.IMAGE_URI }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
