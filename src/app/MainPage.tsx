@@ -66,7 +66,6 @@ export default function MainPage() {
                 userInfo={userInfo}
                 isMyPost={post.myPost}
                 postId={post.id}
-                isFollowing={post.following}
               />
               <PostCard.Content {...postContent} />
               <PostCard.Footer {...postInfo} />
