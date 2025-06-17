@@ -1,3 +1,4 @@
+import React from "react";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ApiEmotion, DisplayEmotion } from "@/types/Emotion";
@@ -7,10 +8,7 @@ interface ISelectEmotion {
   setEmotion: (emotion: ApiEmotion) => void;
 }
 
-export default function SelectEmotion({
-  selectedEmotion,
-  setEmotion,
-}: ISelectEmotion) {
+function SelectEmotion({ selectedEmotion, setEmotion }: ISelectEmotion) {
   const handleEmotionChange = (value: ApiEmotion) => {
     setEmotion(value);
   };
@@ -38,3 +36,5 @@ export default function SelectEmotion({
     </div>
   );
 }
+
+export default React.memo(SelectEmotion);
