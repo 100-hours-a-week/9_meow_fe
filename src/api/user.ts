@@ -22,7 +22,7 @@ export const getUserId = async () => {
 };
 
 export const getProfileInfo = async ({ userId }: { userId: number }) => {
-  const response = await authInstance.get<IProfileInfoResponse>(
+  const response = await defaultInstance.get<IProfileInfoResponse>(
     `/users/profile/${userId}`,
   );
   return response.data;
