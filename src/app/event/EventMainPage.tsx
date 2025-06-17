@@ -1,4 +1,4 @@
-import { EventPostCard } from "@/components/pages";
+import { EventHistoryCard, EventPostCard } from "@/components/pages";
 import { ApiAnimalType } from "@/types/animal";
 
 export default function EventMainPage() {
@@ -14,6 +14,17 @@ export default function EventMainPage() {
           animalType: ApiAnimalType.CAT,
         }}
         likeCount={100}
+        rank="1st"
+      />
+      <EventHistoryCard
+        title="제 5회 미스코리냥"
+        subject="꿀잠 모먼트"
+        timestamp={new Date()}
+        imageUrls={[
+          "/icon/badge/first-badge.PNG",
+          "/icon/badge/second-badge.PNG",
+          "/icon/badge/third-badge.PNG",
+        ]}
       />
     </div>
   );
