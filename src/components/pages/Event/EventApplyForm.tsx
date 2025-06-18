@@ -39,10 +39,10 @@ export default function EventApplyForm() {
   };
 
   return (
-    <div className="flex flex-col gap-5 items-center">
+    <div className="w-full flex flex-col gap-5 items-center">
       <label
         className={cn(
-          "w-full h-80 flex items-center justify-center rounded-3xl cursor-pointer overflow-hidden",
+          "w-full aspect-square flex items-center justify-center rounded-3xl cursor-pointer overflow-hidden",
           previewUrl
             ? "bg-none border border-muted-foreground"
             : "bg-foreground border-none",
