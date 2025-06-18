@@ -29,14 +29,14 @@ export default function UserItem({
   return (
     <div
       className={cn(
-        "flex flex-row items-center gap-2",
+        "flex flex-row items-center gap-2 overflow-hidden",
         size === "sm" && "gap-1",
       )}
       onClick={handleClick}
     >
       <Avatar
         className={cn(
-          "border border-muted-foreground",
+          "border border-muted-foreground flex-shrink-0",
           profileImageUrl ?? "bg-foreground",
           size === "sm" && "size-5",
         )}
@@ -44,15 +44,18 @@ export default function UserItem({
         <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
         <AvatarFallback>미야옹</AvatarFallback>
       </Avatar>
-      <div className="flex flex-col text-sm">
+      <div className="flex flex-col text-sm min-w-0 flex-1">
         <p
-          className={cn("text-orange-950 text-sm", size === "sm" && "text-xs")}
+          className={cn(
+            "text-orange-950 text-sm text-ellipsis overflow-hidden whitespace-nowrap",
+            size === "sm" && "text-xs",
+          )}
         >
           {nickname}
         </p>
         <p
           className={cn(
-            "text-orange-950/30 text-xs",
+            "text-orange-950/30 text-xs text-ellipsis overflow-hidden whitespace-nowrap",
             size === "sm" && "text-[10px]",
           )}
         >
