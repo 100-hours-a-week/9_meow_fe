@@ -36,8 +36,8 @@ export default function UserItem({
         <AvatarFallback>미야옹</AvatarFallback>
       </Avatar>
       <div className="flex flex-col text-sm">
-        <p className="text-orange-950">{nickname}</p>
-        <p className="text-orange-950/30">
+        <p className="text-foreground">{nickname}</p>
+        <p className="text-muted-foreground">
           {convertAnimalTypeToDisplay(animalType)}
         </p>
       </div>

@@ -31,7 +31,7 @@ export default function ContextMenu({ postId }: { postId: number }) {
         <DotsVerticalIcon className="fill-foreground" />
       </Button>
       {isOpen && (
-        <div className="w-24 absolute top-9 right-0 bg-orange-100 rounded-lg shadow-lg p-2 gap-2 flex flex-col z-10">
+        <div className="w-24 absolute top-9 right-0 bg-background-secondary rounded-lg shadow-lg p-2 gap-2 flex flex-col z-10">
           <Button
             variant="primaryOutline"
             size="sm"
