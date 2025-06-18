@@ -10,6 +10,7 @@ export interface IUserItem {
   nickname: string;
   animalType: ApiAnimalType;
   size?: "default" | "sm";
+  dark?: boolean;
 }
 
 export default function UserItem({
@@ -18,6 +19,7 @@ export default function UserItem({
   nickname,
   animalType,
   size = "default",
+  dark = false,
 }: IUserItem) {
   const navigate = useNavigate();
 
@@ -37,7 +39,7 @@ export default function UserItem({
       <Avatar
         className={cn(
           "border border-muted-foreground flex-shrink-0",
-          profileImageUrl ?? "bg-foreground",
+          profileImageUrl ?? (dark ? "bg-background" : "bg-foreground"),
           size === "sm" && "size-5",
         )}
       >
@@ -49,6 +51,7 @@ export default function UserItem({
           className={cn(
             "text-orange-950 text-sm text-ellipsis overflow-hidden whitespace-nowrap",
             size === "sm" && "text-xs",
+            dark ? "text-background" : "text-foreground",
           )}
         >
           {nickname}
@@ -57,6 +60,7 @@ export default function UserItem({
           className={cn(
             "text-orange-950/30 text-xs text-ellipsis overflow-hidden whitespace-nowrap",
             size === "sm" && "text-[10px]",
+            dark ? "text-background" : "text-muted-foreground",
           )}
         >
           {convertAnimalTypeToDisplay(animalType)}
