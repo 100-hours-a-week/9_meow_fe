@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SendIcon from "@/assets/icon/send.svg?react";
 
 const MAX_LENGTH = 50;
 
@@ -85,7 +86,7 @@ export default function CommentInput({ postId }: ICommentInput) {
             value.length > MAX_LENGTH || value.trim().length === 0 || isPending
           }
         >
-          <img src="/icon/send.svg" alt="댓글 전송" className="size-6" />
+          <SendIcon className="size-6 fill-foreground" />
         </Button>
       </div>
     </div>
