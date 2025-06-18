@@ -39,7 +39,7 @@ export default function UserItem({
       <Avatar
         className={cn(
           "border border-muted-foreground flex-shrink-0",
-          profileImageUrl ?? (dark ? "bg-background" : "bg-foreground"),
+          !profileImageUrl && (dark ? "bg-background" : "bg-foreground"),
           size === "sm" && "size-5",
         )}
       >

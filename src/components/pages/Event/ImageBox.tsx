@@ -11,11 +11,11 @@ interface IImageBox {
 function renderBadge(rank: TRank) {
   switch (rank) {
     case "1st":
-      return <img src={"/icon/badge/first-badge.PNG"} alt="badge" />;
+      return <img src={"/icon/badge/first-badge.PNG"} alt="first badge" />;
     case "2nd":
-      return <img src={"/icon/badge/second-badge.PNG"} alt="badge" />;
+      return <img src={"/icon/badge/second-badge.PNG"} alt="second badge" />;
     case "3rd":
-      return <img src={"/icon/badge/third-badge.PNG"} alt="badge" />;
+      return <img src={"/icon/badge/third-badge.PNG"} alt="third badge" />;
     default:
       return null;
   }
