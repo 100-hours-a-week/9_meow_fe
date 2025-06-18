@@ -1,4 +1,6 @@
 import { Button } from "../ui/button";
+import AskIcon from "@/assets/icon/ask.svg?react";
+import InstagramIcon from "@/assets/icon/instagram.svg?react";
 
 export default function Background({
   children,
@@ -21,7 +23,7 @@ export default function Background({
                 );
               }}
             >
-              <img src="/icon/ask.svg" className="size-12" />
+              <AskIcon className="size-12 fill-foreground" />
             </Button>
             <Button
               variant="ghost"
@@ -33,7 +35,7 @@ export default function Background({
                 );
               }}
             >
-              <img src="/icon/instagram.svg" className="size-10" />
+              <InstagramIcon className="size-10 fill-foreground" />
             </Button>
           </div>
           <div className="h-full flex flex-col text-foreground font-bold text-2xl text-right justify-end">

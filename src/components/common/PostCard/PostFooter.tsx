@@ -5,6 +5,10 @@ import { convertEmotionTypeToDisplay } from "@/utils/convertEmotion";
 import { convertTimestamp } from "@/utils/convertTimestamp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import CatOutlinedIcon from "@/assets/icon/cat-outlined.svg?react";
+import CatFilledIcon from "@/assets/icon/cat-filled.svg?react";
+import CommentIcon from "@/assets/icon/comment.svg?react";
+import ShareIcon from "@/assets/icon/share.svg?react";
 
 export interface IPostFooter {
   postId: number;
@@ -69,14 +73,15 @@ export default function PostFooter({
           disabled={isPending}
           className="size-6 p-1"
         >
-          <img
-            src={didLike ? "/icon/cat-filled.svg" : "/icon/cat-outlined.svg"}
-            alt="좋아요"
-          />
+          {didLike ? (
+            <CatFilledIcon className="fill-foreground" />
+          ) : (
+            <CatOutlinedIcon className="fill-foreground" />
+          )}
         </Button>
         <p>{likeCount}</p>
         <Button variant="ghost" size="icon" className="size-6 p-1">
-          <img src="/icon/comment.svg" alt="댓글" />
+          <CommentIcon className="stroke-foreground" />
         </Button>
         <p>{commentCount}</p>
         <Button
@@ -85,7 +90,7 @@ export default function PostFooter({
           onClick={handleShareClick}
           className="size-6 p-1"
         >
-          <img src="/icon/share.svg" alt="공유" />
+          <ShareIcon className="stroke-foreground" />
         </Button>
       </div>
       <div className="flex flex-row items-center gap-2 text-muted-foreground text-xs">
