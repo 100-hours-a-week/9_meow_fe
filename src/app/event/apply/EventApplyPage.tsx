@@ -1,3 +1,5 @@
+import { EventApplyForm } from "@/components/pages";
+
 export default function EventApplyPage() {
-  return <div>EventApplyPage</div>;
+  return <EventApplyForm />;
 }
