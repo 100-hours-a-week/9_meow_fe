@@ -19,6 +19,7 @@ import EventPollPage from "./app/event/poll/EventPollPage";
 import EventDetailPage from "./app/event/[eventId]/EventDetailPage";
 import { Background, Header, NavigationBar } from "./components/common";
 import "./index.css";
+import ChatPage from "./app/chat/ChatPage";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ function App() {
                 <Route path="/event/apply" element={<EventApplyPage />} />
                 <Route path="/event/poll" element={<EventPollPage />} />
                 <Route path="/event/:eventId" element={<EventDetailPage />} />
+                <Route path="/chat" element={<ChatPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </div>
