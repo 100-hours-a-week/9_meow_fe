@@ -3,14 +3,12 @@ import { imageQueries } from "@/api/queries/ImageQueries";
 import { Button } from "@/components/ui/button";
 import { useImagePreview } from "@/hooks/common/useImagePreview";
 import { cn } from "@/lib/utils";
-import useTokenStore from "@/store/useTokenStore";
 import { useMutation } from "@tanstack/react-query";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function EventSubmitForm() {
   const navigate = useNavigate();
-  const { token } = useTokenStore();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { previewUrl, createPreview } = useImagePreview({
     initialImage: selectedImage,
@@ -22,18 +20,6 @@ export default function EventSubmitForm() {
   const { mutateAsync: uploadImageToS3 } = useMutation({
     ...imageQueries.uploadImageToS3(),
   });
-
-  useEffect(() => {
-    if (!token) {
-      if (
-        window.confirm("로그인 해야 이벤트 신청이 가능하다옹. 로그인 하겠냐옹?")
-      ) {
-        navigate("/login");
-      } else {
-        navigate("/event");
-      }
-    }
-  }, [token, navigate]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
