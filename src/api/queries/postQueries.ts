@@ -18,6 +18,7 @@ import {
 } from "../post";
 import {
   infiniteQueryOptions,
+  QueryClient,
   queryOptions,
   UseMutationOptions,
 } from "@tanstack/react-query";
@@ -92,15 +93,20 @@ export const postQueries = {
 
   delete: ({
     postId,
-    navigate,
+    queryClient,
   }: {
     postId: number;
-    navigate: NavigateFunction;
+    queryClient: QueryClient;
   }) => ({
     mutationKey: [...postQueries.all(), "delete", postId],
     mutationFn: () => deletePost(postId),
     onSuccess: () => {
-      navigate(0);
+      queryClient.invalidateQueries({
+        queryKey: [...postQueries.all(), "list"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [...postQueries.all(), "userPostList"],
+      });
     },
     onError: (error: AxiosError<IError>) => {
       if (error.response?.status !== 401) {

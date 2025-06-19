@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { Button } from "../../ui/button";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postQueries } from "@/api/queries/postQueries";
 import DotsVerticalIcon from "@/assets/icon/dots-vertical.svg?react";
 
 export default function ContextMenu({ postId }: { postId: number }) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { mutate: deletePost } = useMutation({
-    ...postQueries.delete({ postId, navigate }),
+    ...postQueries.delete({ postId, queryClient }),
   });
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
