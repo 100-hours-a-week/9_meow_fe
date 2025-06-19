@@ -16,3 +16,7 @@ export interface IEventPostData {
 export interface IEventSubmitRequest {
   imageUrl: string;
 }
+
+export interface IEventSubmittedResponse {
+  hasApplied: boolean;
+}
