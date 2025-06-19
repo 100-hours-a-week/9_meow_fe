@@ -34,10 +34,7 @@ export default function PostFooter({
     ...postQueries.like({
       onLikeSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: [...postQueries.all(), "detail", postId],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [...postQueries.all(), "list"],
+          queryKey: [...postQueries.all()],
         });
       },
       navigate,
