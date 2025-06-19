@@ -3,7 +3,7 @@ import { EventPostCard } from "@/components/pages";
 import { ApiAnimalType } from "@/types/animal";
 import { useQuery } from "@tanstack/react-query";
 
-export default function EventPollPage() {
+export default function EventVotePage() {
   const { data } = useQuery({ ...eventQueries.eventPostList() });
   return (
     <div className="flex flex-row flex-wrap gap-3 p-2">

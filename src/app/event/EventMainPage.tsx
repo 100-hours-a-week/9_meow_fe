@@ -37,7 +37,7 @@ function renderBanner({
             <Button
               variant="secondarySolid"
               onClick={() => {
-                navigate("/event/poll");
+                navigate("/event/vote");
               }}
             >
               ♧ 신청한 사진 보러 가기 ♧
@@ -53,7 +53,7 @@ function renderBanner({
           button={
             <Button
               variant="secondarySolid"
-              onClick={() => navigate("/event/poll")}
+              onClick={() => navigate("/event/vote")}
             >
               ♧ 투표하러 가기 ♧
             </Button>
