@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
-import { getEventPeriod } from "../event";
-import { IEventPeriodResponse } from "../types/event";
+import { getEventPeriod, getEventPostList } from "../event";
+import { IEventPeriodResponse, IEventPostData } from "../types/event";
 
 export const eventQueries = {
   all: () => ["event"] as const,
@@ -9,5 +9,11 @@ export const eventQueries = {
     queryOptions<IEventPeriodResponse>({
       queryKey: [...eventQueries.all(), "eventPeriod"],
       queryFn: () => getEventPeriod(),
+    }),
+
+  eventPostList: () =>
+    queryOptions<IEventPostData[]>({
+      queryKey: [...eventQueries.all(), "eventPostList"],
+      queryFn: () => getEventPostList(),
     }),
 };
