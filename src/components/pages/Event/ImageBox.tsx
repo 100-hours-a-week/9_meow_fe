@@ -30,7 +30,7 @@ export default function ImageBox({ src, rank, className }: IImageBox) {
       )}
     >
       <div className="absolute top-1 left-1 w-[20px]">{renderBadge(rank)}</div>
-      <div className="rounded-lg overflow-hidden border border-muted-foreground">
+      <div className="w-full h-full rounded-lg overflow-hidden border border-muted-foreground">
         <img src={src} alt="postImage" className="w-full h-full object-cover" />
       </div>
     </div>
