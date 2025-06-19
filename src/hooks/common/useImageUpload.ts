@@ -43,6 +43,10 @@ export const useImageUpload = () => {
     try {
       const imageUrls = await Promise.all(
         selectedImages.map(async (image) => {
+          if (image.file.size === 0 && image.preview.startsWith("http")) {
+            return image.preview;
+          }
+
           const imageUrl = await uploadImageToS3(image.file);
           return imageUrl;
         }),
