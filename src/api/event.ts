@@ -1,5 +1,10 @@
+import authInstance from "./instance/authInstance";
 import defaultInstance from "./instance/defaultInstance";
-import { IEventPeriodResponse, IEventPostData } from "./types/event";
+import {
+  IEventPeriodResponse,
+  IEventPostData,
+  IEventSubmitRequest,
+} from "./types/event";
 
 export const getEventPeriod = async () => {
   const response =
@@ -10,5 +15,10 @@ export const getEventPeriod = async () => {
 export const getEventPostList = async () => {
   const response =
     await defaultInstance.get<IEventPostData[]>(`/event-posts/all`);
+  return response.data;
+};
+
+export const postEvent = async (data: IEventSubmitRequest) => {
+  const response = await authInstance.post(`/event-posts`, data);
   return response.data;
 };

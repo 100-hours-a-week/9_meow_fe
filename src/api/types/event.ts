@@ -12,3 +12,7 @@ export interface IEventPostData {
   postId: number;
   profileImageUrl?: string;
 }
+
+export interface IEventSubmitRequest {
+  imageUrl: string;
+}
