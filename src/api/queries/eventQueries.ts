@@ -1,9 +1,15 @@
 import { queryOptions, UseMutationOptions } from "@tanstack/react-query";
-import { getEventPeriod, getEventPostList, postEvent } from "../event";
+import {
+  getEventPeriod,
+  getEventPostList,
+  getEventSubmitted,
+  postEvent,
+} from "../event";
 import {
   IEventPeriodResponse,
   IEventPostData,
   IEventSubmitRequest,
+  IEventSubmittedResponse,
 } from "../types/event";
 import { AxiosError } from "axios";
 import { IError } from "../types/common";
@@ -41,4 +47,10 @@ export const eventQueries = {
       }
     },
   }),
+
+  hasSubmitted: () =>
+    queryOptions<IEventSubmittedResponse>({
+      queryKey: [...eventQueries.all(), "hasSubmitted"],
+      queryFn: () => getEventSubmitted(),
+    }),
 };

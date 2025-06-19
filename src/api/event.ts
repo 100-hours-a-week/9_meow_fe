@@ -4,6 +4,7 @@ import {
   IEventPeriodResponse,
   IEventPostData,
   IEventSubmitRequest,
+  IEventSubmittedResponse,
 } from "./types/event";
 
 export const getEventPeriod = async () => {
@@ -20,5 +21,11 @@ export const getEventPostList = async () => {
 
 export const postEvent = async (data: IEventSubmitRequest) => {
   const response = await authInstance.post(`/event-posts`, data);
+  return response.data;
+};
+
+export const getEventSubmitted = async () => {
+  const response =
+    await authInstance.get<IEventSubmittedResponse>(`/event-posts/applied`);
   return response.data;
 };
