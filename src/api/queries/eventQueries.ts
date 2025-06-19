@@ -5,9 +5,9 @@ import { IEventPeriodResponse } from "../types/event";
 export const eventQueries = {
   all: () => ["event"] as const,
 
-  eventPeriod: (datetime: string) =>
+  eventPeriod: () =>
     queryOptions<IEventPeriodResponse>({
       queryKey: [...eventQueries.all(), "eventPeriod"],
-      queryFn: () => getEventPeriod({ datetime }),
+      queryFn: () => getEventPeriod(),
     }),
 };
