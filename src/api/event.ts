@@ -29,3 +29,10 @@ export const getEventSubmitted = async () => {
     await authInstance.get<IEventSubmittedResponse>(`/event-posts/applied`);
   return response.data;
 };
+
+export const postVote = async (eventPostId: number) => {
+  const response = await defaultInstance.post(
+    `/event-posts/${eventPostId}/likes`,
+  );
+  return response.data;
+};

@@ -4,6 +4,7 @@ import {
   getEventPostList,
   getEventSubmitted,
   postEvent,
+  postVote,
 } from "../event";
 import {
   IEventPeriodResponse,
@@ -53,4 +54,9 @@ export const eventQueries = {
       queryKey: [...eventQueries.all(), "hasSubmitted"],
       queryFn: () => getEventSubmitted(),
     }),
+
+  vote: (): UseMutationOptions<void, AxiosError<IError>, number> => ({
+    mutationKey: [...eventQueries.all(), "vote"],
+    mutationFn: (eventPostId: number) => postVote(eventPostId),
+  }),
 };
