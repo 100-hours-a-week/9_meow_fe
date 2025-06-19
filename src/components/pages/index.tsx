@@ -13,3 +13,4 @@ export { default as EventPostCard } from "./Event/PostCard";
 export { default as EventHistoryCard } from "./Event/HistoryCard";
 export { default as EventTop3 } from "./Event/EventTop3";
 export { default as EventApplyForm } from "./Event/EventApplyForm";
+export { default as EventTimer } from "./Event/Timer";
