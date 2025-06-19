@@ -100,7 +100,7 @@ export const postQueries = {
     mutationKey: [...postQueries.all(), "delete", postId],
     mutationFn: () => deletePost(postId),
     onSuccess: () => {
-      navigate("/");
+      navigate(0);
     },
     onError: (error: AxiosError<IError>) => {
       if (error.response?.status !== 401) {
