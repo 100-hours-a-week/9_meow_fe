@@ -167,10 +167,46 @@ jobs:
             ${{ env.IMAGE_URI }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
+       - name: Prepare deployment scripts from template
+        run: |
+          mkdir -p scripts
+          # 1) 템플릿 치환
+          sed \
+            -e "s#{{ECR_REGISTRY}}#${{ secrets.ECR_REGISTRY }}#g" \
+            -e "s#{{VERSION}}#${{ env.VERSION }}#g" \
+            scripts/deploy_frontend.sh.tmpl \
+            > scripts/deploy_frontend.sh
+          chmod +x scripts/deploy_frontend.sh
 
-    #   - name: Trigger CodeDeploy
-    #     run: |
-    #       aws deploy create-deployment \
-    #         --application-name ${{ env.APP_NAME }} \
-    #         --deployment-group-name ${{ env.DG_NAME }} \
-    #         --s3-location bucket=${{ secrets.DEPLOY_BUCKET }},key=${ENV}/deploy-bundle.zip,bundleType=zip
+      - name: Prepare AppSpec.yml
+        run: |
+          cat << 'EOF' > AppSpec.yml
+          version: 0.0
+          os: linux
+          hooks:
+            BeforeInstall:
+              - location: scripts/stop_frontend.sh
+                timeout: 300
+                runas: ec2-user
+            AfterInstall:
+              - location: scripts/deploy_frontend.sh
+                timeout: 300
+                runas: ec2-user
+          EOF
+
+      - name: Zip deployment bundle
+        run: zip -r deploy-bundle.zip AppSpec.yml scripts/
+
+      - name: Upload bundle to S3
+        run: |
+          aws s3 cp deploy-bundle.zip \
+            s3://${{ secrets.DEPLOY_BUCKET }}/prod/deploy-bundle.zip
+
+      - name: Trigger CodeDeploy
+        uses: aws-actions/aws-code-deploy@v0.0.26
+        with:
+          application-name: ${{ env.APP_NAME }}
+          deployment-group:   ${{ env.DG_NAME }}
+          bucket:             ${{ secrets.DEPLOY_BUCKET }}
+          bundle-type:        zip
+          key:                prod/deploy-bundle.zip
