@@ -14,7 +14,7 @@ import MemberPage from "./app/member/[userId]/MemberPage";
 import FollowerPage from "./app/member/[userId]/follower/FollowerPage";
 import FollowingPage from "./app/member/[userId]/following/FollowingPage";
 import EventMainPage from "./app/event/EventMainPage";
-import EventApplyPage from "./app/event/apply/EventApplyPage";
+import EventSubmitPage from "./app/event/submit/EventSubmitPage";
 import EventVotePage from "./app/event/vote/EventVotePage";
 import EventDetailPage from "./app/event/[eventId]/EventDetailPage";
 import { Background, Header, NavigationBar } from "./components/common";
@@ -54,7 +54,7 @@ function App() {
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/redirect" element={<RedirectPage />} />
                 <Route path="/event" element={<EventMainPage />} />
-                <Route path="/event/apply" element={<EventApplyPage />} />
+                <Route path="/event/submit" element={<EventSubmitPage />} />
                 <Route path="/event/vote" element={<EventVotePage />} />
                 <Route path="/event/:eventId" element={<EventDetailPage />} />
                 <Route path="/chat" element={<ChatPage />} />

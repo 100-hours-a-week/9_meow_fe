@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function EventApplyForm() {
+export default function EventSubmitForm() {
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { previewUrl, createPreview } = useImagePreview({

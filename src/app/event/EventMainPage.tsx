@@ -21,7 +21,7 @@ function renderBanner({
           button={
             <Button
               variant="primarySolid"
-              onClick={() => navigate("/event/apply")}
+              onClick={() => navigate("/event/submit")}
             >
               ♤ 신청하러 가기 ♤
             </Button>
