@@ -1,5 +1,5 @@
 import { eventQueries } from "@/api/queries/eventQueries";
-import { EventPostCard, EventTimer } from "@/components/pages";
+import { EventPostCard, EventTimer, EventTop3 } from "@/components/pages";
 import { ApiAnimalType } from "@/types/animal";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -30,7 +30,7 @@ export default function EventVotePage() {
 
   return (
     <div className="flex flex-col gap-5 p-2">
-      {eventPeriod?.status === "투표중" && <div>순위</div>}
+      {eventPeriod?.status === "투표중" && <EventTop3 />}
       {eventPeriod?.status === "투표전" && (
         <div className="flex flex-row items-center justify-center">
           <EventTimer
@@ -43,6 +43,7 @@ export default function EventVotePage() {
         {eventPostList &&
           eventPostList.map((post) => (
             <EventPostCard
+              key={post.postId}
               postId={post.postId}
               postImageUrl={post.imageUrl}
               userInfo={{
