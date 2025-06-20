@@ -2,8 +2,9 @@ import { eventQueries } from "@/api/queries/eventQueries";
 import { EventPostCard, EventTimer, EventTop3 } from "@/components/pages";
 import { ApiAnimalType } from "@/types/animal";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEventVoteCountSSE } from "@/hooks/event/useEventVoteCountSSE";
 
 export default function EventVotePage() {
   const navigate = useNavigate();
@@ -13,12 +14,31 @@ export default function EventVotePage() {
     ...eventQueries.eventPostList(),
   });
 
+  // SSE를 통한 실시간 좋아요 수 업데이트
+  const { voteCountData } = useEventVoteCountSSE();
+
   useEffect(() => {
     if (eventPeriod?.status === null || eventPeriod?.status === "신청") {
       alert("신청 기간이 아니다냥");
       navigate("/event");
     }
   }, [eventPeriod, navigate]);
+
+  // 실시간 좋아요 수가 포함된 포스트 리스트 생성
+  const updatedEventPostList = useMemo(() => {
+    if (!eventPostList) return null;
+
+    return eventPostList.map((post) => {
+      const updatedVoteData = voteCountData?.find(
+        (voteData) => voteData.postId === post.postId,
+      );
+
+      return {
+        ...post,
+        likeCount: updatedVoteData?.likeCount ?? post.likeCount,
+      };
+    });
+  }, [eventPostList, voteCountData]);
 
   if (isEventPostListPending) {
     return (
@@ -40,8 +60,8 @@ export default function EventVotePage() {
         </div>
       )}
       <div className="flex flex-row flex-wrap gap-3 items-center justify-center">
-        {eventPostList &&
-          eventPostList.map((post) => (
+        {updatedEventPostList &&
+          updatedEventPostList.map((post) => (
             <EventPostCard
               key={post.postId}
               postId={post.postId}
