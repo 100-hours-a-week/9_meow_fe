@@ -22,9 +22,11 @@ export const commentQueries = {
   create: ({
     postId,
     navigate,
+    currentPath,
   }: {
     postId: number;
     navigate: NavigateFunction;
+    currentPath?: string;
   }) => ({
     mutationKey: [...commentQueries.all(), "create", postId],
     mutationFn: ({ content }: { content: string }) =>
@@ -35,7 +37,10 @@ export const commentQueries = {
     onError: (error: AxiosError<IError>) => {
       if (error.message === "No token available") {
         if (window.confirm("로그인 해야 댓글 달 수 있다옹. 로그인 하겠냥?")) {
-          navigate("/login");
+          const redirectPath = currentPath
+            ? `?redirect=${encodeURIComponent(currentPath)}`
+            : "";
+          navigate(`/login${redirectPath}`);
         }
       }
       if (error.response?.status !== 401) {

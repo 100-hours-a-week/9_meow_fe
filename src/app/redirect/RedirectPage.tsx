@@ -9,12 +9,13 @@ export default function RedirectPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const code = searchParams.get("code");
+  const state = searchParams.get("state");
 
   const { setKakaoId } = useKakaoIdStore();
   const { token, setToken } = useTokenStore();
 
   const { mutate: login } = useMutation({
-    ...loginQueries.login({ setToken, navigate }),
+    ...loginQueries.login({ setToken, navigate, redirectPath: state }),
   });
 
   const { mutate: getKakao } = useMutation({
@@ -29,9 +30,10 @@ export default function RedirectPage() {
 
   useEffect(() => {
     if (token) {
-      navigate("/");
+      const redirectPath = state || "/";
+      navigate(redirectPath);
     }
-  }, [token, navigate]);
+  }, [token, navigate, state]);
 
   return <div>♧ 리디렉션 중이다옹...</div>;
 }
