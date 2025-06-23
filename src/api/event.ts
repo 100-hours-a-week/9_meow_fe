@@ -5,11 +5,18 @@ import {
   IEventPostData,
   IEventSubmitRequest,
   IEventSubmittedResponse,
+  IEventTopicResponse,
 } from "./types/event";
 
 export const getEventPeriod = async () => {
   const response =
     await defaultInstance.get<IEventPeriodResponse>(`/event-weeks/status`);
+  return response.data;
+};
+
+export const getEventTopic = async () => {
+  const response =
+    await defaultInstance.get<IEventTopicResponse>(`/event-weeks/topic`);
   return response.data;
 };
 

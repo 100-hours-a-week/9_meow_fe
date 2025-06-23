@@ -5,6 +5,11 @@ export interface IEventPeriodResponse {
   time: string;
 }
 
+export interface IEventTopicResponse {
+  week: number;
+  topic: string;
+}
+
 export interface IEventPostData {
   imageUrl: string;
   nickname: string;

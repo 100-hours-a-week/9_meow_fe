@@ -10,6 +10,7 @@ export default function EventVotePage() {
   const navigate = useNavigate();
 
   const { data: eventPeriod } = useQuery({ ...eventQueries.eventPeriod() });
+  const { data: topicData } = useQuery({ ...eventQueries.topic() });
   const { data: eventPostList, isPending: isEventPostListPending } = useQuery({
     ...eventQueries.eventPostList(),
   });
@@ -50,6 +51,12 @@ export default function EventVotePage() {
 
   return (
     <div className="flex flex-col gap-5 p-2">
+      <div className="flex flex-col gap-2 items-center">
+        <h1 className="text-4xl font-bold">¢ 투표하라냥 ♧</h1>
+        {eventPeriod?.status !== null && (
+          <p className="text-2xl">주제: {topicData?.topic}</p>
+        )}
+      </div>
       {eventPeriod?.status === "투표중" && <EventTop3 />}
       {eventPeriod?.status === "투표전" && (
         <div className="flex flex-row items-center justify-center">

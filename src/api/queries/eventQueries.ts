@@ -3,6 +3,7 @@ import {
   getEventPeriod,
   getEventPostList,
   getEventSubmitted,
+  getEventTopic,
   postEvent,
   postVote,
 } from "../event";
@@ -11,6 +12,7 @@ import {
   IEventPostData,
   IEventSubmitRequest,
   IEventSubmittedResponse,
+  IEventTopicResponse,
 } from "../types/event";
 import { AxiosError } from "axios";
 import { IError } from "../types/common";
@@ -23,6 +25,12 @@ export const eventQueries = {
     queryOptions<IEventPeriodResponse>({
       queryKey: [...eventQueries.all(), "eventPeriod"],
       queryFn: () => getEventPeriod(),
+    }),
+
+  topic: () =>
+    queryOptions<IEventTopicResponse>({
+      queryKey: [...eventQueries.all(), "topic"],
+      queryFn: () => getEventTopic(),
     }),
 
   eventPostList: () =>
