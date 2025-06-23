@@ -27,6 +27,7 @@ import {
 import { IError } from "../types/common";
 import { AxiosError } from "axios";
 import { NavigateFunction } from "react-router-dom";
+import { createAuthErrorHandler, ALERT_MESSAGES } from "../utils/errorHandler";
 
 export const userQueries = {
   all: () => ["user"] as const,
@@ -108,20 +109,10 @@ export const userQueries = {
         queryKey: [...userQueries.all(), "profileInfo", userId],
       });
     },
-    onError: (error: AxiosError<IError>) => {
-      if (error.message === "No token available") {
-        if (
-          window.confirm("로그인 해야 좋아요 누를 수 있다옹. 로그인 하겠냥?")
-        ) {
-          const redirectPath = currentPath
-            ? `?redirect=${encodeURIComponent(currentPath)}`
-            : "";
-          navigate(`/login${redirectPath}`);
-        }
-      } else if (error.response?.status !== 401) {
-        alert("팔로우에 실패했다옹...");
-      }
-    },
+    onError: createAuthErrorHandler(
+      { navigate, currentPath },
+      ALERT_MESSAGES.FOLLOW_FAILED,
+    ),
   }),
 
   unfollow: ({
@@ -142,20 +133,10 @@ export const userQueries = {
         queryKey: [...userQueries.all(), "profileInfo", userId],
       });
     },
-    onError: (error: AxiosError<IError>) => {
-      if (error.message === "No token available") {
-        if (
-          window.confirm("로그인 해야 좋아요 누를 수 있다옹. 로그인 하겠냥?")
-        ) {
-          const redirectPath = currentPath
-            ? `?redirect=${encodeURIComponent(currentPath)}`
-            : "";
-          navigate(`/login${redirectPath}`);
-        }
-      } else if (error.response?.status !== 401) {
-        alert("언팔로우에 실패했다옹...");
-      }
-    },
+    onError: createAuthErrorHandler(
+      { navigate, currentPath },
+      ALERT_MESSAGES.UNFOLLOW_FAILED,
+    ),
   }),
 
   followerList: ({ userId }: { userId: number }) =>
