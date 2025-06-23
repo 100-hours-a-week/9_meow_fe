@@ -1,6 +1,5 @@
 import { eventQueries } from "@/api/queries/eventQueries";
 import { EventPostCard, EventTimer, EventTop3 } from "@/components/pages";
-import { ApiAnimalType } from "@/types/animal";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -77,10 +76,10 @@ export default function EventVotePage() {
               postId={post.postId}
               postImageUrl={post.imageUrl}
               userInfo={{
-                userId: 1,
+                userId: post.userId,
                 profileImageUrl: post.profileImageUrl,
                 nickname: post.nickname,
-                animalType: ApiAnimalType.CAT,
+                animalType: post.animalType,
               }}
               likeCount={post.likeCount}
             />
