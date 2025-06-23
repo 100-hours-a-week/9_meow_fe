@@ -6,6 +6,10 @@ import {
 } from "@/api/types/login";
 import { getKakaoId, getKakaoUrl, postLogin } from "@/api/login";
 import { NavigateFunction } from "react-router-dom";
+import {
+  ALERT_MESSAGES,
+  createDefaultErrorHandler,
+} from "../utils/errorHandler";
 
 export const loginQueries = {
   all: () => ["login"] as const,
@@ -40,19 +44,19 @@ export const loginQueries = {
   login: ({
     setToken,
     navigate,
+    redirectPath,
   }: {
     setToken: (token: string) => void;
     navigate: NavigateFunction;
+    redirectPath?: string | null;
   }) => ({
     mutationKey: [...loginQueries.all(), "login"],
     mutationFn: (kakaoId: number) => postLogin(kakaoId),
     onSuccess: (data: ILoginResponse) => {
       setToken(data.accessToken);
-      navigate(-2);
+      const targetPath = redirectPath || "/";
+      navigate(targetPath);
     },
-    onError: (error: Error) => {
-      console.error("Login failed:", error);
-      alert("로그인에 실패했다옹... 다시 시도해달라옹");
-    },
+    onError: createDefaultErrorHandler(ALERT_MESSAGES.LOGIN_FAILED),
   }),
 };

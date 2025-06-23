@@ -27,6 +27,7 @@ import {
 import { IError } from "../types/common";
 import { AxiosError } from "axios";
 import { NavigateFunction } from "react-router-dom";
+import { createAuthErrorHandler, ALERT_MESSAGES } from "../utils/errorHandler";
 
 export const userQueries = {
   all: () => ["user"] as const,
@@ -93,9 +94,13 @@ export const userQueries = {
   follow: ({
     userId,
     queryClient,
+    navigate,
+    currentPath,
   }: {
     userId: number;
     queryClient: QueryClient;
+    navigate: NavigateFunction;
+    currentPath?: string;
   }): UseMutationOptions<void, AxiosError<IError>, void> => ({
     mutationKey: [...userQueries.all(), "follow", userId],
     mutationFn: () => postFollow({ userId }),
@@ -104,19 +109,22 @@ export const userQueries = {
         queryKey: [...userQueries.all(), "profileInfo", userId],
       });
     },
-    onError: (error: AxiosError<IError>) => {
-      if (error.response?.status !== 401) {
-        alert("팔로우에 실패했다옹...");
-      }
-    },
+    onError: createAuthErrorHandler(
+      { navigate, currentPath },
+      ALERT_MESSAGES.FOLLOW_FAILED,
+    ),
   }),
 
   unfollow: ({
     userId,
     queryClient,
+    navigate,
+    currentPath,
   }: {
     userId: number;
     queryClient: QueryClient;
+    navigate: NavigateFunction;
+    currentPath?: string;
   }): UseMutationOptions<void, AxiosError<IError>, void> => ({
     mutationKey: [...userQueries.all(), "unfollow", userId],
     mutationFn: () => deleteFollow({ userId }),
@@ -125,11 +133,10 @@ export const userQueries = {
         queryKey: [...userQueries.all(), "profileInfo", userId],
       });
     },
-    onError: (error: AxiosError<IError>) => {
-      if (error.response?.status !== 401) {
-        alert("언팔로우에 실패했다옹...");
-      }
-    },
+    onError: createAuthErrorHandler(
+      { navigate, currentPath },
+      ALERT_MESSAGES.UNFOLLOW_FAILED,
+    ),
   }),
 
   followerList: ({ userId }: { userId: number }) =>

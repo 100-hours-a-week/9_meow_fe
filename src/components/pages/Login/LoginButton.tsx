@@ -1,15 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import KakaoLoginIcon from "/loginButton/kakao_login_medium_narrow.png";
 import { loginQueries } from "@/api/queries/loginQueries";
+import { useLocation } from "react-router-dom";
 
-export default function LoginButton() {
+interface LoginButtonProps {
+  redirectPath?: string | null;
+}
+
+export default function LoginButton({ redirectPath }: LoginButtonProps) {
   const { data: kakaoUrl } = useQuery(loginQueries.kakaoUrl());
+  const location = useLocation();
 
   return (
     <button
       onClick={() => {
         if (kakaoUrl) {
-          window.location.href = kakaoUrl;
+          const state = redirectPath || location.pathname + location.search;
+          const loginUrl = new URL(kakaoUrl);
+          loginUrl.searchParams.set("state", state);
+          window.location.href = loginUrl.toString();
         }
       }}
       className="relative"
