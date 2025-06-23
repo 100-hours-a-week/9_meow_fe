@@ -25,7 +25,7 @@ import { NavigateFunction } from "react-router-dom";
 export const eventQueries = {
   all: () => ["event"] as const,
 
-  eventPeriod: () =>
+  period: () =>
     queryOptions<IEventPeriodResponse>({
       queryKey: [...eventQueries.all(), "eventPeriod"],
       queryFn: () => getEventPeriod(),
@@ -37,13 +37,13 @@ export const eventQueries = {
       queryFn: () => getEventTopic({ week }),
     }),
 
-  eventPostList: () =>
+  postList: () =>
     queryOptions<IEventPostData[]>({
       queryKey: [...eventQueries.all(), "eventPostList"],
       queryFn: () => getEventPostList(),
     }),
 
-  sumbitEvent: ({
+  submitEvent: ({
     navigate,
   }: {
     navigate: NavigateFunction;

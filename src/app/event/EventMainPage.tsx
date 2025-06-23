@@ -67,7 +67,7 @@ function renderBanner({
 
 export default function EventMainPage() {
   const navigate = useNavigate();
-  const { data: eventPeriod } = useQuery({ ...eventQueries.eventPeriod() });
+  const { data: eventPeriod } = useQuery({ ...eventQueries.period() });
   const { data: topicData } = useQuery({
     ...eventQueries.topic({ week: eventPeriod?.week || 0 }),
     enabled: !!eventPeriod?.week,

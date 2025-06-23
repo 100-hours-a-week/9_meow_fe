@@ -15,7 +15,7 @@ export default function EventSubmitForm() {
   });
 
   const { mutate: submitEvent } = useMutation({
-    ...eventQueries.sumbitEvent({ navigate }),
+    ...eventQueries.submitEvent({ navigate }),
   });
   const { mutateAsync: uploadImageToS3 } = useMutation({
     ...imageQueries.uploadImageToS3(),

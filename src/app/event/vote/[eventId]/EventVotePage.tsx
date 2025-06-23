@@ -10,12 +10,12 @@ export default function EventVotePage() {
   const { eventId } = useParams();
   const navigate = useNavigate();
 
-  const { data: eventPeriod } = useQuery({ ...eventQueries.eventPeriod() });
+  const { data: eventPeriod } = useQuery({ ...eventQueries.period() });
   const { data: topicData } = useQuery({
     ...eventQueries.topic({ week: Number(eventId) }),
   });
   const { data: eventPostList, isPending: isEventPostListPending } = useQuery({
-    ...eventQueries.eventPostList(),
+    ...eventQueries.postList(),
   });
 
   // SSE를 통한 실시간 좋아요 수 업데이트
