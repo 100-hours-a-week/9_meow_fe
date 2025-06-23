@@ -68,15 +68,18 @@ function renderBanner({
 export default function EventMainPage() {
   const navigate = useNavigate();
   const { data: eventPeriod } = useQuery({ ...eventQueries.eventPeriod() });
-  const { data: topicData } = useQuery({ ...eventQueries.topic() });
+  const { data: topicData } = useQuery({
+    ...eventQueries.topic({ week: eventPeriod?.week || 0 }),
+    enabled: !!eventPeriod?.week,
+  });
 
   // TODO: 데이터 연결
   return (
     <div className="p-5 flex flex-col gap-5">
       <div className="flex flex-col gap-2 items-center">
         <h1 className="text-4xl font-bold">
-          {eventPeriod?.status !== null
-            ? `¢ 제 ${topicData?.week}회 미스코리냥 ♧`
+          {eventPeriod && eventPeriod?.status !== null
+            ? `¢ 제 ${eventPeriod?.week}회 미스코리냥 ♧`
             : "¢ 미스코리냥 ♧"}
         </h1>
         {eventPeriod?.status !== null && (

@@ -15,9 +15,10 @@ export const getEventPeriod = async () => {
   return response.data;
 };
 
-export const getEventTopic = async () => {
-  const response =
-    await defaultInstance.get<IEventTopicResponse>(`/event-weeks/topic`);
+export const getEventTopic = async ({ week }: { week: number }) => {
+  const response = await defaultInstance.get<IEventTopicResponse>(
+    `/event-weeks/topic/${week}`,
+  );
   return response.data;
 };
 

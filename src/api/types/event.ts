@@ -4,10 +4,10 @@ import { TEventStatus } from "@/types/EventStatus";
 export interface IEventPeriodResponse {
   status: TEventStatus;
   time: string;
+  week: number;
 }
 
 export interface IEventTopicResponse {
-  week: number;
   topic: string;
 }
 

@@ -29,10 +29,10 @@ export const eventQueries = {
       queryFn: () => getEventPeriod(),
     }),
 
-  topic: () =>
+  topic: ({ week }: { week: number }) =>
     queryOptions<IEventTopicResponse>({
-      queryKey: [...eventQueries.all(), "topic"],
-      queryFn: () => getEventTopic(),
+      queryKey: [...eventQueries.all(), "topic", week],
+      queryFn: () => getEventTopic({ week }),
     }),
 
   eventPostList: () =>
