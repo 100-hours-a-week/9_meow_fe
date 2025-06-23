@@ -49,6 +49,15 @@ export default function EditProfileForm() {
     (isNicknameChanged && isNicknameDuplicate) ||
     (!isNicknameChanged && !isAnimalChanged && !isImageChanged);
 
+  const handleCancel = () => {
+    const answer = window.confirm(
+      "취소하면 작성한 내용이 사라지는데, 그래도 취소하겠냥?",
+    );
+    if (answer) {
+      navigate(`/mypage/redirect`);
+    }
+  };
+
   const handleSubmit = async () => {
     try {
       const imageUrl =
@@ -96,7 +105,9 @@ export default function EditProfileForm() {
         setAnimal={setSelectedAnimal}
       />
       <div className="flex gap-10 w-full justify-center">
-        <Button variant="primarySolid">취소냥</Button>
+        <Button variant="primarySolid" onClick={handleCancel}>
+          취소냥
+        </Button>
         <Button
           variant="secondarySolid"
           disabled={isSubmitDisabled}

@@ -4,7 +4,7 @@ import { ApiEmotion } from "@/types/Emotion";
 import { convertEmotionTypeToDisplay } from "@/utils/convertEmotion";
 import { convertTimestamp } from "@/utils/convertTimestamp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import CatOutlinedIcon from "@/assets/icon/cat-outlined.svg?react";
 import CatFilledIcon from "@/assets/icon/cat-filled.svg?react";
 import CommentIcon from "@/assets/icon/comment.svg?react";
@@ -29,6 +29,7 @@ export default function PostFooter({
 }: IPostFooter) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { mutate: likePost, isPending } = useMutation({
     ...postQueries.like({
@@ -38,6 +39,7 @@ export default function PostFooter({
         });
       },
       navigate,
+      currentPath: location.pathname + location.search,
     }),
   });
 

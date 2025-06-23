@@ -24,6 +24,11 @@ import {
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { NavigateFunction } from "react-router-dom";
+import {
+  createAuthErrorHandler,
+  ALERT_MESSAGES,
+  createDefaultErrorHandler,
+} from "../utils/errorHandler";
 
 export const postQueries = {
   all: () => ["post"] as const,
@@ -56,20 +61,17 @@ export const postQueries = {
     onSuccess: () => {
       navigate("/");
     },
-    onError: (error: AxiosError<IError>) => {
-      if (error.response?.status !== 401) {
-        alert("게시글 작성에 실패했다옹. 잠시 후 다시 시도해보냥");
-        console.log("error", error);
-      }
-    },
+    onError: createDefaultErrorHandler(ALERT_MESSAGES.POST_CREATE_FAILED),
   }),
 
   like: ({
     onLikeSuccess,
     navigate,
+    currentPath,
   }: {
     onLikeSuccess?: () => void;
     navigate: NavigateFunction;
+    currentPath?: string;
   }) => ({
     mutationKey: [...postQueries.all(), "like"],
     mutationFn: ({ postId, isLiked }: { postId: number; isLiked: boolean }) =>
@@ -78,17 +80,10 @@ export const postQueries = {
       // 좋아요 성공 시 posts 쿼리 데이터를 무효화하여 재요청
       onLikeSuccess?.();
     },
-    onError: (error: AxiosError<IError>) => {
-      if (error.message === "No token available") {
-        if (
-          window.confirm("로그인 해야 좋아요 누를 수 있다옹. 로그인 하겠냥?")
-        ) {
-          navigate("/login");
-        }
-      } else if (error.response?.status !== 401) {
-        alert("좋아요에 실패했다옹...");
-      }
-    },
+    onError: createAuthErrorHandler(
+      { navigate, currentPath },
+      ALERT_MESSAGES.LIKE_FAILED,
+    ),
   }),
 
   delete: ({
@@ -108,11 +103,7 @@ export const postQueries = {
         queryKey: [...postQueries.all(), "userPostList"],
       });
     },
-    onError: (error: AxiosError<IError>) => {
-      if (error.response?.status !== 401) {
-        alert("게시글 삭제에 실패했다옹. 잠시 후 다시 시도해냥");
-      }
-    },
+    onError: createDefaultErrorHandler(ALERT_MESSAGES.POST_DELETE_FAILED),
   }),
 
   editInfo: ({ postId }: { postId: number }) =>
@@ -127,7 +118,11 @@ export const postQueries = {
   }: {
     postId: number;
     navigate: NavigateFunction;
-  }): UseMutationOptions<IPostEditResponse, Error, ICreatePost> => ({
+  }): UseMutationOptions<
+    IPostEditResponse,
+    AxiosError<IError>,
+    ICreatePost
+  > => ({
     mutationKey: [...postQueries.all(), "edit", postId],
     mutationFn: ({ imageUrls, content, emotion }: ICreatePost) =>
       putPost({ postId, imageUrls, content, emotion }),
@@ -135,6 +130,7 @@ export const postQueries = {
       alert("게시글 수정에 성공했다옹");
       navigate(`/detail/${postId}`);
     },
+    onError: createDefaultErrorHandler(ALERT_MESSAGES.POST_EDIT_FAILED),
   }),
 
   userPostList: ({ userId }: { userId: number }) =>

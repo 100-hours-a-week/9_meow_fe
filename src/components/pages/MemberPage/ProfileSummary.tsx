@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import MemberInfoSummary from "./ProfileSummary/MemberInfoSummary";
 import { ApiAnimalType } from "@/types/animal";
 import ProfileInfo from "./ProfileSummary/ProfileInfo";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { userQueries } from "@/api/queries/userQueries";
 import useTokenStore from "@/store/useTokenStore";
@@ -14,6 +14,7 @@ interface IProfileSummary {
 
 export default function ProfileSummary({ userId }: IProfileSummary) {
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
   const { clearToken } = useTokenStore();
 
@@ -21,10 +22,20 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
     ...userQueries.profileInfo({ userId }),
   });
   const { mutate: follow } = useMutation({
-    ...userQueries.follow({ userId, queryClient }),
+    ...userQueries.follow({
+      userId,
+      queryClient,
+      navigate,
+      currentPath: location.pathname + location.search,
+    }),
   });
   const { mutate: unfollow } = useMutation({
-    ...userQueries.unfollow({ userId, queryClient }),
+    ...userQueries.unfollow({
+      userId,
+      queryClient,
+      navigate,
+      currentPath: location.pathname + location.search,
+    }),
   });
 
   const handleShareClick = async () => {

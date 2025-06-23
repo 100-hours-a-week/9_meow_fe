@@ -1,6 +1,10 @@
 import { UseMutationOptions } from "@tanstack/react-query";
 import { getDuplicateNickname, postUsers } from "@/api/signup";
 import { ISignupUserRequest } from "@/api/types/signup";
+import {
+  ALERT_MESSAGES,
+  createDefaultErrorHandler,
+} from "../utils/errorHandler";
 
 export const signupQueries = {
   all: () => ["signup"] as const,
@@ -41,9 +45,6 @@ export const signupQueries = {
       setKakaoId(data);
       login(data);
     },
-    onError: (error: Error) => {
-      console.error("Signup failed:", error);
-      alert("회원가입에 실패했다옹... 다시 시도해달라옹");
-    },
+    onError: createDefaultErrorHandler(ALERT_MESSAGES.SIGNUP_FAILED),
   }),
 };
