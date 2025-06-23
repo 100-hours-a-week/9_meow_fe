@@ -1,6 +1,7 @@
 import authInstance from "./instance/authInstance";
 import defaultInstance from "./instance/defaultInstance";
 import {
+  IEventHistoryDetailResponse,
   IEventPeriodResponse,
   IEventPostData,
   IEventSubmitRequest,
@@ -40,6 +41,13 @@ export const getEventSubmitted = async () => {
 export const postVote = async (eventPostId: number) => {
   const response = await defaultInstance.post(
     `/event-posts/${eventPostId}/likes`,
+  );
+  return response.data;
+};
+
+export const getEventHistoryDetail = async (rankWeek: number) => {
+  const response = await defaultInstance.get<IEventHistoryDetailResponse[]>(
+    `/event-posts/${rankWeek}`,
   );
   return response.data;
 };

@@ -1,3 +1,4 @@
+import { ApiAnimalType } from "@/types/animal";
 import { TEventStatus } from "@/types/EventStatus";
 
 export interface IEventPeriodResponse {
@@ -24,4 +25,14 @@ export interface IEventSubmitRequest {
 
 export interface IEventSubmittedResponse {
   hasApplied: boolean;
+}
+
+export interface IEventHistoryDetailResponse {
+  postId: number;
+  imageUrl: string;
+  nickname: string;
+  animalType: ApiAnimalType;
+  profileImageUrl?: string;
+  userId: number;
+  likeCount: number;
 }

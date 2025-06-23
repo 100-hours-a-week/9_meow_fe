@@ -1,5 +1,6 @@
 import { queryOptions, UseMutationOptions } from "@tanstack/react-query";
 import {
+  getEventHistoryDetail,
   getEventPeriod,
   getEventPostList,
   getEventSubmitted,
@@ -8,6 +9,7 @@ import {
   postVote,
 } from "../event";
 import {
+  IEventHistoryDetailResponse,
   IEventPeriodResponse,
   IEventPostData,
   IEventSubmitRequest,
@@ -67,4 +69,10 @@ export const eventQueries = {
     mutationKey: [...eventQueries.all(), "vote"],
     mutationFn: (eventPostId: number) => postVote(eventPostId),
   }),
+
+  historyDetail: ({ rankWeek }: { rankWeek: number }) =>
+    queryOptions<IEventHistoryDetailResponse[]>({
+      queryKey: [...eventQueries.all(), "historyDetail", rankWeek],
+      queryFn: () => getEventHistoryDetail(rankWeek),
+    }),
 };
