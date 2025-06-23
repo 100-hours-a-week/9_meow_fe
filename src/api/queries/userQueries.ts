@@ -1,6 +1,6 @@
 import {
-  infiniteQueryOptions,
   QueryClient,
+  UseInfiniteQueryOptions,
   UseMutationOptions,
   UseQueryOptions,
 } from "@tanstack/react-query";
@@ -139,25 +139,31 @@ export const userQueries = {
     ),
   }),
 
-  followerList: ({ userId }: { userId: number }) =>
-    infiniteQueryOptions<IFollowerDataPagination, Error>({
-      queryKey: [...userQueries.all(), "followerList", userId],
-      queryFn: ({ pageParam }) =>
-        getFollowerList({ userId, page: pageParam as number, size: 20 }),
-      getNextPageParam: (lastPage: IFollowerDataPagination) => {
-        return lastPage.last ? undefined : lastPage.currentPage + 1;
-      },
-      initialPageParam: 0,
-    }),
+  followerList: ({
+    userId,
+  }: {
+    userId: number;
+  }): UseInfiniteQueryOptions<IFollowerDataPagination, Error> => ({
+    queryKey: [...userQueries.all(), "followerList", userId],
+    queryFn: ({ pageParam }) =>
+      getFollowerList({ userId, page: pageParam as number, size: 20 }),
+    getNextPageParam: (lastPage: IFollowerDataPagination) => {
+      return lastPage.last ? undefined : lastPage.currentPage + 1;
+    },
+    initialPageParam: 0,
+  }),
 
-  followingList: ({ userId }: { userId: number }) =>
-    infiniteQueryOptions<IFollowerDataPagination, Error>({
-      queryKey: [...userQueries.all(), "followingList", userId],
-      queryFn: ({ pageParam }) =>
-        getFollowingList({ userId, page: pageParam as number, size: 20 }),
-      getNextPageParam: (lastPage: IFollowerDataPagination) => {
-        return lastPage.last ? undefined : lastPage.currentPage + 1;
-      },
-      initialPageParam: 0,
-    }),
+  followingList: ({
+    userId,
+  }: {
+    userId: number;
+  }): UseInfiniteQueryOptions<IFollowerDataPagination, Error> => ({
+    queryKey: [...userQueries.all(), "followingList", userId],
+    queryFn: ({ pageParam }) =>
+      getFollowingList({ userId, page: pageParam as number, size: 20 }),
+    getNextPageParam: (lastPage: IFollowerDataPagination) => {
+      return lastPage.last ? undefined : lastPage.currentPage + 1;
+    },
+    initialPageParam: 0,
+  }),
 };

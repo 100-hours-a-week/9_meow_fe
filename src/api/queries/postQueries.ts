@@ -17,10 +17,10 @@ import {
   putPost,
 } from "../post";
 import {
-  infiniteQueryOptions,
   QueryClient,
-  queryOptions,
+  UseInfiniteQueryOptions,
   UseMutationOptions,
+  UseQueryOptions,
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { NavigateFunction } from "react-router-dom";
@@ -33,24 +33,26 @@ import {
 export const postQueries = {
   all: () => ["post"] as const,
 
-  list: () =>
-    infiniteQueryOptions<IPostSummaryDataPagination, Error>({
-      queryKey: [...postQueries.all(), "list"],
-      queryFn: ({ pageParam }) =>
-        getPostList({ page: pageParam as number, size: 10 }),
-      getNextPageParam: (lastPage: IPostSummaryDataPagination) => {
-        return lastPage.last ? undefined : lastPage.currentPage + 1;
-      },
-      initialPageParam: 0,
-    }),
+  list: (): UseInfiniteQueryOptions<IPostSummaryDataPagination, Error> => ({
+    queryKey: [...postQueries.all(), "list"],
+    queryFn: ({ pageParam }) =>
+      getPostList({ page: pageParam as number, size: 10 }),
+    getNextPageParam: (lastPage: IPostSummaryDataPagination) => {
+      return lastPage.last ? undefined : lastPage.currentPage + 1;
+    },
+    initialPageParam: 0,
+  }),
 
-  detail: (postId: number) =>
-    queryOptions<IPostDetailData, Error>({
-      queryKey: [...postQueries.all(), "detail", postId],
-      queryFn: () => getPostDetail(postId),
-    }),
+  detail: (postId: number): UseQueryOptions<IPostDetailData, Error> => ({
+    queryKey: [...postQueries.all(), "detail", postId],
+    queryFn: () => getPostDetail(postId),
+  }),
 
-  create: ({ navigate }: { navigate: NavigateFunction }) => ({
+  create: ({
+    navigate,
+  }: {
+    navigate: NavigateFunction;
+  }): UseMutationOptions<IPostDetailData, AxiosError<IError>, ICreatePost> => ({
     mutationKey: [...postQueries.all(), "create"],
     mutationFn: ({ imageUrls, content, emotion }: ICreatePost) =>
       postPost({
@@ -72,7 +74,11 @@ export const postQueries = {
     onLikeSuccess?: () => void;
     navigate: NavigateFunction;
     currentPath?: string;
-  }) => ({
+  }): UseMutationOptions<
+    void,
+    AxiosError<IError>,
+    { postId: number; isLiked: boolean }
+  > => ({
     mutationKey: [...postQueries.all(), "like"],
     mutationFn: ({ postId, isLiked }: { postId: number; isLiked: boolean }) =>
       postLikePost({ postId, isLiked }),
@@ -92,7 +98,7 @@ export const postQueries = {
   }: {
     postId: number;
     queryClient: QueryClient;
-  }) => ({
+  }): UseMutationOptions<void, AxiosError<IError>, void> => ({
     mutationKey: [...postQueries.all(), "delete", postId],
     mutationFn: () => deletePost(postId),
     onSuccess: () => {
@@ -106,11 +112,14 @@ export const postQueries = {
     onError: createDefaultErrorHandler(ALERT_MESSAGES.POST_DELETE_FAILED),
   }),
 
-  editInfo: ({ postId }: { postId: number }) =>
-    queryOptions<IPostEditInfoResponse, Error>({
-      queryKey: [...postQueries.all(), "editInfo", postId],
-      queryFn: () => getPostEditInfo(postId),
-    }),
+  editInfo: ({
+    postId,
+  }: {
+    postId: number;
+  }): UseQueryOptions<IPostEditInfoResponse, Error> => ({
+    queryKey: [...postQueries.all(), "editInfo", postId],
+    queryFn: () => getPostEditInfo(postId),
+  }),
 
   edit: ({
     postId,
@@ -133,14 +142,17 @@ export const postQueries = {
     onError: createDefaultErrorHandler(ALERT_MESSAGES.POST_EDIT_FAILED),
   }),
 
-  userPostList: ({ userId }: { userId: number }) =>
-    infiniteQueryOptions<IPostSummaryDataPagination, Error>({
-      queryKey: [...postQueries.all(), "userPostList", userId],
-      queryFn: ({ pageParam }) =>
-        getUserPostList({ page: pageParam as number, size: 10, userId }),
-      getNextPageParam: (lastPage: IPostSummaryDataPagination) => {
-        return lastPage.last ? undefined : lastPage.currentPage + 1;
-      },
-      initialPageParam: 0,
-    }),
+  userPostList: ({
+    userId,
+  }: {
+    userId: number;
+  }): UseInfiniteQueryOptions<IPostSummaryDataPagination, Error> => ({
+    queryKey: [...postQueries.all(), "userPostList", userId],
+    queryFn: ({ pageParam }) =>
+      getUserPostList({ page: pageParam as number, size: 10, userId }),
+    getNextPageParam: (lastPage: IPostSummaryDataPagination) => {
+      return lastPage.last ? undefined : lastPage.currentPage + 1;
+    },
+    initialPageParam: 0,
+  }),
 };
