@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { userQueries } from "@/api/queries/userQueries";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { imageQueries } from "@/api/queries/ImageQueries";
+import { imageQueries } from "@/api/queries/imageQueries";
 
 export default function EditProfileForm() {
   const navigate = useNavigate();
