@@ -34,6 +34,15 @@ export default function SignupForm() {
   );
   const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
 
+  const handleCancel = () => {
+    const answer = window.confirm(
+      "취소하면 작성한 내용이 사라지는데, 그래도 취소하겠냥?",
+    );
+    if (answer) {
+      navigate(`/login`);
+    }
+  };
+
   const handleSignup = async () => {
     if (!kakaoId) {
       alert("카카오 로그인을 확인해주세옹");
@@ -85,7 +94,9 @@ export default function SignupForm() {
         setAnimal={setSelectedAnimal}
       />
       <div className="flex gap-10 w-full justify-center">
-        <Button variant="primarySolid">취소냥</Button>
+        <Button variant="primarySolid" onClick={handleCancel}>
+          취소냥
+        </Button>
         <Button
           variant="secondarySolid"
           disabled={isSubmitDisabled}
