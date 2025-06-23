@@ -3,13 +3,16 @@ import { EventSubmitForm } from "@/components/pages";
 import useTokenStore from "@/store/useTokenStore";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function EventSubmitPage() {
   const navigate = useNavigate();
+  const { eventId } = useParams();
   const { token } = useTokenStore();
 
-  const { data: topicData } = useQuery({ ...eventQueries.topic() });
+  const { data: topicData } = useQuery({
+    ...eventQueries.topic({ week: Number(eventId) }),
+  });
   const { data: hasSubmitted } = useQuery({
     ...eventQueries.hasSubmitted(),
   });
@@ -36,7 +39,7 @@ export default function EventSubmitPage() {
   return (
     <div className="w-full px-6 flex flex-col gap-5 items-center">
       <div className="flex flex-col gap-2 items-center mt-5">
-        <p className="text-4xl">¢ 제 {topicData?.week}회 미스코리냥 신청 ♧</p>
+        <p className="text-4xl">¢ 제 {eventId}회 미스코리냥 신청 ♧</p>
         <p className="text-2xl">주제 : {topicData?.topic}</p>
       </div>
       <div className="flex flex-col gap-0 items-start text-base">

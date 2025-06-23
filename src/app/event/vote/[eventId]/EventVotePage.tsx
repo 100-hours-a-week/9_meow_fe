@@ -3,14 +3,17 @@ import { EventPostCard, EventTimer, EventTop3 } from "@/components/pages";
 import { ApiAnimalType } from "@/types/animal";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEventVoteCountSSE } from "@/hooks/event/useEventVoteCountSSE";
 
 export default function EventVotePage() {
+  const { eventId } = useParams();
   const navigate = useNavigate();
 
   const { data: eventPeriod } = useQuery({ ...eventQueries.eventPeriod() });
-  const { data: topicData } = useQuery({ ...eventQueries.topic() });
+  const { data: topicData } = useQuery({
+    ...eventQueries.topic({ week: Number(eventId) }),
+  });
   const { data: eventPostList, isPending: isEventPostListPending } = useQuery({
     ...eventQueries.eventPostList(),
   });
@@ -20,7 +23,7 @@ export default function EventVotePage() {
 
   useEffect(() => {
     if (eventPeriod?.status === null || eventPeriod?.status === "신청") {
-      alert("신청 기간이 아니다냥");
+      alert("투표 기간이 아니다냥");
       navigate("/event");
     }
   }, [eventPeriod, navigate]);
