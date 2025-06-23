@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { imageQueries } from "@/api/queries/ImageQueries";
+import { imageQueries } from "@/api/queries/imageQueries";
 
 export interface IPreviewImage {
   file: File;

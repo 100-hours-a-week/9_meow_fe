@@ -10,7 +10,7 @@ import useKakaoIdStore from "@/store/useKakaoIdStore";
 import useTokenStore from "@/store/useTokenStore";
 import { signupQueries } from "@/api/queries/signupQueries";
 import { loginQueries } from "@/api/queries/loginQueries";
-import { imageQueries } from "@/api/queries/ImageQueries";
+import { imageQueries } from "@/api/queries/imageQueries";
 
 export default function SignupForm() {
   const navigate = useNavigate();
