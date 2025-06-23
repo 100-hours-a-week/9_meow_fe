@@ -3,6 +3,8 @@ import { IUserItem } from "@/components/common/UserItem";
 import { Button } from "@/components/ui/button";
 import PawIcon from "@/assets/icon/paw.svg?react";
 import { cn } from "@/lib/utils";
+import { eventQueries } from "@/api/queries/eventQueries";
+import { useMutation } from "@tanstack/react-query";
 
 interface IEventPostFooter {
   postId: number;
@@ -17,6 +19,10 @@ export default function EventPostFooter({
   likeCount,
   dark = false,
 }: IEventPostFooter) {
+  const { mutate: vote } = useMutation({
+    ...eventQueries.vote(),
+  });
+
   return (
     <div className="flex flex-row justify-between">
       <UserItem {...userInfo} size="sm" dark={dark} />
@@ -25,7 +31,7 @@ export default function EventPostFooter({
         size="icon"
         className="flex flex-row gap-1 items-center"
         onClick={() => {
-          console.log("postId: ", postId);
+          vote(postId);
         }}
       >
         <PawIcon className={cn(dark ? "fill-background" : "fill-foreground")} />

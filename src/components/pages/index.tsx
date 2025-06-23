@@ -12,4 +12,6 @@ export { default as MemberItem } from "./MemberPage/MemberItem";
 export { default as EventPostCard } from "./Event/PostCard";
 export { default as EventHistoryCard } from "./Event/HistoryCard";
 export { default as EventTop3 } from "./Event/EventTop3";
-export { default as EventApplyForm } from "./Event/EventApplyForm";
+export { default as EventSubmitForm } from "./Event/EventSubmitForm";
+export { default as EventTimer } from "./Event/Timer";
+export { default as RecentPodium } from "./Event/RecentPodium";

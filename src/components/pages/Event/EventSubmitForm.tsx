@@ -1,14 +1,24 @@
+import { eventQueries } from "@/api/queries/eventQueries";
+import { imageQueries } from "@/api/queries/ImageQueries";
 import { Button } from "@/components/ui/button";
 import { useImagePreview } from "@/hooks/common/useImagePreview";
 import { cn } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function EventApplyForm() {
+export default function EventSubmitForm() {
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { previewUrl, createPreview } = useImagePreview({
     initialImage: selectedImage,
+  });
+
+  const { mutate: submitEvent } = useMutation({
+    ...eventQueries.submitEvent({ navigate }),
+  });
+  const { mutateAsync: uploadImageToS3 } = useMutation({
+    ...imageQueries.uploadImageToS3(),
   });
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,12 +39,13 @@ export default function EventApplyForm() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (
       selectedImage &&
       window.confirm("정말 참가하겠냥? 참가하면 수정할 수 없다옹...")
     ) {
-      console.log(selectedImage);
+      const imageUrl = await uploadImageToS3(selectedImage);
+      submitEvent({ imageUrl });
     }
   };
 
