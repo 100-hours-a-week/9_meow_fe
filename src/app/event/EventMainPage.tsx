@@ -72,6 +72,9 @@ export default function EventMainPage() {
     ...eventQueries.topic({ week: eventPeriod?.week || 0 }),
     enabled: !!eventPeriod?.week,
   });
+  const { data: historySummary } = useQuery({
+    ...eventQueries.historySummary(),
+  });
 
   // TODO: 데이터 연결
   return (
@@ -87,16 +90,17 @@ export default function EventMainPage() {
         )}
       </div>
       {eventPeriod && renderBanner({ data: eventPeriod, navigate })}
-      <EventHistoryCard
-        title="제 5회 미스코리냥"
-        subject="꿀잠 모먼트"
-        timestamp={new Date()}
-        imageUrls={[
-          "/icon/badge/first-badge.PNG",
-          "/icon/badge/second-badge.PNG",
-          "/icon/badge/third-badge.PNG",
-        ]}
-      />
+      {historySummary &&
+        historySummary.map((summary) => (
+          <EventHistoryCard
+            key={summary.week}
+            title={`제 ${summary.week}회 미스코리냥`}
+            subject={summary.topic}
+            eventWeek={summary.week}
+            timestamp={new Date(summary.endAt)}
+            imageUrls={summary.imageUrl}
+          />
+        ))}
     </div>
   );
 }

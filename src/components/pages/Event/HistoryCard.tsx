@@ -1,9 +1,11 @@
 import { convertTimestamp } from "@/utils/convertTimestamp";
 import ImageBox from "./ImageBox";
+import { useNavigate } from "react-router-dom";
 
 interface IEventHistoryCard {
   title: string;
   subject: string;
+  eventWeek: number;
   timestamp: Date;
   imageUrls: string[];
 }
@@ -11,11 +13,19 @@ interface IEventHistoryCard {
 export default function EventHistoryCard({
   title,
   subject,
+  eventWeek,
   timestamp,
   imageUrls,
 }: IEventHistoryCard) {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex flex-row justify-between rounded-xl border border-muted-foreground p-2">
+    <div
+      className="flex flex-row justify-between rounded-xl border border-muted-foreground p-2"
+      onClick={() => {
+        navigate(`/event/${eventWeek}`);
+      }}
+    >
       <div className="flex flex-col gap-1">
         <div className="text-base">{title}</div>
         <div className="text-xs text-foreground/50">

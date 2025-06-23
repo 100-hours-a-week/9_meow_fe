@@ -14,9 +14,11 @@ export interface IEventTopicResponse {
 export interface IEventPostData {
   imageUrl: string;
   nickname: string;
+  animalType: ApiAnimalType;
   likeCount: number;
   postId: number;
   profileImageUrl?: string;
+  userId: number;
 }
 
 export interface IEventSubmitRequest {
@@ -25,6 +27,13 @@ export interface IEventSubmitRequest {
 
 export interface IEventSubmittedResponse {
   hasApplied: boolean;
+}
+
+export interface IEventHistorySummaryResponse {
+  week: number;
+  topic: string;
+  endAt: string;
+  imageUrl: string[];
 }
 
 export interface IEventHistoryDetailResponse {
