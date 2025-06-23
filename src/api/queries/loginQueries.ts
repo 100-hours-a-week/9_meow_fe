@@ -1,4 +1,4 @@
-import { queryOptions, UseMutationOptions } from "@tanstack/react-query";
+import { queryOptions } from "@tanstack/react-query";
 import {
   IKakaoAuthResponse,
   ILoginCode,
@@ -10,8 +10,6 @@ import {
   ALERT_MESSAGES,
   createDefaultErrorHandler,
 } from "../utils/errorHandler";
-import { IError } from "../types/common";
-import { AxiosError } from "axios";
 
 export const loginQueries = {
   all: () => ["login"] as const,
@@ -30,11 +28,7 @@ export const loginQueries = {
     setKakaoId: (kakaoId: number) => void;
     login: (id: number) => void;
     navigate: NavigateFunction;
-  }): UseMutationOptions<
-    IKakaoAuthResponse,
-    AxiosError<IError>,
-    ILoginCode
-  > => ({
+  }) => ({
     mutationKey: [...loginQueries.all(), "kakaoId"],
     mutationFn: ({ code }: ILoginCode) => getKakaoId(code),
     onSuccess: (data: IKakaoAuthResponse) => {
@@ -55,7 +49,7 @@ export const loginQueries = {
     setToken: (token: string) => void;
     navigate: NavigateFunction;
     redirectPath?: string | null;
-  }): UseMutationOptions<ILoginResponse, AxiosError<IError>, number> => ({
+  }) => ({
     mutationKey: [...loginQueries.all(), "login"],
     mutationFn: (kakaoId: number) => postLogin(kakaoId),
     onSuccess: (data: ILoginResponse) => {
