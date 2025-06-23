@@ -6,6 +6,10 @@ import {
 } from "@/api/types/login";
 import { getKakaoId, getKakaoUrl, postLogin } from "@/api/login";
 import { NavigateFunction } from "react-router-dom";
+import {
+  ALERT_MESSAGES,
+  createDefaultErrorHandler,
+} from "../utils/errorHandler";
 
 export const loginQueries = {
   all: () => ["login"] as const,
@@ -53,9 +57,6 @@ export const loginQueries = {
       const targetPath = redirectPath || "/";
       navigate(targetPath);
     },
-    onError: (error: Error) => {
-      console.error("Login failed:", error);
-      alert("로그인에 실패했다옹... 다시 시도해달라옹");
-    },
+    onError: createDefaultErrorHandler(ALERT_MESSAGES.LOGIN_FAILED),
   }),
 };

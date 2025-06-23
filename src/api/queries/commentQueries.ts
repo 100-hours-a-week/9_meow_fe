@@ -1,9 +1,8 @@
 import { ICommentDataPagination } from "../types/comment";
-import { IError } from "../types/common";
-import { AxiosError } from "axios";
 import { getCommentList, postComment } from "../comment";
 import { infiniteQueryOptions } from "@tanstack/react-query";
 import { NavigateFunction } from "react-router-dom";
+import { createAuthErrorHandler, ALERT_MESSAGES } from "../utils/errorHandler";
 
 export const commentQueries = {
   all: () => ["comment"] as const,
@@ -34,19 +33,9 @@ export const commentQueries = {
         content,
         postId,
       }),
-    onError: (error: AxiosError<IError>) => {
-      if (error.message === "No token available") {
-        if (window.confirm("로그인 해야 댓글 달 수 있다옹. 로그인 하겠냥?")) {
-          const redirectPath = currentPath
-            ? `?redirect=${encodeURIComponent(currentPath)}`
-            : "";
-          navigate(`/login${redirectPath}`);
-        }
-      }
-      if (error.response?.status !== 401) {
-        alert("댓글 작성에 실패했다옹. 잠시 후 다시 시도해보냥");
-        console.log("error", error);
-      }
-    },
+    onError: createAuthErrorHandler(
+      { navigate, currentPath },
+      ALERT_MESSAGES.COMMENT_FAILED,
+    ),
   }),
 };
