@@ -93,9 +93,13 @@ export const userQueries = {
   follow: ({
     userId,
     queryClient,
+    navigate,
+    currentPath,
   }: {
     userId: number;
     queryClient: QueryClient;
+    navigate: NavigateFunction;
+    currentPath?: string;
   }): UseMutationOptions<void, AxiosError<IError>, void> => ({
     mutationKey: [...userQueries.all(), "follow", userId],
     mutationFn: () => postFollow({ userId }),
@@ -105,7 +109,16 @@ export const userQueries = {
       });
     },
     onError: (error: AxiosError<IError>) => {
-      if (error.response?.status !== 401) {
+      if (error.message === "No token available") {
+        if (
+          window.confirm("로그인 해야 좋아요 누를 수 있다옹. 로그인 하겠냥?")
+        ) {
+          const redirectPath = currentPath
+            ? `?redirect=${encodeURIComponent(currentPath)}`
+            : "";
+          navigate(`/login${redirectPath}`);
+        }
+      } else if (error.response?.status !== 401) {
         alert("팔로우에 실패했다옹...");
       }
     },
@@ -114,9 +127,13 @@ export const userQueries = {
   unfollow: ({
     userId,
     queryClient,
+    navigate,
+    currentPath,
   }: {
     userId: number;
     queryClient: QueryClient;
+    navigate: NavigateFunction;
+    currentPath?: string;
   }): UseMutationOptions<void, AxiosError<IError>, void> => ({
     mutationKey: [...userQueries.all(), "unfollow", userId],
     mutationFn: () => deleteFollow({ userId }),
@@ -126,7 +143,16 @@ export const userQueries = {
       });
     },
     onError: (error: AxiosError<IError>) => {
-      if (error.response?.status !== 401) {
+      if (error.message === "No token available") {
+        if (
+          window.confirm("로그인 해야 좋아요 누를 수 있다옹. 로그인 하겠냥?")
+        ) {
+          const redirectPath = currentPath
+            ? `?redirect=${encodeURIComponent(currentPath)}`
+            : "";
+          navigate(`/login${redirectPath}`);
+        }
+      } else if (error.response?.status !== 401) {
         alert("언팔로우에 실패했다옹...");
       }
     },
