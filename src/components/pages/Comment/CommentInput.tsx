@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import SendIcon from "@/assets/icon/send.svg?react";
 
 const MAX_LENGTH = 50;
@@ -18,9 +18,14 @@ export default function CommentInput({ postId }: ICommentInput) {
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { mutate: createComment, isPending } = useMutation({
-    ...commentQueries.create({ postId, navigate }),
+    ...commentQueries.create({
+      postId,
+      navigate,
+      currentPath: location.pathname + location.search,
+    }),
     onSuccess: () => {
       setValue("");
       queryClient.invalidateQueries({

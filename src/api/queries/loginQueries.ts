@@ -40,15 +40,18 @@ export const loginQueries = {
   login: ({
     setToken,
     navigate,
+    redirectPath,
   }: {
     setToken: (token: string) => void;
     navigate: NavigateFunction;
+    redirectPath?: string | null;
   }) => ({
     mutationKey: [...loginQueries.all(), "login"],
     mutationFn: (kakaoId: number) => postLogin(kakaoId),
     onSuccess: (data: ILoginResponse) => {
       setToken(data.accessToken);
-      navigate(-2);
+      const targetPath = redirectPath || "/";
+      navigate(targetPath);
     },
     onError: (error: Error) => {
       console.error("Login failed:", error);

@@ -67,9 +67,11 @@ export const postQueries = {
   like: ({
     onLikeSuccess,
     navigate,
+    currentPath,
   }: {
     onLikeSuccess?: () => void;
     navigate: NavigateFunction;
+    currentPath?: string;
   }) => ({
     mutationKey: [...postQueries.all(), "like"],
     mutationFn: ({ postId, isLiked }: { postId: number; isLiked: boolean }) =>
@@ -83,7 +85,10 @@ export const postQueries = {
         if (
           window.confirm("로그인 해야 좋아요 누를 수 있다옹. 로그인 하겠냥?")
         ) {
-          navigate("/login");
+          const redirectPath = currentPath
+            ? `?redirect=${encodeURIComponent(currentPath)}`
+            : "";
+          navigate(`/login${redirectPath}`);
         }
       } else if (error.response?.status !== 401) {
         alert("좋아요에 실패했다옹...");
