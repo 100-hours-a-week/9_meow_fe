@@ -1,12 +1,10 @@
 import { UseMutationOptions } from "@tanstack/react-query";
 import { getDuplicateNickname, postUsers } from "@/api/signup";
 import { ISignupUserRequest } from "@/api/types/signup";
-import { IError } from "@/api/types/common";
 import {
   ALERT_MESSAGES,
   createDefaultErrorHandler,
 } from "../utils/errorHandler";
-import { AxiosError } from "axios";
 
 export const signupQueries = {
   all: () => ["signup"] as const,
@@ -40,7 +38,7 @@ export const signupQueries = {
   }: {
     setKakaoId: (kakaoId: number) => void;
     login: (id: number) => void;
-  }): UseMutationOptions<number, AxiosError<IError>, ISignupUserRequest> => ({
+  }) => ({
     mutationKey: [...signupQueries.all(), "signup"],
     mutationFn: (data: ISignupUserRequest) => postUsers(data),
     onSuccess: (data: number) => {
