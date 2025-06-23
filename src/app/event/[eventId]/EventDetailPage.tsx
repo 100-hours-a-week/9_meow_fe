@@ -5,6 +5,9 @@ import { useParams } from "react-router-dom";
 
 export default function EventDetailPage() {
   const { eventId } = useParams();
+  const { data: topicData } = useQuery({
+    ...eventQueries.topic({ week: Number(eventId) }),
+  });
   const { data: historyDetail, isPending } = useQuery({
     ...eventQueries.historyDetail({ rankWeek: Number(eventId) }),
   });
@@ -18,6 +21,10 @@ export default function EventDetailPage() {
 
   return (
     <div className="flex flex-col p-3 gap-4">
+      <div className="flex flex-col gap-2 items-center">
+        <h1 className="text-4xl font-bold">¢ 제 {eventId}회 미스코리냥 ♧</h1>
+        <p className="text-2xl">주제: {topicData?.topic}</p>
+      </div>
       {top3Data && top3Data.length > 0 && (
         <div className="flex flex-row justify-between bg-foreground rounded-2xl p-2">
           {top3Data.map((detail, index) => {
