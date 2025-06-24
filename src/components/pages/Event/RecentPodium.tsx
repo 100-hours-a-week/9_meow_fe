@@ -21,12 +21,12 @@ export default function RecentPodium({
 
   return (
     <div
-      className="flex flex-col items-center justify-between rounded-xl border border-muted-foreground p-5 gap-4"
+      className="flex flex-col items-center justify-between rounded-xl border border-muted-foreground gap-4 py-3"
       onClick={() => {
         navigate(`/event/${eventWeek}`);
       }}
     >
-      <div className="flex flex-col gap-1 items-center">
+      <div className="flex flex-col gap-0 items-center">
         <div className="text-3xl">{title}</div>
         <div className="text-lg text-foreground/50">
           주제 : <span>{subject}</span>
@@ -35,7 +35,7 @@ export default function RecentPodium({
           발표 : <span>{convertTimestamp(timestamp)}</span>
         </div>
       </div>
-      <div className="flex gap-5 items-center">
+      <div className="w-full flex items-center justify-between px-2">
         {imageUrls[0] && (
           <ImageBox
             src={imageUrls[0]}

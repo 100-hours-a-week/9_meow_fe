@@ -27,7 +27,7 @@ export default function EventPostCard({
   return (
     <div
       className={cn(
-        `relative w-[100px] flex flex-col gap-1`,
+        `relative w-[120px] flex flex-col gap-1`,
         dark && "text-background",
       )}
     >

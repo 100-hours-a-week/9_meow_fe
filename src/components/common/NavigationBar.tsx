@@ -6,7 +6,7 @@ import useTokenStore from "@/store/useTokenStore";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useLocation } from "react-router-dom";
 import {
-  CalendarIcon,
+  PartyPopper,
   HomeIcon,
   MessageCircleIcon,
   PlusIcon,
@@ -32,7 +32,7 @@ export default function NavigationBar() {
       {renderIconButton("/", <HomeIcon className="stroke-foreground size-6" />)}
       {renderIconButton(
         "/event",
-        <CalendarIcon className="stroke-foreground size-6" />,
+        <PartyPopper className="stroke-foreground size-6" />,
       )}
       {renderIconButton(
         "/create",

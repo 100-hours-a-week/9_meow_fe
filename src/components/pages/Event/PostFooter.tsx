@@ -30,7 +30,7 @@ export default function EventPostFooter({
       <UserItem {...userInfo} size="sm" dark={dark} />
       <Button
         variant="ghost"
-        size="icon"
+        size="sm"
         className="flex flex-row gap-1 items-center"
         disabled={!isVoteTime}
         onClick={() => {

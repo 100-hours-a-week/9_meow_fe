@@ -28,7 +28,7 @@ export default function EventTop3() {
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center bg-foreground text-background p-5 rounded-2xl gap-3">
+      <div className="w-full h-[180px] flex flex-col items-center justify-center bg-foreground text-background p-5 rounded-2xl gap-1">
         <WifiOff className="w-8 h-8" />
         <div className="text-center">
           <div className="font-bold mb-2">실시간 연결 실패</div>
@@ -49,15 +49,15 @@ export default function EventTop3() {
 
   if (!top3Data || top3Data.length === 0) {
     return (
-      <div className="flex items-center justify-center bg-foreground text-background p-5 rounded-2xl gap-2">
+      <div className="w-full h-[180px] flex items-center justify-center bg-foreground text-background p-5 rounded-2xl gap-2">
         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-background"></div>
-        <span>실시간 데이터 로딩 중...</span>
+        <span>실시간 Top3를 가져오는 중이다냥...</span>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-row justify-between bg-foreground rounded-2xl p-2">
+    <div className="w-full h-[180px] flex flex-row justify-between bg-foreground rounded-2xl p-2 items-center">
       <EventPostCard {...convertToEventPostCard(top3Data[0], "1st")} dark />
       {top3Data[1] && (
         <EventPostCard {...convertToEventPostCard(top3Data[1], "2nd")} dark />

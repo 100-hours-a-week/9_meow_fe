@@ -48,7 +48,7 @@ export default function EventDetailPage() {
           })}
         </div>
       )}
-      <div className="flex flex-row flex-wrap gap-3">
+      <div className="flex flex-row flex-wrap gap-3 justify-center">
         {remainingData &&
           remainingData.map((detail) => (
             <EventPostCard
