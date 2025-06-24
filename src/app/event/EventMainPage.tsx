@@ -6,22 +6,22 @@ import { useQuery } from "@tanstack/react-query";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
 function renderBanner({
-  data,
+  eventPeriodData,
   navigate,
 }: {
-  data: IEventPeriodResponse;
+  eventPeriodData: IEventPeriodResponse;
   navigate: NavigateFunction;
 }) {
-  switch (data.status) {
+  switch (eventPeriodData.status) {
     case "신청":
       return (
         <EventTimer
           title="신청까지 남은 시간"
-          endTimestamp={new Date(data.time)}
+          endTimestamp={new Date(eventPeriodData.time)}
           button={
             <Button
               variant="primarySolid"
-              onClick={() => navigate(`/event/submit/${data.week}`)}
+              onClick={() => navigate(`/event/submit/${eventPeriodData.week}`)}
             >
               ♤ 신청하러 가기 ♤
             </Button>
@@ -32,12 +32,12 @@ function renderBanner({
       return (
         <EventTimer
           title="투표까지 남은 시간"
-          endTimestamp={new Date(data.time)}
+          endTimestamp={new Date(eventPeriodData.time)}
           button={
             <Button
               variant="secondarySolid"
               onClick={() => {
-                navigate(`/event/vote/${data.week}`);
+                navigate(`/event/vote/${eventPeriodData.week}`);
               }}
             >
               ♧ 신청한 사진 보러 가기 ♧
@@ -49,11 +49,11 @@ function renderBanner({
       return (
         <EventTimer
           title="투표 마감까지 남은 시간"
-          endTimestamp={new Date(data.time)}
+          endTimestamp={new Date(eventPeriodData.time)}
           button={
             <Button
               variant="secondarySolid"
-              onClick={() => navigate(`/event/vote/${data.week}`)}
+              onClick={() => navigate(`/event/vote/${eventPeriodData.week}`)}
             >
               ♧ 투표하러 가기 ♧
             </Button>
@@ -67,12 +67,12 @@ function renderBanner({
 
 export default function EventMainPage() {
   const navigate = useNavigate();
-  const { data: eventPeriod } = useQuery({ ...eventQueries.period() });
+  const { data: eventPeriodData } = useQuery({ ...eventQueries.period() });
   const { data: topicData } = useQuery({
-    ...eventQueries.topic({ week: eventPeriod?.week || 0 }),
-    enabled: !!eventPeriod?.week,
+    ...eventQueries.topic({ week: eventPeriodData?.week || 0 }),
+    enabled: !!eventPeriodData?.week,
   });
-  const { data: historySummary } = useQuery({
+  const { data: historySummaryData } = useQuery({
     ...eventQueries.historySummary(),
   });
   const { data: recentPostData } = useQuery({
@@ -83,15 +83,15 @@ export default function EventMainPage() {
     <div className="p-5 flex flex-col gap-5">
       <div className="flex flex-col gap-2 items-center">
         <h1 className="text-4xl font-bold">
-          {eventPeriod && eventPeriod?.status === null
+          {eventPeriodData && eventPeriodData?.status === null
             ? "¢ 미스코리냥 ♧"
-            : `¢ 제 ${eventPeriod?.week}회 미스코리냥 ♧`}
+            : `¢ 제 ${eventPeriodData?.week}회 미스코리냥 ♧`}
         </h1>
-        {eventPeriod?.status !== null && (
+        {eventPeriodData?.status !== null && (
           <p className="text-2xl">주제: {topicData?.topic}</p>
         )}
       </div>
-      {eventPeriod && eventPeriod.status === "신청" && (
+      {eventPeriodData && eventPeriodData.status === "신청" && (
         <div className="flex flex-col gap-2">
           <h3 className="text-base font-bold text-center">
             사용자들이 방금 신청한 사진이다냥 ♤
@@ -109,24 +109,24 @@ export default function EventMainPage() {
           </div>
         </div>
       )}
-      {eventPeriod && renderBanner({ data: eventPeriod, navigate })}
-      {eventPeriod && eventPeriod.status === null ? (
-        historySummary &&
-        historySummary.length > 0 && (
+      {eventPeriodData && renderBanner({ eventPeriodData, navigate })}
+      {eventPeriodData && eventPeriodData.status === null ? (
+        historySummaryData &&
+        historySummaryData.length > 0 && (
           <>
             {/* 가장 최근 history를 크게 보여줌 */}
 
             <RecentPodium
-              title={`제 ${historySummary[0].week}회 미스코리냥`}
-              subject={historySummary[0].topic}
-              eventWeek={historySummary[0].week}
-              timestamp={new Date(historySummary[0].endAt)}
-              imageUrls={historySummary[0].imageUrl}
+              title={`제 ${historySummaryData[0].week}회 미스코리냥`}
+              subject={historySummaryData[0].topic}
+              eventWeek={historySummaryData[0].week}
+              timestamp={new Date(historySummaryData[0].endAt)}
+              imageUrls={historySummaryData[0].imageUrl}
             />
 
             {/* 나머지 history를 아래에 나열 */}
             <div className="flex flex-col gap-2 mt-4">
-              {historySummary.slice(1).map((summary) => (
+              {historySummaryData.slice(1).map((summary) => (
                 <EventHistoryCard
                   key={summary.week}
                   title={`제 ${summary.week}회 미스코리냥`}
@@ -141,8 +141,8 @@ export default function EventMainPage() {
         )
       ) : (
         <>
-          {historySummary &&
-            historySummary.map((summary) => (
+          {historySummaryData &&
+            historySummaryData.map((summary) => (
               <EventHistoryCard
                 key={summary.week}
                 title={`제 ${summary.week}회 미스코리냥`}
