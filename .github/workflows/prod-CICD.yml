@@ -150,8 +150,8 @@ jobs:
         id: get_version
         shell: bash
         run: |
-          # If head commit is tagged, use that tag or use the latest tag
-          VERSION=&(git describe --tags --exact-match 2>/dev/null || echo "latest")
+          # If head commit is tagged, use that tag or fallback to "latest"
+          VERSION=$(git describe --tags --exact-match 2>/dev/null || echo "latest")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Build & Push Docker Image
