@@ -8,6 +8,7 @@ import {
   getEventTopic,
   postEvent,
   postVote,
+  getEventRecentPost,
 } from "../event";
 import {
   IEventHistorySummaryResponse,
@@ -60,6 +61,12 @@ export const eventQueries = {
       }
     },
   }),
+
+  recentPost: () =>
+    queryOptions<string[]>({
+      queryKey: [...eventQueries.all(), "recentPost"],
+      queryFn: () => getEventRecentPost(),
+    }),
 
   hasSubmitted: () =>
     queryOptions<IEventSubmittedResponse>({
