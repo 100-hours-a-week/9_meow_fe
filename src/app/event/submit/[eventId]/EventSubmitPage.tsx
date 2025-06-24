@@ -14,7 +14,7 @@ export default function EventSubmitPage() {
   const { data: topicData } = useQuery({
     ...eventQueries.topic({ week: Number(eventId) }),
   });
-  const { data: hasSubmitted } = useQuery({
+  const { data: hasSubmittedData } = useQuery({
     ...eventQueries.hasSubmitted(),
   });
 
@@ -31,11 +31,11 @@ export default function EventSubmitPage() {
   }, [token, navigate]);
 
   useEffect(() => {
-    if (hasSubmitted) {
+    if (hasSubmittedData?.hasApplied) {
       alert("이미 신청했다옹");
       navigate("/event");
     }
-  }, [hasSubmitted, navigate]);
+  }, [hasSubmittedData, navigate]);
 
   return (
     <div className="w-full px-6 flex flex-col gap-5 items-center">
