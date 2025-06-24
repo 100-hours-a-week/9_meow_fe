@@ -61,12 +61,10 @@ export default function EventVotePage() {
       </div>
       {eventPeriod?.status === "투표중" && <EventTop3 />}
       {eventPeriod?.status === "투표전" && (
-        <div className="flex flex-row items-center justify-center">
-          <EventTimer
-            title="투표까지 남은 시간"
-            endTimestamp={new Date(eventPeriod.time)}
-          />
-        </div>
+        <EventTimer
+          title="투표까지 남은 시간"
+          endTimestamp={new Date(eventPeriod.time)}
+        />
       )}
       <div className="flex flex-row flex-wrap gap-3 items-center justify-center">
         {updatedEventPostList &&
