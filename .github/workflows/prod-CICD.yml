@@ -152,12 +152,13 @@ jobs:
         run: |
           # If head commit is tagged, use that tag or fallback to "latest"
           VERSION=$(git describe --tags --exact-match 2>/dev/null || echo "latest")
+          echo "Determined version =${VERSION}"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Build & Push Docker Image
         uses: docker/build-push-action@v4
         with:
-          context: 
+          context: .
           build-args: | 
             VITE_API_URL=${{ secrets.VITE_API_URL }}
             VITE_CLOUDFRONT_URL=${{ secrets.VITE_CLOUDFRONT_URL }}
