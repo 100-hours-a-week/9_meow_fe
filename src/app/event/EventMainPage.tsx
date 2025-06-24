@@ -75,6 +75,9 @@ export default function EventMainPage() {
   const { data: historySummary } = useQuery({
     ...eventQueries.historySummary(),
   });
+  const { data: recentPostData } = useQuery({
+    ...eventQueries.recentPost(),
+  });
 
   return (
     <div className="p-5 flex flex-col gap-5">
@@ -88,6 +91,25 @@ export default function EventMainPage() {
           <p className="text-2xl">주제: {topicData?.topic}</p>
         )}
       </div>
+      {eventPeriod && eventPeriod.status === "신청" && (
+        <div className="flex flex-col gap-2">
+          <h3 className="text-base font-bold text-center">
+            사용자들이 방금 신청한 사진이다냥 ♤
+          </h3>
+          <div className="flex flex-row gap-5 justify-center">
+            {recentPostData?.map((image, index) => (
+              <div key={index} className="flex flex-row gap-2 ">
+                <img
+                  src={image}
+                  alt="recent post"
+                  className="w-24 h-24 object-cover rounded-lg border border-muted-foreground"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {eventPeriod && renderBanner({ data: eventPeriod, navigate })}
       {eventPeriod && eventPeriod.status === null ? (
         historySummary &&
         historySummary.length > 0 && (
@@ -119,7 +141,6 @@ export default function EventMainPage() {
         )
       ) : (
         <>
-          {eventPeriod && renderBanner({ data: eventPeriod, navigate })}
           {historySummary &&
             historySummary.map((summary) => (
               <EventHistoryCard

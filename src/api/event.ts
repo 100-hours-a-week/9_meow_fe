@@ -34,6 +34,13 @@ export const postEvent = async (data: IEventSubmitRequest) => {
   return response.data;
 };
 
+export const getEventRecentPost = async () => {
+  const response = await defaultInstance.get<string[]>(
+    `/event-posts/recent-images`,
+  );
+  return response.data;
+};
+
 export const getEventSubmitted = async () => {
   const response =
     await authInstance.get<IEventSubmittedResponse>(`/event-posts/applied`);
