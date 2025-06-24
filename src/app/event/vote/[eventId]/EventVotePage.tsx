@@ -1,13 +1,15 @@
 import { eventQueries } from "@/api/queries/eventQueries";
 import { EventPostCard, EventTimer, EventTop3 } from "@/components/pages";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEventVoteCountSSE } from "@/hooks/event/useEventVoteCountSSE";
+import { useTimer } from "@/hooks/useTimer";
 
 export default function EventVotePage() {
   const { eventId } = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { data: eventPeriod } = useQuery({ ...eventQueries.period() });
   const { data: topicData } = useQuery({
@@ -17,8 +19,13 @@ export default function EventVotePage() {
     ...eventQueries.postList(),
   });
 
-  // SSE를 통한 실시간 좋아요 수 업데이트
-  const { voteCountData } = useEventVoteCountSSE(eventPeriod);
+  const timeLeft = useTimer({
+    endTimestamp: new Date(eventPeriod?.time || ""),
+    onTimeUp: () =>
+      queryClient.invalidateQueries({
+        queryKey: eventQueries.all(),
+      }),
+  });
 
   useEffect(() => {
     if (eventPeriod?.status === null || eventPeriod?.status === "신청") {
@@ -26,6 +33,9 @@ export default function EventVotePage() {
       navigate("/event");
     }
   }, [eventPeriod, navigate]);
+
+  // SSE를 통한 실시간 좋아요 수 업데이트
+  const { voteCountData } = useEventVoteCountSSE(eventPeriod);
 
   // 실시간 좋아요 수가 포함된 포스트 리스트 생성
   const updatedEventPostList = useMemo(() => {
@@ -53,19 +63,26 @@ export default function EventVotePage() {
 
   return (
     <div className="flex flex-col gap-5 p-2">
-      <div className="flex flex-col gap-2 items-center">
-        <h1 className="text-4xl font-bold">¢ 투표하라냥 ♧</h1>
-        {eventPeriod?.status !== null && (
-          <p className="text-2xl">주제: {topicData?.topic}</p>
+      <div className="w-full flex flex-col gap-0 items-center">
+        <div className="flex flex-col gap-0 items-center">
+          <h1 className="text-4xl font-bold">¢ 투표하라냥 ♧</h1>
+          {eventPeriod?.status === "투표중" && (
+            <div className="w-[100px] fixed top-2 z-10 bg-foreground text-background rounded-lg p-2 text-center">
+              {timeLeft}
+            </div>
+          )}
+          {eventPeriod?.status !== null && (
+            <p className="text-2xl">주제: {topicData?.topic}</p>
+          )}
+        </div>
+        {eventPeriod?.status === "투표중" && <EventTop3 />}
+        {eventPeriod?.status === "투표전" && (
+          <EventTimer
+            title="투표까지 남은 시간"
+            endTimestamp={new Date(eventPeriod.time)}
+          />
         )}
       </div>
-      {eventPeriod?.status === "투표중" && <EventTop3 />}
-      {eventPeriod?.status === "투표전" && (
-        <EventTimer
-          title="투표까지 남은 시간"
-          endTimestamp={new Date(eventPeriod.time)}
-        />
-      )}
       <div className="flex flex-row flex-wrap gap-3 items-center justify-center">
         {updatedEventPostList &&
           updatedEventPostList.map((post) => (
