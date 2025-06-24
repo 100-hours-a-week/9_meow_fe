@@ -1,5 +1,7 @@
 import { calculateTimeLeft } from "@/utils/calculateTimeLeft";
 import { useState, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { eventQueries } from "@/api/queries/eventQueries";
 
 interface IEventTimer {
   title: string;
@@ -13,6 +15,7 @@ export default function EventTimer({
   button,
 }: IEventTimer) {
   const [timeLeft, setTimeLeft] = useState("00 : 00 : 00");
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     // 초기 계산
@@ -23,11 +26,18 @@ export default function EventTimer({
     const timer = setInterval(() => {
       const calculatedTimeLeft = calculateTimeLeft(endTimestamp);
       setTimeLeft(calculatedTimeLeft);
+
+      // 타이머가 0이 되면 콜백 호출
+      if (calculatedTimeLeft === "00 : 00 : 00") {
+        queryClient.invalidateQueries({
+          queryKey: eventQueries.all(),
+        });
+      }
     }, 1000);
 
     // 컴포넌트 언마운트 시 타이머 정리
     return () => clearInterval(timer);
-  }, [endTimestamp]);
+  }, [endTimestamp, queryClient]);
 
   return (
     <div className="flex flex-col items-center justify-center bg-foreground text-background p-5 rounded-3xl gap-3">
