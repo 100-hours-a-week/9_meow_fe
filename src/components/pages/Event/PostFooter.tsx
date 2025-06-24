@@ -11,6 +11,7 @@ interface IEventPostFooter {
   userInfo: IUserItem;
   likeCount: number;
   dark?: boolean;
+  isVoteTime?: boolean;
 }
 
 export default function EventPostFooter({
@@ -18,6 +19,7 @@ export default function EventPostFooter({
   userInfo,
   likeCount,
   dark = false,
+  isVoteTime = false,
 }: IEventPostFooter) {
   const { mutate: vote } = useMutation({
     ...eventQueries.vote(),
@@ -30,6 +32,7 @@ export default function EventPostFooter({
         variant="ghost"
         size="icon"
         className="flex flex-row gap-1 items-center"
+        disabled={!isVoteTime}
         onClick={() => {
           vote(postId);
         }}

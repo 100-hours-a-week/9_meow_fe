@@ -6,7 +6,9 @@ export interface IEventVoteCountDataItem {
   likeCount: number;
 }
 
-export const useEventVoteCountSSE = () => {
+export const useEventVoteCountSSE = (eventPeriod?: {
+  status: string | null;
+}) => {
   const [voteCountData, setVoteCountData] = useState<
     IEventVoteCountDataItem[] | null
   >(null);
@@ -37,6 +39,16 @@ export const useEventVoteCountSSE = () => {
   );
 
   useEffect(() => {
+    // 투표 중이 아닐 때는 연결하지 않음
+    if (eventPeriod?.status !== "투표중") {
+      if (eventSourceRef.current) {
+        setIsConnected(false);
+        eventSourceRef.current.close();
+        eventSourceRef.current = null;
+      }
+      return;
+    }
+
     const connectSSE = () => {
       try {
         const eventSource = new EventSource(
@@ -82,7 +94,7 @@ export const useEventVoteCountSSE = () => {
         eventSourceRef.current = null;
       }
     };
-  }, []);
+  }, [eventPeriod?.status]); // eventPeriod.status를 의존성으로 추가
 
   const reconnect = () => {
     if (eventSourceRef.current) {

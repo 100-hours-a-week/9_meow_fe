@@ -12,6 +12,7 @@ export interface IEventPostCard {
   likeCount: number;
   rank?: TRank;
   dark?: boolean;
+  isVoteTime?: boolean;
 }
 
 export default function EventPostCard({
@@ -21,6 +22,7 @@ export default function EventPostCard({
   likeCount,
   rank = "none",
   dark = false,
+  isVoteTime = false,
 }: IEventPostCard) {
   return (
     <div
@@ -35,6 +37,7 @@ export default function EventPostCard({
         userInfo={userInfo}
         likeCount={likeCount}
         dark={dark}
+        isVoteTime={isVoteTime}
       />
     </div>
   );
