@@ -128,7 +128,7 @@ jobs:
           echo "REGISTRY=${registry}"    >> $GITHUB_ENV
           echo "IMAGE_URI=${image_uri}"  >> $GITHUB_ENV
           echo "APP_NAME=meow-${deploy_env}-deployment" >> $GITHUB_ENV
-          echo "DG_NAME=meow-${deploy_env}-deployment_group" >> $GITHUB_ENV
+          echo "DG_NAME=DG-meow-prod-fe" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
