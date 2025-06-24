@@ -18,7 +18,7 @@ export default function EventVotePage() {
   });
 
   // SSE를 통한 실시간 좋아요 수 업데이트
-  const { voteCountData } = useEventVoteCountSSE();
+  const { voteCountData } = useEventVoteCountSSE(eventPeriod);
 
   useEffect(() => {
     if (eventPeriod?.status === null || eventPeriod?.status === "신청") {
