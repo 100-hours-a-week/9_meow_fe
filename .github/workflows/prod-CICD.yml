@@ -1,0 +1,211 @@
+name: Frontend CI & CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+#   unit-tests:
+#     name: 🔨 Unit Tests
+#     runs-on: ubuntu-latest
+#     if: >
+#       !contains(github.event.head_commit.message, '[skip ci]') &&
+#       !contains(github.event.head_commit.message, '[ci skip]') &&
+#       github.event_name == 'pull_request' &&
+#       github.base_ref == 'develop' 
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '18'
+#       - run: npm ci
+#       - run: npm run test:unit
+
+  # integration-tests:
+  #   name: 🔗 Integration Tests
+  #   runs-on: ubuntu-latest
+  #   needs: unit-tests
+  #   if: >
+  #     !contains(github.event.head_commit.message, '[skip ci]') &&
+  #     !contains(github.event.head_commit.message, '[ci skip]') &&
+  #     github.event_name == 'pull_request' &&
+  #     contains(github.base_ref, 'main') 
+  #   services:
+  #     mysql:
+  #       image: mysql:8
+  #       env:
+  #         MYSQL_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
+  #         MYSQL_DATABASE: community_db
+  #       ports:
+  #         - 3306:3306
+  #       options: >-
+  #         --health-cmd="mysqladmin ping --silent"
+  #         --health-interval=10s --health-retries=3
+  #   env:
+  #     BACKEND_PORT: 8080
+  #     FRONTEND_PORT: 4173
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Checkout Backend for Integration
+  #       uses: actions/checkout@v3
+  #       with:
+  #         repository: 100-hours-a-week/9_meow_be
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         path: backend
+  #     - name: Setup Java 17
+  #       uses: actions/setup-java@v3
+  #       with:
+  #         distribution: temurin
+  #         java-version: 17
+  #     - run: |
+  #         cd backend
+  #         mvn clean package -DskipTests
+  #         java -jar target/*.jar &
+  #     - run: |
+  #         for i in {1..12}; do
+  #           curl -sf http://localhost:$BACKEND_PORT/api/health && break
+  #           sleep 5
+  #         done
+  #     - run: |
+  #         npm ci
+  #         npm run build
+  #         npm run preview &
+  #     - run: |
+  #         for i in {1..6}; do
+  #           curl -sf http://localhost:$FRONTEND_PORT/ && break
+  #           sleep 5
+  #         done
+  #     - run: curl -f http://localhost:$FRONTEND_PORT/api/health
+
+  deploy-frontend:
+    name: 🚀 Deploy Frontend
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' &&
+      !contains(github.event.head_commit.message, '[skip cd]') &&
+      !contains(github.event.head_commit.message, '[cd skip]')
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+            fetch-depth: 0  # Ensure full history is available for deployments
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_FOR_ACTIONS }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_FOR_ACTIONS }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Determine ENV & App Names
+        id: meta
+        shell: bash
+        run: |
+          # 1) 배포 stage
+          deploy_env=prod
+
+          # 2) 서비스명 고정
+          service_name=9_meow_fe
+
+          # 3) 레지스트리 끝의 슬래시 제거
+          registry="${{ secrets.ECR_REGISTRY }}"
+          registry="${registry%/}"
+
+          # 4) IMAGE_URI 조합 (shell 변수 사용!!)
+          image_uri="${registry}/${deploy_env}/${service_name}"
+
+          # 5) 환경변수로 내보내기
+          echo "ENV=${deploy_env}"       >> $GITHUB_ENV
+          echo "SERVICE=${service_name}" >> $GITHUB_ENV
+          echo "REGISTRY=${registry}"    >> $GITHUB_ENV
+          echo "IMAGE_URI=${image_uri}"  >> $GITHUB_ENV
+          echo "APP_NAME=meow-${deploy_env}-deployment" >> $GITHUB_ENV
+          echo "DG_NAME=meow-${deploy_env}-deployment_group" >> $GITHUB_ENV
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Cache buildx layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ env.ENV }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-${{ env.ENV }}-
+      - name: Fetch all Git Tags
+        run: git fetch --tags --quiet
+
+      - name: Determine version tag
+        id: get_version
+        shell: bash
+        run: |
+          # If head commit is tagged, use that tag or use the latest tag
+          VERSION=&(git describe --tags --exact-match 2>/dev/null || echo "latest")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Build & Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: 
+          build-args: | 
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_CLOUDFRONT_URL=${{ secrets.VITE_CLOUDFRONT_URL }}
+          push: true
+          tags: |
+            ${{ env.IMAGE_URI }}:${{ env.VERSION }}
+            ${{ env.IMAGE_URI }}:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Prepare deployment scripts from template
+        run: |
+          mkdir -p scripts
+          # 1) 템플릿 치환
+          sed \
+            -e "s#{{ECR_REGISTRY}}#${{ secrets.ECR_REGISTRY }}#g" \
+            -e "s#{{VERSION}}#${{ env.VERSION }}#g" \
+            scripts/deploy_frontend.sh.tmpl \
+            > scripts/deploy_frontend.sh
+          chmod +x scripts/deploy_frontend.sh
+
+      - name: Prepare AppSpec.yml
+        run: |
+          cat << 'EOF' > AppSpec.yml
+          version: 0.0
+          os: linux
+          hooks:
+            BeforeInstall:
+              - location: scripts/stop_frontend.sh
+                timeout: 300
+                runas: ec2-user
+            AfterInstall:
+              - location: scripts/deploy_frontend.sh
+                timeout: 300
+                runas: ec2-user
+          EOF
+
+      - name: Zip deployment bundle
+        run: zip -r deploy-bundle.zip AppSpec.yml scripts/
+
+      - name: Upload bundle to S3
+        run: |
+          aws s3 cp deploy-bundle.zip \
+            s3://${{ secrets.DEPLOY_BUCKET }}/prod/deploy-bundle.zip
+
+      - name: Trigger CodeDeploy via AWS CLI
+        run: |
+          aws deploy create-deployment \
+            --application-name ${{ env.APP_NAME }} \
+            --deployment-group-name ${{ env.DG_NAME }} \
+            --s3-location bucket=${{ secrets.DEPLOY_BUCKET }},key=prod/deploy-bundle.zip,bundleType=zip \
+            --description "Deploy ${{ env.VERSION }} to production"
