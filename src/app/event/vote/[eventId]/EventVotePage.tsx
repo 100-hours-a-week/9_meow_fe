@@ -80,6 +80,7 @@ export default function EventVotePage() {
                 animalType: post.animalType,
               }}
               likeCount={post.likeCount}
+              isVoteTime={eventPeriod?.status === "투표중"}
             />
           ))}
       </div>
