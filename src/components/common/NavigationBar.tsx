@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import useTokenStore from "@/store/useTokenStore";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   CalendarIcon,
   HomeIcon,
@@ -21,6 +21,7 @@ function renderIconButton(route: string, icon: React.ReactNode) {
 }
 
 export default function NavigationBar() {
+  const location = useLocation();
   const { token } = useTokenStore();
   const { data: profileImage } = useQuery({
     ...userQueries.userProfileImage(),
@@ -42,7 +43,9 @@ export default function NavigationBar() {
         <MessageCircleIcon className="stroke-foreground size-6" />,
       )}
       {renderIconButton(
-        token ? "/mypage/redirect" : "/login",
+        token
+          ? "/mypage/redirect"
+          : `/login?redirect=${encodeURIComponent(location.pathname)}`,
         <Avatar
           className={cn(
             "border border-muted-foreground",

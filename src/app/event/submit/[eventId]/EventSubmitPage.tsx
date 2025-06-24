@@ -3,10 +3,11 @@ import { EventSubmitForm } from "@/components/pages";
 import useTokenStore from "@/store/useTokenStore";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export default function EventSubmitPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { eventId } = useParams();
   const { token } = useTokenStore();
 
@@ -22,7 +23,7 @@ export default function EventSubmitPage() {
       if (
         window.confirm("로그인 해야 이벤트 신청이 가능하다옹. 로그인 하겠냐옹?")
       ) {
-        navigate("/login");
+        navigate(`/login?redirect=${encodeURIComponent(location.pathname)}`);
       } else {
         navigate("/event");
       }
