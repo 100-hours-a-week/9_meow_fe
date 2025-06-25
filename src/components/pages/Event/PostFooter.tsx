@@ -1,3 +1,4 @@
+import React from "react";
 import { UserItem } from "@/components/common";
 import { IUserItem } from "@/components/common/UserItem";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ interface IEventPostFooter {
   isVoteTime?: boolean;
 }
 
-export default function EventPostFooter({
+function EventPostFooter({
   postId,
   userInfo,
   likeCount,
@@ -50,3 +51,5 @@ export default function EventPostFooter({
     </div>
   );
 }
+
+export default React.memo(EventPostFooter);
