@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import React, { ChangeEvent } from "react";
 import { useImagePreview } from "@/hooks/common/useImagePreview";
 import { Label } from "@radix-ui/react-label";
 
@@ -10,7 +10,7 @@ interface IProfileImageSelection {
   setSelectedImage: (image: File) => void;
 }
 
-export default function ProfileImageSelection({
+function ProfileImageSelection({
   titleText,
   isRequired = false,
   initialImage,
@@ -62,3 +62,5 @@ export default function ProfileImageSelection({
     </div>
   );
 }
+
+export default React.memo(ProfileImageSelection);
