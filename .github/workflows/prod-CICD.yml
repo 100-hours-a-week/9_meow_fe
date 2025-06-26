@@ -197,7 +197,7 @@ jobs:
             AfterInstall:
               - location: scripts/deploy_frontend.sh
                 timeout: 300
-                runas: ec2-user
+                runas: ubuntu
           EOF
 
       - name: Zip deployment bundle
