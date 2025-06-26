@@ -184,9 +184,9 @@ jobs:
             > scripts/deploy_frontend.sh
           chmod +x scripts/deploy_frontend.sh
 
-      - name: Prepare AppSpec.yml
+      - name: Prepare appspec.yml
         run: |
-          cat << 'EOF' > AppSpec.yml
+          cat << 'EOF' > appspec.yml
           version: 0.0
           os: linux
           hooks:
@@ -201,7 +201,7 @@ jobs:
           EOF
 
       - name: Zip deployment bundle
-        run: zip -r deploy-bundle.zip AppSpec.yml scripts/
+        run: zip -r deploy-bundle.zip appspec.yml scripts/
 
       - name: Upload bundle to S3
         run: |
