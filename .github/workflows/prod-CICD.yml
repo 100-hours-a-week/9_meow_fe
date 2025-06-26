@@ -168,6 +168,11 @@ jobs:
             ${{ env.IMAGE_URI }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
+      - name: Create stop _frontend.sh script
+        run: |
+          echo -e '#!/bin/bash\necho "no frontend to stop"' > scripts/stop_frontend.sh
+          chmod +x scripts/stop_frontend.sh
+
       - name: Prepare deployment scripts from template
         run: |
           mkdir -p scripts
