@@ -193,7 +193,7 @@ jobs:
             BeforeInstall:
               - location: scripts/stop_frontend.sh
                 timeout: 300
-                runas: ec2-user
+                runas: ubuntu
             AfterInstall:
               - location: scripts/deploy_frontend.sh
                 timeout: 300
