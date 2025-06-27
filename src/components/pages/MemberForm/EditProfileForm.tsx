@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SelectAnimalType from "./SelectAnimalType";
@@ -48,6 +48,11 @@ export default function EditProfileForm() {
   const isSubmitDisabled =
     (isNicknameChanged && isNicknameDuplicate) ||
     (!isNicknameChanged && !isAnimalChanged && !isImageChanged);
+
+  const animals = useMemo(() => [ApiAnimalType.CAT, ApiAnimalType.DOG], []);
+  const handleAnimalChange = useCallback((animal: ApiAnimalType) => {
+    setSelectedAnimal(animal);
+  }, []);
 
   const handleCancel = () => {
     const answer = window.confirm(
@@ -100,9 +105,9 @@ export default function EditProfileForm() {
       <SelectAnimalType
         titleText="어떤 동물이냐옹"
         isRequired={true}
-        animals={[ApiAnimalType.CAT, ApiAnimalType.DOG]}
+        animals={animals}
         selectedAnimal={selectedAnimal}
-        setAnimal={setSelectedAnimal}
+        setAnimal={handleAnimalChange}
       />
       <div className="flex gap-10 w-full justify-center">
         <Button variant="primarySolid" onClick={handleCancel}>

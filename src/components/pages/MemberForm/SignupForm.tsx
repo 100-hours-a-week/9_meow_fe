@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
@@ -33,6 +33,11 @@ export default function SignupForm() {
     ApiAnimalType.CAT,
   );
   const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
+
+  const animals = useMemo(() => [ApiAnimalType.CAT, ApiAnimalType.DOG], []);
+  const handleAnimalChange = useCallback((animal: ApiAnimalType) => {
+    setSelectedAnimal(animal);
+  }, []);
 
   const handleCancel = () => {
     const answer = window.confirm(
@@ -89,9 +94,9 @@ export default function SignupForm() {
       <SelectAnimalType
         titleText="어떤 동물이냐옹"
         isRequired={true}
-        animals={[ApiAnimalType.CAT, ApiAnimalType.DOG]}
+        animals={animals}
         selectedAnimal={selectedAnimal}
-        setAnimal={setSelectedAnimal}
+        setAnimal={handleAnimalChange}
       />
       <div className="flex gap-10 w-full justify-center">
         <Button variant="primarySolid" onClick={handleCancel}>

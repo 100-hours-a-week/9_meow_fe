@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import {
   MAX_IMAGES,
   validateFileLength,
@@ -6,7 +6,7 @@ import {
 import { validateFileSize } from "./validation/validateFileSize";
 import { IPreviewImage } from "@/hooks/common/useImageUpload";
 
-export default function ImageInput({
+function ImageInput({
   selectedImages,
   addImage,
   removeImage,
@@ -84,3 +84,5 @@ export default function ImageInput({
     </div>
   );
 }
+
+export default React.memo(ImageInput);

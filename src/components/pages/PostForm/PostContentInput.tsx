@@ -1,3 +1,4 @@
+import React from "react";
 import { cn } from "@/lib/utils";
 
 const MAX_LENGTH = 200;
@@ -9,7 +10,7 @@ interface IPostContentInput {
   setIsSubmitDisabled: (isSubmitDisabled: boolean) => void;
 }
 
-export default function PostContentInput({
+function PostContentInput({
   content,
   setContent,
   setIsSubmitDisabled,
@@ -43,3 +44,5 @@ export default function PostContentInput({
     </div>
   );
 }
+
+export default React.memo(PostContentInput);

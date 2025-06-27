@@ -1,3 +1,4 @@
+import React from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ApiAnimalType } from "@/types/animal";
 import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
@@ -11,7 +12,7 @@ interface ISelectAnimalType {
   setAnimal: (animal: ApiAnimalType) => void;
 }
 
-export default function SelectAnimalType({
+function SelectAnimalType({
   titleText,
   isRequired = false,
   animals,
@@ -47,3 +48,5 @@ export default function SelectAnimalType({
     </div>
   );
 }
+
+export default React.memo(SelectAnimalType);
