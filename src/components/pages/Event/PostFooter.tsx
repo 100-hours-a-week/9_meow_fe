@@ -27,7 +27,7 @@ export default function EventPostFooter({
 
   return (
     <div className="flex flex-row justify-between">
-      <UserItem {...userInfo} size="sm" dark={dark} />
+      <UserItem {...userInfo} size="sm" dark={dark} disabled={isVoteTime} />
       <Button
         variant="ghost"
         size="sm"

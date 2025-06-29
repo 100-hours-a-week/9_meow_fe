@@ -1,4 +1,4 @@
-import { convertTimestamp } from "@/utils/convertTimestamp";
+import { convertTimestampToDate } from "@/utils/convertTimestamp";
 import ImageBox from "./ImageBox";
 import { useNavigate } from "react-router-dom";
 
@@ -21,18 +21,18 @@ export default function RecentPodium({
 
   return (
     <div
-      className="flex flex-col items-center justify-between rounded-xl border border-muted-foreground gap-4 py-3"
+      className="flex flex-col items-center justify-between rounded-xl border border-muted-foreground gap-4 py-3 shadow-lg"
       onClick={() => {
         navigate(`/event/${eventWeek}`);
       }}
     >
       <div className="flex flex-col gap-0 items-center">
-        <div className="text-3xl">{title}</div>
+        <div className="text-2xl md:text-3xl">{title}</div>
         <div className="text-lg text-foreground/50">
           주제 : <span>{subject}</span>
         </div>
         <div className="text-lg text-foreground/50">
-          발표 : <span>{convertTimestamp(timestamp)}</span>
+          발표 : <span>{convertTimestampToDate(timestamp)}</span>
         </div>
       </div>
       <div className="w-full flex items-center justify-between px-2">

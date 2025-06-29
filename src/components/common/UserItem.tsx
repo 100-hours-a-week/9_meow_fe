@@ -11,6 +11,7 @@ export interface IUserItem {
   animalType: ApiAnimalType;
   size?: "default" | "sm";
   dark?: boolean;
+  disabled?: boolean;
 }
 
 export default function UserItem({
@@ -20,6 +21,7 @@ export default function UserItem({
   animalType,
   size = "default",
   dark = false,
+  disabled = false,
 }: IUserItem) {
   const navigate = useNavigate();
 
@@ -34,7 +36,7 @@ export default function UserItem({
         "flex flex-row items-center gap-2 overflow-hidden",
         size === "sm" && "gap-1",
       )}
-      onClick={handleClick}
+      onClick={disabled ? undefined : handleClick}
     >
       <Avatar
         className={cn(

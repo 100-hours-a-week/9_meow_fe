@@ -1,4 +1,4 @@
-import { convertTimestamp } from "@/utils/convertTimestamp";
+import { convertTimestampToDate } from "@/utils/convertTimestamp";
 import ImageBox from "./ImageBox";
 import { useNavigate } from "react-router-dom";
 
@@ -21,7 +21,7 @@ export default function EventHistoryCard({
 
   return (
     <div
-      className="flex flex-row justify-between rounded-xl border border-muted-foreground p-2"
+      className="flex flex-row justify-between rounded-xl border border-muted-foreground p-2 shadow-md"
       onClick={() => {
         navigate(`/event/${eventWeek}`);
       }}
@@ -32,7 +32,7 @@ export default function EventHistoryCard({
           주제 : <span>{subject}</span>
         </div>
         <div className="text-xs text-foreground/50">
-          발표 : <span>{convertTimestamp(timestamp)}</span>
+          발표 : <span>{convertTimestampToDate(timestamp)}</span>
         </div>
       </div>
       <div className="flex gap-2 items-center">
@@ -40,21 +40,21 @@ export default function EventHistoryCard({
           <ImageBox
             src={imageUrls[0]}
             rank="1st"
-            className="h-[60px] w-[60px]"
+            className="h-[60px] w-[60px] md:h-[60px] md:w-[60px]"
           />
         )}
         {imageUrls[1] && (
           <ImageBox
             src={imageUrls[1]}
             rank="2nd"
-            className="h-[60px] w-[60px]"
+            className="h-[60px] w-[60px] md:h-[60px] md:w-[60px]"
           />
         )}
         {imageUrls[2] && (
           <ImageBox
             src={imageUrls[2]}
             rank="3rd"
-            className="h-[60px] w-[60px]"
+            className="h-[60px] w-[60px] md:h-[60px] md:w-[60px]"
           />
         )}
       </div>

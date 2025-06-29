@@ -62,10 +62,14 @@ export default function EventVotePage() {
   }
 
   return (
-    <div className="flex flex-col gap-5 p-2">
+    <div className="flex flex-col gap-5 p-5">
       <div className="w-full flex flex-col gap-0 items-center">
         <div className="flex flex-col gap-0 items-center">
-          <h1 className="text-4xl font-bold">¢ 투표하라냥 ♧</h1>
+          <h1 className="text-4xl font-bold">
+            {eventPeriod?.status === "투표전"
+              ? "투표 직전이다냥! 준비하라냥!"
+              : "¢ 투표하라냥 ♧"}
+          </h1>
           {eventPeriod?.status === "투표중" && (
             <div className="w-[100px] fixed top-2 z-10 bg-foreground text-background rounded-lg p-2 text-center">
               {timeLeft}
@@ -83,7 +87,7 @@ export default function EventVotePage() {
           />
         )}
       </div>
-      <div className="flex flex-row flex-wrap gap-3 items-center justify-center">
+      <div className="w-full grid grid-cols-3 gap-y-2 items-center justify-center justify-items-center">
         {updatedEventPostList &&
           updatedEventPostList.map((post) => (
             <EventPostCard
