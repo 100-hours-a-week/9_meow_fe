@@ -82,13 +82,13 @@ export default function EventMainPage() {
   return (
     <div className="p-5 flex flex-col gap-5">
       <div className="flex flex-col gap-2 items-center">
-        <h1 className="text-4xl font-bold">
+        <h1 className="text-2xl md:text-4xl font-bold">
           {eventPeriodData && eventPeriodData?.status === null
             ? "¢ 미스코리냥 ♧"
             : `¢ 제 ${eventPeriodData?.week}회 미스코리냥 ♧`}
         </h1>
         {eventPeriodData?.status !== null && (
-          <p className="text-2xl">주제: {topicData?.topic}</p>
+          <p className="text-lg md:text-2xl">주제: {topicData?.topic}</p>
         )}
       </div>
       {eventPeriodData && eventPeriodData.status === "신청" && (

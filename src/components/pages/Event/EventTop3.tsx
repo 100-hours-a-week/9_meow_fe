@@ -57,7 +57,7 @@ export default function EventTop3() {
   }
 
   return (
-    <div className="w-full h-[180px] flex flex-row justify-between bg-foreground rounded-2xl p-2 items-center">
+    <div className="w-full h-[180px] flex flex-row justify-center bg-foreground rounded-2xl items-center gap-3 md:gap-2">
       <EventPostCard {...convertToEventPostCard(top3Data[0], "1st")} dark />
       {top3Data[1] && (
         <EventPostCard {...convertToEventPostCard(top3Data[1], "2nd")} dark />

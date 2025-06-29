@@ -27,7 +27,7 @@ export default function RecentPodium({
       }}
     >
       <div className="flex flex-col gap-0 items-center">
-        <div className="text-3xl">{title}</div>
+        <div className="text-2xl md:text-3xl">{title}</div>
         <div className="text-lg text-foreground/50">
           주제 : <span>{subject}</span>
         </div>

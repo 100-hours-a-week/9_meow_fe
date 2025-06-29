@@ -22,7 +22,9 @@ export default function EventDetailPage() {
   return (
     <div className="flex flex-col p-5 gap-4">
       <div className="flex flex-col gap-2 items-center">
-        <h1 className="text-4xl font-bold">¢ 제 {eventId}회 미스코리냥 ♧</h1>
+        <h1 className="text-2xl md:text-4xl font-bold">
+          ¢ 제 {eventId}회 미스코리냥 ♧
+        </h1>
         <p className="text-2xl">주제: {topicData?.topic}</p>
       </div>
       {top3Data && top3Data.length > 0 && (
