@@ -20,7 +20,7 @@ export default function EventDetailPage() {
   const remainingData = historyDetail?.slice(3);
 
   return (
-    <div className="flex flex-col p-3 gap-4">
+    <div className="flex flex-col p-5 gap-4">
       <div className="flex flex-col gap-2 items-center">
         <h1 className="text-4xl font-bold">¢ 제 {eventId}회 미스코리냥 ♧</h1>
         <p className="text-2xl">주제: {topicData?.topic}</p>
@@ -48,7 +48,7 @@ export default function EventDetailPage() {
           })}
         </div>
       )}
-      <div className="flex flex-row flex-wrap gap-3 justify-center">
+      <div className="grid grid-cols-3 gap-y-2 justify-center justify-items-center items-center">
         {remainingData &&
           remainingData.map((detail) => (
             <EventPostCard
