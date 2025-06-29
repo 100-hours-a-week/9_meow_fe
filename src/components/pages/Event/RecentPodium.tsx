@@ -21,7 +21,7 @@ export default function RecentPodium({
 
   return (
     <div
-      className="flex flex-col items-center justify-between rounded-xl border border-muted-foreground gap-4 py-3"
+      className="flex flex-col items-center justify-between rounded-xl border border-muted-foreground gap-4 py-3 shadow-lg"
       onClick={() => {
         navigate(`/event/${eventWeek}`);
       }}

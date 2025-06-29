@@ -21,7 +21,7 @@ export default function EventHistoryCard({
 
   return (
     <div
-      className="flex flex-row justify-between rounded-xl border border-muted-foreground p-2"
+      className="flex flex-row justify-between rounded-xl border border-muted-foreground p-2 shadow-md"
       onClick={() => {
         navigate(`/event/${eventWeek}`);
       }}
