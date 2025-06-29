@@ -27,3 +27,11 @@ export const convertTimestamp = (timestamp: Date): string => {
 
   return `${year}년 ${month}월 ${day}일`;
 };
+
+export const convertTimestampToDate = (timestamp: Date): string => {
+  const year = timestamp.getFullYear();
+  const month = timestamp.getMonth() + 1;
+  const day = timestamp.getDate();
+
+  return `${year}년 ${month}월 ${day}일`;
+};

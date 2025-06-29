@@ -1,4 +1,4 @@
-import { convertTimestamp } from "@/utils/convertTimestamp";
+import { convertTimestampToDate } from "@/utils/convertTimestamp";
 import ImageBox from "./ImageBox";
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +32,7 @@ export default function RecentPodium({
           주제 : <span>{subject}</span>
         </div>
         <div className="text-lg text-foreground/50">
-          발표 : <span>{convertTimestamp(timestamp)}</span>
+          발표 : <span>{convertTimestampToDate(timestamp)}</span>
         </div>
       </div>
       <div className="w-full flex items-center justify-between px-2">
