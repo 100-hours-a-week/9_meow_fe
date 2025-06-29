@@ -25,7 +25,7 @@ export default function ImageBox({ src, rank, className }: IImageBox) {
   return (
     <div
       className={cn(
-        "relative flex flex-col gap-1 w-[120px] h-[120px]",
+        "relative flex flex-col gap-1 w-[100px] md:w-[120px] h-[100px] md:h-[120px]",
         className,
       )}
     >

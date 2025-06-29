@@ -40,21 +40,21 @@ export default function EventHistoryCard({
           <ImageBox
             src={imageUrls[0]}
             rank="1st"
-            className="h-[60px] w-[60px]"
+            className="h-[60px] w-[60px] md:h-[60px] md:w-[60px]"
           />
         )}
         {imageUrls[1] && (
           <ImageBox
             src={imageUrls[1]}
             rank="2nd"
-            className="h-[60px] w-[60px]"
+            className="h-[60px] w-[60px] md:h-[60px] md:w-[60px]"
           />
         )}
         {imageUrls[2] && (
           <ImageBox
             src={imageUrls[2]}
             rank="3rd"
-            className="h-[60px] w-[60px]"
+            className="h-[60px] w-[60px] md:h-[60px] md:w-[60px]"
           />
         )}
       </div>
