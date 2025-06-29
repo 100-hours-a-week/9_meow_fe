@@ -17,7 +17,7 @@ export default function ProfileImageSelection({
   selectedImage,
   setSelectedImage,
 }: IProfileImageSelection) {
-  const { previewUrl, createPreview } = useImagePreview({
+  const { previewUrl, error, createPreview } = useImagePreview({
     initialImage: initialImage ?? selectedImage,
   });
 
@@ -58,6 +58,7 @@ export default function ProfileImageSelection({
           />
         </label>
       </div>
+      {error && <p className="text-xs text-destructive mt-2">{error}</p>}
     </div>
   );
 }
