@@ -28,7 +28,7 @@ export default function EventSubmitPage() {
         navigate("/event");
       }
     }
-  }, [token, navigate]);
+  }, [token, navigate, location.pathname]);
 
   useEffect(() => {
     if (hasSubmittedData?.hasApplied) {
