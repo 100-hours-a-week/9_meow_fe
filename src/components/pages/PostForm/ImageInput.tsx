@@ -3,7 +3,6 @@ import {
   MAX_IMAGES,
   validateFileLength,
 } from "./validation/validateFileLength";
-import { validateFileSize } from "./validation/validateFileSize";
 import { IPreviewImage } from "@/hooks/common/useImageUpload";
 
 export default function ImageInput({
@@ -16,23 +15,27 @@ export default function ImageInput({
   removeImage: (index: number) => void;
 }) {
   const [error, setError] = useState<string | null>(null);
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
+
     const { isValid: isFileLengthValid, message: fileLengthMessage } =
       validateFileLength(selectedImages.length);
     if (!isFileLengthValid) {
       setError(fileLengthMessage);
       return;
     }
-    const { isValid: isFileSizeValid, message: fileSizeMessage } =
-      validateFileSize(files[0]);
-    if (!isFileSizeValid) {
-      setError(fileSizeMessage);
-      return;
+
+    try {
+      setError(null);
+      await addImage(files[0]);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("이미지 추가 중 오류가 발생했다냥");
+      }
     }
-    setError(null);
-    addImage(files[0]);
   };
 
   const handleDeleteImage = (index: number) => {

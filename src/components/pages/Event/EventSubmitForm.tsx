@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 export default function EventSubmitForm() {
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const { previewUrl, createPreview } = useImagePreview({
+  const { previewUrl, error, createPreview } = useImagePreview({
     initialImage: selectedImage,
   });
 
@@ -77,6 +77,7 @@ export default function EventSubmitForm() {
           onChange={handleImageChange}
         />
       </label>
+      {error && <p className="text-xs text-destructive">{error}</p>}
       <div className="flex flex-row gap-2">
         <Button variant="primarySolid" size="sm" onClick={handleCancel}>
           취소냥
