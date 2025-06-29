@@ -137,6 +137,7 @@
   body {
     @apply bg-orange-50 text-foreground;
     font-family: "Ownglyph_ParkDaHyun", sans-serif;
+    overscroll-behavior: none;
   }
   textarea:focus {
     outline: 2px solid var(--foreground);
