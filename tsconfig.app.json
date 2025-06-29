@@ -10,6 +10,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "types": ["vite-plugin-svgr/client"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -26,5 +27,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src", "svg.d.ts"]
 }

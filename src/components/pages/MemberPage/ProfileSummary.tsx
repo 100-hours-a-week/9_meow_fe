@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { userQueries } from "@/api/queries/userQueries";
 import useTokenStore from "@/store/useTokenStore";
+import LogoutIcon from "@/assets/icon/logout.svg?react";
 
 interface IProfileSummary {
   userId: number;
@@ -69,7 +70,7 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
           onClick={handleLogout}
           className="absolute top-3 right-3"
         >
-          <img src="/icon/logout.svg" alt="logout" className="size-5" />
+          <LogoutIcon className="size-5 fill-foreground" />
         </Button>
       )}
       <div className="w-full flex flex-row gap-5 justify-center">

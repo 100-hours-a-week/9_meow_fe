@@ -7,7 +7,7 @@ export const ERROR_MESSAGES = {
 } as const;
 
 export const ALERT_MESSAGES = {
-  LOGIN_REQUIRED: "로그인 해야 좋아요 누를 수 있다옹. 로그인 하겠냥?",
+  LOGIN_REQUIRED: "로그인 해야 가능하다옹. 로그인 하겠냥?",
   FOLLOW_FAILED: "팔로우에 실패했다옹... 잠시 후 다시 시도해보라냥",
   UNFOLLOW_FAILED: "언팔로우에 실패했다옹... 잠시 후 다시 시도해보라냥",
   LIKE_FAILED: "좋아요에 실패했다옹... 잠시 후 다시 시도해보라냥",

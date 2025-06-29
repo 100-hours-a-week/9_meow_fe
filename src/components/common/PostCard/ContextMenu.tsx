@@ -3,6 +3,7 @@ import { Button } from "../../ui/button";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postQueries } from "@/api/queries/postQueries";
+import DotsVerticalIcon from "@/assets/icon/dots-vertical.svg?react";
 
 export default function ContextMenu({ postId }: { postId: number }) {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function ContextMenu({ postId }: { postId: number }) {
           setIsOpen(!isOpen);
         }}
       >
-        <img src="/icon/dots-vertical.svg" alt="context menu" />
+        <DotsVerticalIcon className="fill-foreground" />
       </Button>
       {isOpen && (
         <div className="w-24 absolute top-9 right-0 bg-orange-100 rounded-lg shadow-lg p-2 gap-2 flex flex-col z-10">
