@@ -15,4 +15,8 @@ RUN npm run build
 # 2) Runtime 단계 (Nginx)
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Nginx 설정 파일 복사
+COPY nginx/nginx-prod.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
