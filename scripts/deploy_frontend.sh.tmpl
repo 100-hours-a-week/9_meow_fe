@@ -11,10 +11,10 @@ aws ecr get-login-password --region ap-northeast-2 \
 docker pull $ECR_REGISTRY/prod/9_meow_fe:$VERSION
 
 # 3) 기존 컨테이너 중지·삭제
-docker stop frontend || true
-docker rm   frontend || true
+docker stop frontend-container || true
+docker rm   frontend-container || true
 
 # 4) 새 컨테이너 실행
-docker run -d --name frontend --restart unless-stopped \
+docker run -d --name frontend-container --restart unless-stopped \
   -p 80:80 \
   $ECR_REGISTRY/prod/9_meow_fe:$VERSION
