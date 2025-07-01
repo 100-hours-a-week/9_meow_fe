@@ -39,7 +39,6 @@ export default function AISelectModal({
     setSelectedAIImageUrl(imageUrl);
   };
 
-  // TODO : 이미지 선택 연결 필요
   const handleConfirm = () => {
     if (selectedAIImageUrl) {
       onSelectImage(selectedAIImageUrl);

@@ -8,8 +8,8 @@ interface IProfileImageSelection {
   titleText?: string;
   isRequired?: boolean;
   initialImage?: string;
-  selectedImage: File | null;
-  setSelectedImage: (image: File) => void;
+  selectedImage: File | string | null;
+  setSelectedImage: (image: File | string) => void;
 }
 
 function ProfileImageSelection({
@@ -33,8 +33,8 @@ function ProfileImageSelection({
   };
 
   const handleAIImageSelect = (imageUrl: string) => {
-    // TODO: 이미지 선택 연결 필요
-    console.log(imageUrl);
+    setSelectedImage(imageUrl);
+    createPreview(imageUrl);
   };
 
   return (
