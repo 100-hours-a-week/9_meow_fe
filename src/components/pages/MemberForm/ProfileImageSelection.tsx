@@ -3,6 +3,7 @@ import { useImagePreview } from "@/hooks/common/useImagePreview";
 import { Label } from "@radix-ui/react-label";
 import AISelectModal from "./AISelectModal";
 import { Button } from "@/components/ui/button";
+import { ApiAnimalType } from "@/types/animal";
 
 interface IProfileImageSelection {
   titleText?: string;
@@ -10,6 +11,7 @@ interface IProfileImageSelection {
   initialImage?: string;
   selectedImage: File | string | null;
   setSelectedImage: (image: File | string) => void;
+  userAnimal?: ApiAnimalType;
 }
 
 function ProfileImageSelection({
@@ -18,6 +20,7 @@ function ProfileImageSelection({
   initialImage,
   selectedImage,
   setSelectedImage,
+  userAnimal,
 }: IProfileImageSelection) {
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
   const { previewUrl, error, createPreview } = useImagePreview({
@@ -82,6 +85,7 @@ function ProfileImageSelection({
       {isAIModalOpen && (
         <AISelectModal
           isOpen={isAIModalOpen}
+          userAnimal={userAnimal}
           onClose={() => setIsAIModalOpen(false)}
           onSelectImage={handleAIImageSelect}
         />

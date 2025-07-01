@@ -2,15 +2,22 @@ import Modal from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { useImagePreview } from "@/hooks/common/useImagePreview";
 import { ChangeEvent, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { userQueries } from "@/api/queries/userQueries";
+import { imageQueries } from "@/api/queries/ImageQueries";
+import { Loader2 } from "lucide-react";
+import { ApiAnimalType } from "@/types/animal";
 
 interface AISelectModalProps {
   isOpen: boolean;
+  userAnimal?: ApiAnimalType;
   onClose: () => void;
   onSelectImage: (imageUrl: string) => void;
 }
 
 export default function AISelectModal({
   isOpen,
+  userAnimal,
   onClose,
   onSelectImage,
 }: AISelectModalProps) {
@@ -20,18 +27,25 @@ export default function AISelectModal({
     initialImage: selectedImage ?? "",
   });
 
-  // TODO : 이미지 조회 연결
-  const aiGeneratedImages = [
-    "/logo.svg",
-    "/logo_blur.png",
-    "/realize_logo.png",
-  ];
+  const { mutateAsync: uploadImageToS3 } = useMutation({
+    ...imageQueries.uploadImageToS3(),
+  });
+  const {
+    mutate: postAiProfileImage,
+    data: aiProfileImageData,
+    isPending,
+  } = useMutation(userQueries.aiProfileImage());
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setSelectedImage(file);
       createPreview(file);
+      const imageUrl = file ? await uploadImageToS3(file as File) : undefined;
+      postAiProfileImage({
+        image_url: imageUrl ?? "",
+        animal: userAnimal ?? ApiAnimalType.CAT,
+      });
     }
   };
 
@@ -99,33 +113,41 @@ export default function AISelectModal({
           <br />¢ 배경이 깨끗하면 좋다냥!
         </p>
 
-        <div className="bg-orange-100 w-full rounded-lg p-4 flex flex-col items-center gap-5">
-          <h3 className="text-2xl font-bold">이 중에 골라봐냥</h3>
-          <div className="flex flex-row justify-between w-full px-8">
-            {aiGeneratedImages.map((imageUrl, index) => (
-              <div
-                key={index}
-                className={`relative group cursor-pointer rounded-full border-2 overflow-hidden transition-colors ${
-                  selectedAIImageUrl === imageUrl
-                    ? "border-foreground"
-                    : "border-foreground/30 hover:border-foreground/60"
-                }`}
-                onClick={() => handleAIImageSelect(imageUrl)}
-              >
-                <img
-                  src={imageUrl}
-                  alt="AI Generated Image"
-                  className="w-[60px] h-[60px] object-cover"
-                />
-                {selectedAIImageUrl === imageUrl && (
-                  <div className="absolute inset-0 bg-foreground/20 flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">✓</span>
-                  </div>
-                )}
-              </div>
-            ))}
+        {isPending ? (
+          <div className="flex justify-center items-center h-full">
+            <Loader2 className="w-10 h-10 animate-spin" />
           </div>
-        </div>
+        ) : (
+          aiProfileImageData && (
+            <div className="bg-orange-100 w-full rounded-lg p-4 flex flex-col items-center gap-5">
+              <h3 className="text-2xl font-bold">이 중에 골라봐냥</h3>
+              <div className="flex flex-row justify-between w-full px-8">
+                {aiProfileImageData?.map((imageUrl, index) => (
+                  <div
+                    key={index}
+                    className={`relative group cursor-pointer rounded-full border-2 overflow-hidden transition-colors ${
+                      selectedAIImageUrl === imageUrl
+                        ? "border-foreground"
+                        : "border-foreground/30 hover:border-foreground/60"
+                    }`}
+                    onClick={() => handleAIImageSelect(imageUrl)}
+                  >
+                    <img
+                      src={imageUrl}
+                      alt="AI Generated Image"
+                      className="w-[60px] h-[60px] object-cover"
+                    />
+                    {selectedAIImageUrl === imageUrl && (
+                      <div className="absolute inset-0 bg-foreground/20 flex items-center justify-center">
+                        <span className="text-white font-bold text-sm">✓</span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        )}
 
         <div className="flex justify-end gap-2 pt-4">
           <Button variant="primarySolid" onClick={onClose}>

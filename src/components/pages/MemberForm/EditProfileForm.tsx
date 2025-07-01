@@ -71,7 +71,7 @@ export default function EditProfileForm() {
       const imageUrl =
         selectedImage instanceof File
           ? await uploadImageToS3(selectedImage)
-          : (initialImage ?? undefined);
+          : ((selectedImage || initialImage) ?? undefined);
 
       editProfile({
         nickname: nicknameValue,
@@ -98,6 +98,7 @@ export default function EditProfileForm() {
         initialImage={initialImage ?? undefined}
         selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
+        userAnimal={selectedAnimal}
       />
       <NicknameInput
         isRequired={true}
