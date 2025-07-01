@@ -79,11 +79,13 @@ function ProfileImageSelection({
         </div>
         {error && <p className="text-xs text-destructive mt-2">{error}</p>}
       </div>
-      <AISelectModal
-        isOpen={isAIModalOpen}
-        onClose={() => setIsAIModalOpen(false)}
-        onSelectImage={handleAIImageSelect}
-      />
+      {isAIModalOpen && (
+        <AISelectModal
+          isOpen={isAIModalOpen}
+          onClose={() => setIsAIModalOpen(false)}
+          onSelectImage={handleAIImageSelect}
+        />
+      )}
     </>
   );
 }
