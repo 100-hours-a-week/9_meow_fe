@@ -28,7 +28,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Background>
-          <div className="w-full flex flex-col bg-background max-w-[430px] mx-auto outline outline-foreground/20 shadow-xl overflow-y-hidden">
+          <div className="relative w-full flex flex-col bg-background max-w-[430px] mx-auto outline outline-foreground/20 shadow-xl overflow-y-hidden">
             <Header />
             <div className="flex-1 overflow-y-auto mb-12">
               <Routes>
