@@ -1,13 +1,16 @@
+import { useRef } from "react";
 import { PostCard } from "@/components/common";
 import { IPostContent } from "@/components/common/PostCard/PostContent";
 import { IUserItem } from "@/components/common/UserItem";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
-import React, { useRef } from "react";
-import { useObserver } from "@/hooks/common/useObserver";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { postQueries } from "@/api/queries/postQueries";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { useObserver } from "@/hooks/common/useObserver";
 
 export default function MainPage() {
+  const parentRef = useRef(null);
+
   const { data, fetchNextPage, hasNextPage, isLoading, error } =
     useInfiniteQuery({
       ...postQueries.list(),
@@ -17,9 +20,22 @@ export default function MainPage() {
   useObserver({
     target: lastElementRef as React.RefObject<HTMLElement>,
     onIntersect: ([entry]) => {
-      if (entry.isIntersecting && hasNextPage) {
+      if (entry.isIntersecting && hasNextPage && !isLoading) {
         fetchNextPage();
       }
+    },
+  });
+
+  const allPosts = data ? data.pages.flatMap((page) => page.content) : [];
+
+  const rowVirtualizer = useVirtualizer({
+    count: allPosts.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 310, // PostCard 높이(300) + gap(10) = 310
+    overscan: 5,
+    getItemKey: (index) => {
+      const post = allPosts[index];
+      return post ? `post-${post.id}` : `loading-${index}`;
     },
   });
 
@@ -39,9 +55,31 @@ export default function MainPage() {
   }
 
   return (
-    <div className="pt-2 flex flex-col gap-2.5 px-2">
-      {data.pages.map((page) =>
-        page.content.map((post) => {
+    <div className="pt-2 px-2 h-screen overflow-auto" ref={parentRef}>
+      <div
+        className="w-full relative"
+        style={{ height: `${rowVirtualizer.getTotalSize()}px` }}
+      >
+        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+          const post = allPosts[virtualRow.index];
+
+          if (!post) {
+            return (
+              <div
+                key={`loading-${virtualRow.index}`}
+                className="absolute top-0 left-0 w-full"
+                style={{
+                  height: `${virtualRow.size}px`,
+                  transform: `translateY(${virtualRow.start}px)`,
+                }}
+              >
+                <div className="flex items-center justify-center h-full">
+                  <div>Loading...</div>
+                </div>
+              </div>
+            );
+          }
+
           const userInfo: IUserItem = {
             userId: post.userId,
             nickname: post.nickname,
@@ -60,19 +98,30 @@ export default function MainPage() {
             timestamp: new Date(post.createdAt),
             emotion: post.emotion,
           };
+
           return (
-            <PostCard key={`post-${post.id}`} postId={post.id}>
-              <PostCard.Header
-                userInfo={userInfo}
-                isMyPost={post.myPost}
-                postId={post.id}
-              />
-              <PostCard.Content {...postContent} />
-              <PostCard.Footer {...postInfo} />
-            </PostCard>
+            <div
+              key={`post-${post.id}`}
+              data-index={virtualRow.index}
+              ref={rowVirtualizer.measureElement}
+              className="absolute top-0 left-0 w-full"
+              style={{ transform: `translateY(${virtualRow.start}px)` }}
+            >
+              <div className="pb-2.5">
+                <PostCard postId={post.id}>
+                  <PostCard.Header
+                    userInfo={userInfo}
+                    isMyPost={post.myPost}
+                    postId={post.id}
+                  />
+                  <PostCard.Content {...postContent} />
+                  <PostCard.Footer {...postInfo} />
+                </PostCard>
+              </div>
+            </div>
           );
-        }),
-      )}
+        })}
+      </div>
       <div ref={lastElementRef} />
     </div>
   );
