@@ -121,7 +121,7 @@ export default function AISelectModal({
           aiProfileImageData && (
             <div className="bg-orange-100 w-full rounded-lg p-4 flex flex-col items-center gap-5">
               <h3 className="text-2xl font-bold">이 중에 골라봐냥</h3>
-              <div className="flex flex-row justify-between w-full px-8">
+              <div className="flex flex-row w-full gap-2 justify-center">
                 {aiProfileImageData?.map((imageUrl, index) => (
                   <div
                     key={index}
@@ -135,7 +135,7 @@ export default function AISelectModal({
                     <img
                       src={imageUrl}
                       alt="AI Generated Image"
-                      className="w-[60px] h-[60px] object-cover"
+                      className="w-[80px] h-[80px] object-cover"
                     />
                     {selectedAIImageUrl === imageUrl && (
                       <div className="absolute inset-0 bg-foreground/20 flex items-center justify-center">
