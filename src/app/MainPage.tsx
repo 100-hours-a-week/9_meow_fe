@@ -6,49 +6,6 @@ import React, { useRef } from "react";
 import { useObserver } from "@/hooks/common/useObserver";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { postQueries } from "@/api/queries/postQueries";
-import { IPostSummaryData } from "@/api/types/post";
-
-const PostList = React.memo(function PostList({
-  posts,
-}: {
-  posts: IPostSummaryData[];
-}) {
-  return (
-    <>
-      {posts.map((post) => {
-        const userInfo: IUserItem = {
-          userId: post.userId,
-          nickname: post.nickname,
-          animalType: post.postType,
-          profileImageUrl: post.profileImageUrl ?? undefined,
-        };
-        const postContent: IPostContent = {
-          thumbnailUrl: post.thumbnailUrl,
-          content: post.transformedContent,
-        };
-        const postInfo: IPostFooter = {
-          postId: post.id,
-          didLike: post.liked,
-          likeCount: post.likeCount,
-          commentCount: post.commentCount,
-          timestamp: new Date(post.createdAt),
-          emotion: post.emotion,
-        };
-        return (
-          <PostCard key={`post-${post.id}`} postId={post.id}>
-            <PostCard.Header
-              userInfo={userInfo}
-              isMyPost={post.myPost}
-              postId={post.id}
-            />
-            <PostCard.Content {...postContent} />
-            <PostCard.Footer {...postInfo} />
-          </PostCard>
-        );
-      })}
-    </>
-  );
-});
 
 export default function MainPage() {
   const { data, fetchNextPage, hasNextPage, isLoading, error } =
@@ -82,10 +39,40 @@ export default function MainPage() {
   }
 
   return (
-    <div className="pt-2 pb-16 flex flex-col gap-2.5 px-2">
-      {data.pages.map((page, pageIndex) => (
-        <PostList key={`page-${pageIndex}`} posts={page.content} />
-      ))}
+    <div className="pt-2 flex flex-col gap-2.5 px-2">
+      {data.pages.map((page) =>
+        page.content.map((post) => {
+          const userInfo: IUserItem = {
+            userId: post.userId,
+            nickname: post.nickname,
+            animalType: post.postType,
+            profileImageUrl: post.profileImageUrl ?? undefined,
+          };
+          const postContent: IPostContent = {
+            thumbnailUrl: post.thumbnailUrl,
+            content: post.transformedContent,
+          };
+          const postInfo: IPostFooter = {
+            postId: post.id,
+            didLike: post.liked,
+            likeCount: post.likeCount,
+            commentCount: post.commentCount,
+            timestamp: new Date(post.createdAt),
+            emotion: post.emotion,
+          };
+          return (
+            <PostCard key={`post-${post.id}`} postId={post.id}>
+              <PostCard.Header
+                userInfo={userInfo}
+                isMyPost={post.myPost}
+                postId={post.id}
+              />
+              <PostCard.Content {...postContent} />
+              <PostCard.Footer {...postInfo} />
+            </PostCard>
+          );
+        }),
+      )}
       <div ref={lastElementRef} />
     </div>
   );
