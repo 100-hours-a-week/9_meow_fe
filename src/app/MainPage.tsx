@@ -8,9 +8,11 @@ import { postQueries } from "@/api/queries/postQueries";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useObserver } from "@/hooks/common/useObserver";
 
-export default function MainPage() {
-  const parentRef = useRef(null);
+interface IMainPage {
+  scrollContainerRef: React.RefObject<HTMLDivElement | null>;
+}
 
+export default function MainPage({ scrollContainerRef }: IMainPage) {
   const { data, fetchNextPage, hasNextPage, isPending, error } =
     useInfiniteQuery({
       ...postQueries.list(),
@@ -30,7 +32,7 @@ export default function MainPage() {
 
   const rowVirtualizer = useVirtualizer({
     count: allPosts.length,
-    getScrollElement: () => parentRef.current,
+    getScrollElement: () => scrollContainerRef.current,
     estimateSize: () => 310, // PostCard 높이(300) + gap(10) = 310
     overscan: 5,
     getItemKey: (index) => {
@@ -55,30 +57,13 @@ export default function MainPage() {
   }
 
   return (
-    <div className="pt-2 px-2 h-screen overflow-auto" ref={parentRef}>
+    <div className="pt-2 px-2">
       <div
         className="w-full relative"
         style={{ height: `${rowVirtualizer.getTotalSize()}px` }}
       >
         {rowVirtualizer.getVirtualItems().map((virtualRow) => {
           const post = allPosts[virtualRow.index];
-
-          if (!post) {
-            return (
-              <div
-                key={`loading-${virtualRow.index}`}
-                className="absolute top-0 left-0 w-full"
-                style={{
-                  height: `${virtualRow.size}px`,
-                  transform: `translateY(${virtualRow.start}px)`,
-                }}
-              >
-                <div className="flex items-center justify-center h-full">
-                  <div>Loading...</div>
-                </div>
-              </div>
-            );
-          }
 
           const userInfo: IUserItem = {
             userId: post.userId,

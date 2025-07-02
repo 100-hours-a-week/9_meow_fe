@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useRef } from "react";
 import MainPage from "./app/MainPage";
 import CreatePostPage from "./app/create/CreatePostPage";
 import DetailPostPage from "./app/detail/[postId]/DetailPostPage";
@@ -24,15 +25,23 @@ import ChatPage from "./app/chat/ChatPage";
 const queryClient = new QueryClient();
 
 function App() {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
         <Background>
           <div className="relative w-full flex flex-col bg-background max-w-[430px] mx-auto outline outline-foreground/20 shadow-xl overflow-y-hidden">
             <Header />
-            <div className="flex-1 overflow-y-auto mb-12">
+            <div
+              ref={scrollContainerRef}
+              className="flex-1 overflow-y-auto mb-12"
+            >
               <Routes>
-                <Route path="/" element={<MainPage />} />
+                <Route
+                  path="/"
+                  element={<MainPage scrollContainerRef={scrollContainerRef} />}
+                />
                 <Route path="/create" element={<CreatePostPage />} />
                 <Route path="/detail/:postId" element={<DetailPostPage />} />
                 <Route path="/edit/:postId" element={<PostEdit />} />
