@@ -11,7 +11,7 @@ import { useObserver } from "@/hooks/common/useObserver";
 export default function MainPage() {
   const parentRef = useRef(null);
 
-  const { data, fetchNextPage, hasNextPage, isLoading, error } =
+  const { data, fetchNextPage, hasNextPage, isPending, error } =
     useInfiniteQuery({
       ...postQueries.list(),
     });
@@ -20,7 +20,7 @@ export default function MainPage() {
   useObserver({
     target: lastElementRef as React.RefObject<HTMLElement>,
     onIntersect: ([entry]) => {
-      if (entry.isIntersecting && hasNextPage && !isLoading) {
+      if (entry.isIntersecting && hasNextPage && !isPending) {
         fetchNextPage();
       }
     },
@@ -40,7 +40,7 @@ export default function MainPage() {
   });
 
   // TODO: 로딩 스켈레톤 추가
-  if (isLoading) {
+  if (isPending) {
     return <div>Loading...</div>;
   }
 
