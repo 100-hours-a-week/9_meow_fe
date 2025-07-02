@@ -157,7 +157,7 @@ jobs:
           # update ssm version tag
           aws ssm put-parameter \
             --name /meow/prod/FRONTEND_IMAGE_TAG \
-            --value "${{ env.VERSION }}" \
+            --value "$VERSION" \
             --type String \
             --overwrite
 
