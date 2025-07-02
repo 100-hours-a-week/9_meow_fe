@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
@@ -11,6 +11,8 @@ import useTokenStore from "@/store/useTokenStore";
 import { signupQueries } from "@/api/queries/signupQueries";
 import { loginQueries } from "@/api/queries/loginQueries";
 import { imageQueries } from "@/api/queries/ImageQueries";
+
+const animals = [ApiAnimalType.CAT, ApiAnimalType.DOG];
 
 export default function SignupForm() {
   const navigate = useNavigate();
@@ -34,7 +36,6 @@ export default function SignupForm() {
   );
   const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
 
-  const animals = useMemo(() => [ApiAnimalType.CAT, ApiAnimalType.DOG], []);
   const handleAnimalChange = useCallback((animal: ApiAnimalType) => {
     setSelectedAnimal(animal);
   }, []);

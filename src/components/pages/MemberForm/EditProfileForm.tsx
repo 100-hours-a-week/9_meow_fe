@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SelectAnimalType from "./SelectAnimalType";
@@ -8,6 +8,8 @@ import { userQueries } from "@/api/queries/userQueries";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { imageQueries } from "@/api/queries/ImageQueries";
+
+const animals = [ApiAnimalType.CAT, ApiAnimalType.DOG];
 
 export default function EditProfileForm() {
   const navigate = useNavigate();
@@ -49,7 +51,6 @@ export default function EditProfileForm() {
     (isNicknameChanged && isNicknameDuplicate) ||
     (!isNicknameChanged && !isAnimalChanged && !isImageChanged);
 
-  const animals = useMemo(() => [ApiAnimalType.CAT, ApiAnimalType.DOG], []);
   const handleAnimalChange = useCallback((animal: ApiAnimalType) => {
     setSelectedAnimal(animal);
   }, []);
