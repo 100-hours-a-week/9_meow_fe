@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SelectAnimalType from "./SelectAnimalType";
@@ -8,6 +8,8 @@ import { userQueries } from "@/api/queries/userQueries";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { imageQueries } from "@/api/queries/ImageQueries";
+
+const animals = [ApiAnimalType.CAT, ApiAnimalType.DOG];
 
 export default function EditProfileForm() {
   const navigate = useNavigate();
@@ -48,6 +50,10 @@ export default function EditProfileForm() {
   const isSubmitDisabled =
     (isNicknameChanged && isNicknameDuplicate) ||
     (!isNicknameChanged && !isAnimalChanged && !isImageChanged);
+
+  const handleAnimalChange = useCallback((animal: ApiAnimalType) => {
+    setSelectedAnimal(animal);
+  }, []);
 
   const handleCancel = () => {
     const answer = window.confirm(
@@ -100,9 +106,9 @@ export default function EditProfileForm() {
       <SelectAnimalType
         titleText="어떤 동물이냐옹"
         isRequired={true}
-        animals={[ApiAnimalType.CAT, ApiAnimalType.DOG]}
+        animals={animals}
         selectedAnimal={selectedAnimal}
-        setAnimal={setSelectedAnimal}
+        setAnimal={handleAnimalChange}
       />
       <div className="flex gap-10 w-full justify-center">
         <Button variant="primarySolid" onClick={handleCancel}>

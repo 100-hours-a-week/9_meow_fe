@@ -1,3 +1,4 @@
+import React from "react";
 import { convertTimestampToDate } from "@/utils/convertTimestamp";
 import ImageBox from "./ImageBox";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +11,7 @@ interface IEventHistoryCard {
   imageUrls: string[];
 }
 
-export default function EventHistoryCard({
+function EventHistoryCard({
   title,
   subject,
   eventWeek,
@@ -61,3 +62,5 @@ export default function EventHistoryCard({
     </div>
   );
 }
+
+export default React.memo(EventHistoryCard);
