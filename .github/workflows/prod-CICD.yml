@@ -151,7 +151,7 @@ jobs:
         shell: bash
         run: |
           # If head commit is tagged, use that tag or fallback to "latest"
-          VERSION=$(git describe --tags --exact-match 2>/dev/null || echo "latest")
+          VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "latest")
           echo "Determined version =${VERSION}"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           # update ssm version tag
