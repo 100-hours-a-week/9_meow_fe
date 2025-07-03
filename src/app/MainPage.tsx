@@ -71,6 +71,17 @@ export default function MainPage({ scrollContainerRef }: IMainPage) {
     }
   }, [data, allPosts.length, rowVirtualizer]);
 
+  useEffect(() => {
+    // 새로고침 시 세션 스토리지에 기록된 페이지 스크롤 위치 삭제
+    window.addEventListener("pagehide", () => {
+      sessionStorage.removeItem("scrollIndex");
+    });
+    return () =>
+      window.removeEventListener("pagehide", () => {
+        sessionStorage.removeItem("scrollIndex");
+      });
+  }, []);
+
   // TODO: 로딩 스켈레톤 추가
   if (isPending) {
     return <div>Loading...</div>;
