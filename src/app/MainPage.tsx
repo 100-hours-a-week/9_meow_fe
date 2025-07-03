@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { PostCard } from "@/components/common";
 import { IPostContent } from "@/components/common/PostCard/PostContent";
 import { IUserItem } from "@/components/common/UserItem";
@@ -39,7 +39,37 @@ export default function MainPage({ scrollContainerRef }: IMainPage) {
       const post = allPosts[index];
       return post ? `post-${post.id}` : `loading-${index}`;
     },
+    onChange: (instance) => {
+      // 현재 스크롤 위치
+      const scrollOffset = instance.scrollOffset;
+      if (scrollOffset === null || scrollOffset === undefined) return;
+
+      // 현재 스크롤 위치에 가장 가까운 아이템 찾기
+      const virtualItems = instance.getVirtualItems();
+      if (virtualItems.length === 0) return;
+      const currentItem =
+        virtualItems.find(
+          (item) => scrollOffset >= item.start && scrollOffset <= item.end,
+        ) || virtualItems[0];
+
+      // 현재 아이템의 index를 session storage에 저장
+      if (currentItem && currentItem.index > 0) {
+        sessionStorage.setItem("scrollIndex", currentItem.index.toString());
+      }
+    },
   });
+
+  // 스크롤 위치 복원
+  useEffect(() => {
+    if (!data || allPosts.length === 0) {
+      return;
+    }
+
+    const savedIndex = sessionStorage.getItem("scrollIndex");
+    if (savedIndex) {
+      rowVirtualizer.scrollToIndex(Number(savedIndex), { align: "start" });
+    }
+  }, [data, allPosts.length, rowVirtualizer]);
 
   // TODO: 로딩 스켈레톤 추가
   if (isPending) {
