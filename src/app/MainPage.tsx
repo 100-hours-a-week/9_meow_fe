@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { PostCard } from "@/components/common";
 import { IPostContent } from "@/components/common/PostCard/PostContent";
 import { IUserItem } from "@/components/common/UserItem";
@@ -7,6 +7,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { postQueries } from "@/api/queries/postQueries";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useObserver } from "@/hooks/common/useObserver";
+import { useScrollMemory } from "@/hooks/common/useScrollMemory";
+import { IPostSummaryData } from "@/api/types/post";
 
 interface IMainPage {
   scrollContainerRef: React.RefObject<HTMLDivElement | null>;
@@ -39,48 +41,14 @@ export default function MainPage({ scrollContainerRef }: IMainPage) {
       const post = allPosts[index];
       return post ? `post-${post.id}` : `loading-${index}`;
     },
-    onChange: (instance) => {
-      // 현재 스크롤 위치
-      const scrollOffset = instance.scrollOffset;
-      if (scrollOffset === null || scrollOffset === undefined) return;
-
-      // 현재 스크롤 위치에 가장 가까운 아이템 찾기
-      const virtualItems = instance.getVirtualItems();
-      if (virtualItems.length === 0) return;
-      const currentItem =
-        virtualItems.find(
-          (item) => scrollOffset >= item.start && scrollOffset <= item.end,
-        ) || virtualItems[0];
-
-      // 현재 아이템의 index를 session storage에 저장
-      if (currentItem && currentItem.index > 0) {
-        sessionStorage.setItem("scrollIndex", currentItem.index.toString());
-      }
-    },
   });
 
-  // 스크롤 위치 복원
-  useEffect(() => {
-    if (!data || allPosts.length === 0) {
-      return;
-    }
-
-    const savedIndex = sessionStorage.getItem("scrollIndex");
-    if (savedIndex) {
-      rowVirtualizer.scrollToIndex(Number(savedIndex), { align: "start" });
-    }
-  }, [data, allPosts.length, rowVirtualizer]);
-
-  useEffect(() => {
-    // 새로고침 시 세션 스토리지에 기록된 페이지 스크롤 위치 삭제
-    window.addEventListener("pagehide", () => {
-      sessionStorage.removeItem("scrollIndex");
-    });
-    return () =>
-      window.removeEventListener("pagehide", () => {
-        sessionStorage.removeItem("scrollIndex");
-      });
-  }, []);
+  useScrollMemory<IPostSummaryData>({
+    key: "main-page",
+    virtualizer: rowVirtualizer,
+    allItems: allPosts,
+    enabled: !isPending && !!data,
+  });
 
   // TODO: 로딩 스켈레톤 추가
   if (isPending) {
