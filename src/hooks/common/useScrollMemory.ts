@@ -1,5 +1,6 @@
 import { VirtualItem, Virtualizer } from "@tanstack/react-virtual";
 import { useEffect } from "react";
+import useScrollMemoryStore from "@/store/useScrollMemoryStore";
 
 interface UseScrollMemoryOptions<T> {
   key: string;
@@ -14,6 +15,8 @@ export const useScrollMemory = <T>({
   allItems,
   enabled = true,
 }: UseScrollMemoryOptions<T>) => {
+  const { setScrollPosition, getScrollPosition } = useScrollMemoryStore();
+
   useEffect(() => {
     if (!enabled || !virtualizer) return;
 
@@ -31,15 +34,12 @@ export const useScrollMemory = <T>({
       const currentItem =
         virtualItems.find(
           (item: VirtualItem) =>
-            scrollOffset >= item.start && scrollOffset <= item.end,
+            scrollOffset >= item.start && scrollOffset < item.end,
         ) || virtualItems[0];
 
-      // 현재 아이템의 index를 session storage에 저장
+      // 현재 아이템의 index를 Zustand 스토어에 저장
       if (currentItem && currentItem.index > 0) {
-        sessionStorage.setItem(
-          `${key}-scrollIndex`,
-          currentItem.index.toString(),
-        );
+        setScrollPosition(key, currentItem.index);
       }
     };
 
@@ -48,7 +48,7 @@ export const useScrollMemory = <T>({
     return () => {
       scrollElement.removeEventListener("scroll", handleScroll);
     };
-  }, [key, virtualizer, enabled]);
+  }, [key, virtualizer, enabled, setScrollPosition]);
 
   // 스크롤 위치 복원
   useEffect(() => {
@@ -56,24 +56,9 @@ export const useScrollMemory = <T>({
       return;
     }
 
-    const savedIndex = sessionStorage.getItem(`${key}-scrollIndex`);
-    if (savedIndex) {
-      virtualizer.scrollToIndex(Number(savedIndex), { align: "start" });
+    const savedIndex = getScrollPosition(key);
+    if (savedIndex !== null) {
+      virtualizer.scrollToIndex(savedIndex, { align: "start" });
     }
-  }, [key, allItems.length, virtualizer, enabled]);
-
-  // 새로고침 시 session storage 초기화
-  useEffect(() => {
-    if (!enabled) return;
-
-    const cleanup = () => {
-      sessionStorage.removeItem(`${key}-scrollIndex`);
-    };
-
-    window.addEventListener("pagehide", cleanup);
-
-    return () => {
-      window.removeEventListener("pagehide", cleanup);
-    };
-  }, [key, enabled]);
+  }, [key, allItems.length, virtualizer, enabled, getScrollPosition]);
 };
