@@ -8,8 +8,13 @@ import { useRef } from "react";
 import { IPostFooter } from "@/components/common/PostCard/PostFooter";
 import { IUserItem } from "@/components/common/UserItem";
 import { IPostContent } from "@/components/common/PostCard/PostContent";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
-export default function MemberPage() {
+interface IMemberPage {
+  scrollContainerRef: React.RefObject<HTMLDivElement | null>;
+}
+
+export default function MemberPage({ scrollContainerRef }: IMemberPage) {
   const { userId } = useParams();
 
   const {
@@ -30,12 +35,31 @@ export default function MemberPage() {
     },
   });
 
+  const allPosts = postList
+    ? postList.pages.flatMap((page) => page.content)
+    : [];
+
+  const rowVirtualizer = useVirtualizer({
+    count: allPosts.length,
+    getScrollElement: () => scrollContainerRef.current,
+    estimateSize: () => 310,
+    overscan: 5,
+    getItemKey: (index) => {
+      const post = allPosts[index];
+      return post ? `post-${post.id}` : `loading-${index}`;
+    },
+  });
+
   return (
     <div className="flex flex-col gap-4 items-center">
       <ProfileSummary userId={Number(userId)} />
-      <div className="flex flex-col gap-2.5 px-2 w-full">
-        {postList?.pages.map((page) =>
-          page.content.map((post) => {
+      <div className="px-2 w-full">
+        <div
+          className="relative w-full"
+          style={{ height: `${rowVirtualizer.getTotalSize()}px` }}
+        >
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            const post = allPosts[virtualRow.index];
             const userInfo: IUserItem = {
               userId: post.userId,
               nickname: post.nickname,
@@ -55,18 +79,28 @@ export default function MemberPage() {
               emotion: post.emotion,
             };
             return (
-              <PostCard key={`post-${post.id}`} postId={post.id}>
-                <PostCard.Header
-                  userInfo={userInfo}
-                  isMyPost={post.myPost}
-                  postId={post.id}
-                />
-                <PostCard.Content {...postContent} />
-                <PostCard.Footer {...postInfo} />
-              </PostCard>
+              <div
+                key={`post-${post.id}`}
+                data-index={virtualRow.index}
+                ref={rowVirtualizer.measureElement}
+                className="absolute top-0 left-0 w-full"
+                style={{ transform: `translateY(${virtualRow.start}px)` }}
+              >
+                <div className="pb-2.5">
+                  <PostCard key={`post-${post.id}`} postId={post.id}>
+                    <PostCard.Header
+                      userInfo={userInfo}
+                      isMyPost={post.myPost}
+                      postId={post.id}
+                    />
+                    <PostCard.Content {...postContent} />
+                    <PostCard.Footer {...postInfo} />
+                  </PostCard>
+                </div>
+              </div>
             );
-          }),
-        )}
+          })}
+        </div>
         <div ref={lastElementRef} />
       </div>
     </div>

@@ -50,7 +50,10 @@ function App() {
                   element={<MyPageRedirectPage />}
                 />
                 <Route path="/mypage/edit" element={<ProfileEditPage />} />
-                <Route path="/member/:userId" element={<MemberPage />} />
+                <Route
+                  path="/member/:userId"
+                  element={<MemberPage scrollContainerRef={scrollContainerRef} />}
+                />
                 <Route
                   path="/member/:userId/follower"
                   element={<FollowerPage />}
