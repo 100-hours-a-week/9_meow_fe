@@ -11,6 +11,7 @@ import { IPostContent } from "@/components/common/PostCard/PostContent";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useScrollMemory } from "@/hooks/common/useScrollMemory";
 import { IPostSummaryData } from "@/api/types/post";
+import useScrollMemoryStore from "@/store/useScrollMemoryStore";
 
 interface IMemberPage {
   scrollContainerRef: React.RefObject<HTMLDivElement | null>;
@@ -18,6 +19,7 @@ interface IMemberPage {
 
 export default function MemberPage({ scrollContainerRef }: IMemberPage) {
   const { userId } = useParams();
+  const { setScrollPosition } = useScrollMemoryStore();
 
   const {
     data: postList,
@@ -117,7 +119,16 @@ export default function MemberPage({ scrollContainerRef }: IMemberPage) {
               style={{ transform: `translateY(${virtualRow.start}px)` }}
             >
               <div className="px-2 pb-2.5">
-                <PostCard key={`post-${post.id}`} postId={post.id}>
+                <PostCard
+                  key={`post-${post.id}`}
+                  postId={post.id}
+                  onClick={() => {
+                    setScrollPosition(
+                      `member-page-${userId}`,
+                      virtualRow.index,
+                    );
+                  }}
+                >
                   <PostCard.Header
                     userInfo={userInfo}
                     isMyPost={post.myPost}

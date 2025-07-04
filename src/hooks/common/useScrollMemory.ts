@@ -43,7 +43,7 @@ export const useScrollMemory = <T>({
       }
     };
 
-    scrollElement.addEventListener("scroll", handleScroll, { passive: true });
+    scrollElement.addEventListener("scroll", handleScroll);
 
     return () => {
       scrollElement.removeEventListener("scroll", handleScroll);

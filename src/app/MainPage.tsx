@@ -9,12 +9,15 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { useObserver } from "@/hooks/common/useObserver";
 import { useScrollMemory } from "@/hooks/common/useScrollMemory";
 import { IPostSummaryData } from "@/api/types/post";
+import useScrollMemoryStore from "@/store/useScrollMemoryStore";
 
 interface IMainPage {
   scrollContainerRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function MainPage({ scrollContainerRef }: IMainPage) {
+  const { setScrollPosition } = useScrollMemoryStore();
+
   const { data, fetchNextPage, hasNextPage, isPending, error } =
     useInfiniteQuery({
       ...postQueries.list(),
@@ -102,7 +105,12 @@ export default function MainPage({ scrollContainerRef }: IMainPage) {
               style={{ transform: `translateY(${virtualRow.start}px)` }}
             >
               <div className="pb-2.5">
-                <PostCard postId={post.id}>
+                <PostCard
+                  postId={post.id}
+                  onClick={() => {
+                    setScrollPosition("main-page", virtualRow.index);
+                  }}
+                >
                   <PostCard.Header
                     userInfo={userInfo}
                     isMyPost={post.myPost}
