@@ -18,16 +18,27 @@ interface IMainPage {
 export default function MainPage({ scrollContainerRef }: IMainPage) {
   const { setScrollPosition } = useScrollMemoryStore();
 
-  const { data, fetchNextPage, hasNextPage, isPending, error } =
-    useInfiniteQuery({
-      ...postQueries.list(),
-    });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isPending,
+    isFetchingNextPage,
+    error,
+  } = useInfiniteQuery({
+    ...postQueries.list(),
+  });
 
   const lastElementRef = useRef<HTMLDivElement | null>(null);
   useObserver({
     target: lastElementRef as React.RefObject<HTMLElement>,
     onIntersect: ([entry]) => {
-      if (entry.isIntersecting && hasNextPage && !isPending) {
+      if (
+        entry.isIntersecting &&
+        hasNextPage &&
+        !isPending &&
+        !isFetchingNextPage
+      ) {
         fetchNextPage();
       }
     },
@@ -36,9 +47,12 @@ export default function MainPage({ scrollContainerRef }: IMainPage) {
   const allPosts = data ? data.pages.flatMap((page) => page.content) : [];
 
   const rowVirtualizer = useVirtualizer({
-    count: allPosts.length,
+    count: hasNextPage ? allPosts.length + 1 : allPosts.length,
     getScrollElement: () => scrollContainerRef.current,
-    estimateSize: () => 310, // PostCard 높이(300) + gap(10) = 310
+    estimateSize: (index) => {
+      if (hasNextPage && index === allPosts.length) return 40;
+      return 310; // PostCard 높이(300) + gap(10) = 310
+    },
     overscan: 5,
     getItemKey: (index) => {
       const post = allPosts[index];
@@ -76,6 +90,25 @@ export default function MainPage({ scrollContainerRef }: IMainPage) {
       >
         {rowVirtualizer.getVirtualItems().map((virtualRow) => {
           const post = allPosts[virtualRow.index];
+
+          if (!post) {
+            return (
+              <div
+                key={`loading-${virtualRow.index}`}
+                ref={lastElementRef}
+                className="absolute top-0 left-0 w-full h-[40px]"
+                style={{ transform: `translateY(${virtualRow.start}px)` }}
+              >
+                <div
+                  ref={rowVirtualizer.measureElement}
+                  className="flex items-center justify-center"
+                >
+                  <div className="animate-spin h-4 w-4 border-foreground border-b-2 rounded-full mr-2"></div>
+                  <span className="text-foreground">로딩중이다옹</span>
+                </div>
+              </div>
+            );
+          }
 
           const userInfo: IUserItem = {
             userId: post.userId,
@@ -124,7 +157,6 @@ export default function MainPage({ scrollContainerRef }: IMainPage) {
           );
         })}
       </div>
-      <div ref={lastElementRef} />
     </div>
   );
 }

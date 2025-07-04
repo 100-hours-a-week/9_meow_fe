@@ -26,6 +26,7 @@ export default function MemberPage({ scrollContainerRef }: IMemberPage) {
     fetchNextPage,
     hasNextPage,
     isPending,
+    isFetchingNextPage,
   } = useInfiniteQuery({
     ...postQueries.userPostList({ userId: Number(userId) }),
   });
@@ -34,7 +35,12 @@ export default function MemberPage({ scrollContainerRef }: IMemberPage) {
   useObserver({
     target: lastElementRef as React.RefObject<HTMLElement>,
     onIntersect: ([entry]) => {
-      if (entry.isIntersecting && hasNextPage && !isPending) {
+      if (
+        entry.isIntersecting &&
+        hasNextPage &&
+        !isPending &&
+        !isFetchingNextPage
+      ) {
         fetchNextPage();
       }
     },
@@ -45,10 +51,11 @@ export default function MemberPage({ scrollContainerRef }: IMemberPage) {
     : [];
 
   const rowVirtualizer = useVirtualizer({
-    count: allPosts.length + 1, // ProfileSummary + posts
+    count: hasNextPage ? allPosts.length + 2 : allPosts.length + 1,
     getScrollElement: () => scrollContainerRef.current,
     estimateSize: (index) => {
       if (index === 0) return 322; // ProfileSummary 높이
+      if (hasNextPage && index === allPosts.length + 1) return 40;
       return 310; // PostCard 높이(300) + gap(10) = 310
     },
     overscan: 5,
@@ -92,6 +99,26 @@ export default function MemberPage({ scrollContainerRef }: IMemberPage) {
 
           // Post 렌더링
           const post = allPosts[virtualRow.index - 1];
+
+          if (!post) {
+            return (
+              <div
+                key={`loading-${virtualRow.index}`}
+                ref={lastElementRef}
+                className="absolute top-0 left-0 w-full h-[40px]"
+                style={{ transform: `translateY(${virtualRow.start}px)` }}
+              >
+                <div
+                  ref={rowVirtualizer.measureElement}
+                  className="flex items-center justify-center"
+                >
+                  <div className="animate-spin h-4 w-4 border-foreground border-b-2 rounded-full mr-2"></div>
+                  <span className="text-foreground">로딩중이다옹</span>
+                </div>
+              </div>
+            );
+          }
+
           const userInfo: IUserItem = {
             userId: post.userId,
             nickname: post.nickname,
