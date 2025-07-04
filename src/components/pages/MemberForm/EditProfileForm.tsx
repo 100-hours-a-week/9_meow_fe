@@ -16,7 +16,9 @@ export default function EditProfileForm() {
   const queryClient = useQueryClient();
 
   const [initialImage, setInitialImage] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | string | null>(
+    null,
+  );
   const [nicknameValue, setNicknameValue] = useState<string>("");
   const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
     ApiAnimalType.CAT,
@@ -69,7 +71,7 @@ export default function EditProfileForm() {
       const imageUrl =
         selectedImage instanceof File
           ? await uploadImageToS3(selectedImage)
-          : (initialImage ?? undefined);
+          : ((selectedImage || initialImage) ?? undefined);
 
       editProfile({
         nickname: nicknameValue,
@@ -96,6 +98,7 @@ export default function EditProfileForm() {
         initialImage={initialImage ?? undefined}
         selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
+        userAnimal={selectedAnimal}
       />
       <NicknameInput
         isRequired={true}

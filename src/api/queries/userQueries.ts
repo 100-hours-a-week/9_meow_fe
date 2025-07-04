@@ -14,6 +14,7 @@ import {
   getProfileInfo,
   getUserId,
   getUserProfileImage,
+  postAiProfileImage,
   postFollow,
 } from "../user";
 import {
@@ -28,6 +29,7 @@ import { IError } from "../types/common";
 import { AxiosError } from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { createAuthErrorHandler, ALERT_MESSAGES } from "../utils/errorHandler";
+import { ApiAnimalType } from "@/types/animal";
 
 export const userQueries = {
   all: () => ["user"] as const,
@@ -160,4 +162,14 @@ export const userQueries = {
       },
       initialPageParam: 0,
     }),
+
+  aiProfileImage: (): UseMutationOptions<
+    string[],
+    Error,
+    { image_url: string; animal: ApiAnimalType }
+  > => ({
+    mutationKey: [...userQueries.all(), "aiProfileImage"],
+    mutationFn: ({ image_url, animal }) =>
+      postAiProfileImage({ image_url, animal }),
+  }),
 };
