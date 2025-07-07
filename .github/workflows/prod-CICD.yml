@@ -9,22 +9,22 @@ on:
       - main
 
 jobs:
-#   unit-tests:
-#     name: 🔨 Unit Tests
-#     runs-on: ubuntu-latest
-#     if: >
-#       !contains(github.event.head_commit.message, '[skip ci]') &&
-#       !contains(github.event.head_commit.message, '[ci skip]') &&
-#       github.event_name == 'pull_request' &&
-#       github.base_ref == 'develop' 
-#     steps:
-#       - uses: actions/checkout@v3
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: '18'
-#       - run: npm ci
-#       - run: npm run test:unit
+  #   unit-tests:
+  #     name: 🔨 Unit Tests
+  #     runs-on: ubuntu-latest
+  #     if: >
+  #       !contains(github.event.head_commit.message, '[skip ci]') &&
+  #       !contains(github.event.head_commit.message, '[ci skip]') &&
+  #       github.event_name == 'pull_request' &&
+  #       github.base_ref == 'develop'
+  #     steps:
+  #       - uses: actions/checkout@v3
+  #       - name: Setup Node.js
+  #         uses: actions/setup-node@v3
+  #         with:
+  #           node-version: '18'
+  #       - run: npm ci
+  #       - run: npm run test:unit
 
   # integration-tests:
   #   name: 🔗 Integration Tests
@@ -34,7 +34,7 @@ jobs:
   #     !contains(github.event.head_commit.message, '[skip ci]') &&
   #     !contains(github.event.head_commit.message, '[ci skip]') &&
   #     github.event_name == 'pull_request' &&
-  #     contains(github.base_ref, 'main') 
+  #     contains(github.base_ref, 'main')
   #   services:
   #     mysql:
   #       image: mysql:8
@@ -93,7 +93,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-            fetch-depth: 0  # Ensure full history is available for deployments
+          fetch-depth: 0 # Ensure full history is available for deployments
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -165,8 +165,9 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          build-args: | 
+          build-args: |
             VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_AI_API_URL=${{ secrets.VITE_AI_API_URL }}
             VITE_CLOUDFRONT_URL=${{ secrets.VITE_CLOUDFRONT_URL }}
           push: true
           tags: |
