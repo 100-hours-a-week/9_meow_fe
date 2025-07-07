@@ -166,10 +166,10 @@ export const userQueries = {
   aiProfileImage: (): UseMutationOptions<
     string[],
     Error,
-    { image_url: string; animal: ApiAnimalType }
+    { image_url: string; animal_type: ApiAnimalType }
   > => ({
     mutationKey: [...userQueries.all(), "aiProfileImage"],
-    mutationFn: ({ image_url, animal }) =>
-      postAiProfileImage({ image_url, animal }),
+    mutationFn: ({ image_url, animal_type }) =>
+      postAiProfileImage({ image_url, animal_type }),
   }),
 };

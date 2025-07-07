@@ -34,7 +34,7 @@ export default function AISelectModal({
     mutate: postAiProfileImage,
     data: aiProfileImageData,
     isPending,
-  } = useMutation(userQueries.aiProfileImage());
+  } = useMutation({ ...userQueries.aiProfileImage() });
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,7 +44,7 @@ export default function AISelectModal({
       const imageUrl = file ? await uploadImageToS3(file as File) : undefined;
       postAiProfileImage({
         image_url: imageUrl ?? "",
-        animal: userAnimal ?? ApiAnimalType.CAT,
+        animal_type: userAnimal ?? ApiAnimalType.CAT,
       });
     }
   };

@@ -99,14 +99,14 @@ export const getFollowingList = async ({
 
 export const postAiProfileImage = async ({
   image_url,
-  animal,
+  animal_type,
 }: {
   image_url: string;
-  animal: ApiAnimalType;
+  animal_type: ApiAnimalType;
 }) => {
   const response = await aiDefaultInstance.post("/search", {
     image_url,
-    animal,
+    animal_type,
   });
   return response.data;
 };
