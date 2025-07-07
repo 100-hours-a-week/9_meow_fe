@@ -79,7 +79,7 @@ function App() {
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </div>
-            <NavigationBar />
+            <NavigationBar scrollContainerRef={scrollContainerRef} />
           </div>
         </Background>
       </Router>

@@ -12,24 +12,50 @@ import {
   PlusIcon,
 } from "lucide-react";
 
-function renderIconButton(route: string, icon: React.ReactNode) {
+function renderIconButton(
+  route: string,
+  icon: React.ReactNode,
+  onClick?: () => void,
+) {
   return (
-    <Link to={route}>
+    <Link to={route} onClick={onClick}>
       <Button variant="ghost">{icon}</Button>
     </Link>
   );
 }
 
-export default function NavigationBar() {
+export default function NavigationBar({
+  scrollContainerRef,
+}: {
+  scrollContainerRef: React.RefObject<HTMLDivElement | null>;
+}) {
   const location = useLocation();
   const { token } = useTokenStore();
   const { data: profileImage } = useQuery({
     ...userQueries.userProfileImage(),
   });
 
+  const handleScrollToTop = ({ pathname }: { pathname: string }) => {
+    // 현재 홈 페이지에 있는 경우에만 스크롤을 맨 위로 올림
+    if (location.pathname === pathname) {
+      // 직접 스크롤 컨테이너에 접근하여 스크롤을 맨 위로 올림
+      const scrollContainer = scrollContainerRef.current;
+      if (scrollContainer) {
+        scrollContainer.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
   return (
     <div className="flex justify-between items-center border-t border-border/30 px-5 py-1 fixed bottom-0 w-full bg-background max-w-[430px] mx-auto">
-      {renderIconButton("/", <HomeIcon className="stroke-foreground size-6" />)}
+      {renderIconButton(
+        "/",
+        <HomeIcon className="stroke-foreground size-6" />,
+        () => handleScrollToTop({ pathname: "/" }),
+      )}
       {renderIconButton(
         "/event",
         <PartyPopper className="stroke-foreground size-6" />,
