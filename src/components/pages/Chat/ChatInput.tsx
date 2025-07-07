@@ -70,7 +70,13 @@ export default function ChatInput() {
         </div>
       </div>
       <SelectAnimalType
-        animals={[ApiAnimalType.CAT, ApiAnimalType.DOG]}
+        animals={[
+          ApiAnimalType.CAT,
+          ApiAnimalType.DOG,
+          ApiAnimalType.HAMSTER,
+          ApiAnimalType.RACCOON,
+          ApiAnimalType.MONKEY,
+        ]}
         selectedAnimal={selectedAnimal}
         setAnimal={setSelectedAnimal}
         size="sm"
