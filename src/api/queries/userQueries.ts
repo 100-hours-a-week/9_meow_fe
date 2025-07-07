@@ -21,6 +21,7 @@ import {
   IEditProfileInfoResponse,
   IEditProfileRequest,
   IFollowerDataPagination,
+  IPostAiProfileImageResponse,
   IProfileInfoResponse,
   IUserIdResponse,
   IUserProfileImageResponse,
@@ -28,7 +29,11 @@ import {
 import { IError } from "../types/common";
 import { AxiosError } from "axios";
 import { NavigateFunction } from "react-router-dom";
-import { createAuthErrorHandler, ALERT_MESSAGES } from "../utils/errorHandler";
+import {
+  createAuthErrorHandler,
+  ALERT_MESSAGES,
+  createDefaultErrorHandler,
+} from "../utils/errorHandler";
 import { ApiAnimalType } from "@/types/animal";
 
 export const userQueries = {
@@ -164,12 +169,13 @@ export const userQueries = {
     }),
 
   aiProfileImage: (): UseMutationOptions<
-    string[],
-    Error,
-    { image_url: string; animal: ApiAnimalType }
+    IPostAiProfileImageResponse,
+    AxiosError<IError>,
+    { image_url: string; animal_type: ApiAnimalType }
   > => ({
     mutationKey: [...userQueries.all(), "aiProfileImage"],
-    mutationFn: ({ image_url, animal }) =>
-      postAiProfileImage({ image_url, animal }),
+    mutationFn: ({ image_url, animal_type }) =>
+      postAiProfileImage({ image_url, animal_type }),
+    onError: createDefaultErrorHandler(ALERT_MESSAGES.AI_PROFILE_IMAGE_FAILED),
   }),
 };
