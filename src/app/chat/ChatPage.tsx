@@ -5,7 +5,8 @@ export default function ChatPage() {
     <div className="flex flex-col items-center p-2 text-5xl font-bold gap-5 w-full h-full overflow-y-hidden">
       <div className="flex flex-row justify-between items-end w-full">
         <h1 className="text-4xl">♧ 동물 톡톡</h1>
-        <p className="text-base">현재 10/15마리 참여 중!</p>
+        {/* TODO: 참여 인원 표시 로직 추가 */}
+        {/* <p className="text-base">현재 10/15마리 참여 중!</p> */}
       </div>
       <div className="flex-1 w-full overflow-y-hidden">
         <ChatContainer />
