@@ -100,6 +100,7 @@ export default function MainPage({ scrollContainerRef }: IMainPage) {
                 style={{ transform: `translateY(${virtualRow.start}px)` }}
               >
                 <div
+                  data-index={virtualRow.index}
                   ref={rowVirtualizer.measureElement}
                   className="flex items-center justify-center"
                 >
