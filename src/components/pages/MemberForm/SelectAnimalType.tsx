@@ -3,6 +3,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ApiAnimalType } from "@/types/animal";
 import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
 import { Label } from "@radix-ui/react-label";
+import { cn } from "@/lib/utils";
 
 interface ISelectAnimalType {
   titleText?: string;
@@ -10,6 +11,7 @@ interface ISelectAnimalType {
   animals: ApiAnimalType[];
   selectedAnimal: ApiAnimalType;
   setAnimal: (animal: ApiAnimalType) => void;
+  size?: "default" | "sm";
 }
 
 function SelectAnimalType({
@@ -18,13 +20,19 @@ function SelectAnimalType({
   animals,
   selectedAnimal,
   setAnimal,
+  size = "default",
 }: ISelectAnimalType) {
   const handleAnimalChange = (value: ApiAnimalType) => {
     setAnimal(value);
   };
 
   return (
-    <div className="flex flex-col gap-1 w-full max-w-[400px]">
+    <div
+      className={cn(
+        "flex flex-col gap-1 w-full max-w-[400px]",
+        size === "sm" && "gap-0",
+      )}
+    >
       {titleText && (
         <Label className="text-xl text-foreground font-bold flex items-center gap-1">
           {titleText + " "}
@@ -33,13 +41,19 @@ function SelectAnimalType({
       )}
       <RadioGroup
         value={selectedAnimal}
-        className="flex flex-row gap-2 flex-wrap"
+        className={cn(
+          "flex flex-row gap-2 flex-wrap",
+          size === "sm" && "gap-1",
+        )}
         onValueChange={handleAnimalChange}
       >
         {animals.map((animal, index) => (
           <div key={animal} className="flex items-center space-x-2">
             <RadioGroupItem value={animal} id={`${animal}-${index + 1}`} />
-            <Label htmlFor={`r${index + 1}`} className="text-lg">
+            <Label
+              htmlFor={`r${index + 1}`}
+              className={cn("text-lg", size === "sm" && "text-sm")}
+            >
               {convertAnimalTypeToDisplay(animal)}
             </Label>
           </div>

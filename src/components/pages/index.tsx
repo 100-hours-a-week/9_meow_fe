@@ -15,3 +15,4 @@ export { default as EventTop3 } from "./Event/EventTop3";
 export { default as EventSubmitForm } from "./Event/EventSubmitForm";
 export { default as EventTimer } from "./Event/Timer";
 export { default as RecentPodium } from "./Event/RecentPodium";
+export { default as ChatContainer } from "./Chat/ChatContainer";
