@@ -21,6 +21,7 @@ import {
   IEditProfileInfoResponse,
   IEditProfileRequest,
   IFollowerDataPagination,
+  IPostAiProfileImageResponse,
   IProfileInfoResponse,
   IUserIdResponse,
   IUserProfileImageResponse,
@@ -164,8 +165,8 @@ export const userQueries = {
     }),
 
   aiProfileImage: (): UseMutationOptions<
-    string[],
-    Error,
+    IPostAiProfileImageResponse,
+    AxiosError<IError>,
     { image_url: string; animal_type: ApiAnimalType }
   > => ({
     mutationKey: [...userQueries.all(), "aiProfileImage"],

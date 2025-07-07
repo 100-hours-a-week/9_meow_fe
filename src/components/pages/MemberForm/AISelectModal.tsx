@@ -122,7 +122,7 @@ export default function AISelectModal({
             <div className="bg-orange-100 w-full rounded-lg p-4 flex flex-col items-center gap-5">
               <h3 className="text-2xl font-bold">이 중에 골라봐냥</h3>
               <div className="flex flex-row w-full gap-2 justify-center">
-                {aiProfileImageData?.map((imageUrl, index) => (
+                {aiProfileImageData?.data?.map((imageUrl, index) => (
                   <div
                     key={index}
                     className={`relative group cursor-pointer rounded-full border-2 overflow-hidden transition-colors ${
