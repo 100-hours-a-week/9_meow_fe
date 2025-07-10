@@ -4,7 +4,9 @@ import ChatInput from "./ChatInput";
 import { useWebSocket } from "@/hooks/common/useWebSocket";
 import useTokenStore from "@/store/useTokenStore";
 import { IReceivedChatMessage } from "@/api/types/chat";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { chatQueries } from "@/api/queries/chatQueries";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 interface IChatContainer {
   chatroomId: number;
@@ -17,6 +19,10 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
   );
 
   const { token } = useTokenStore();
+
+  const { data: chatMessages } = useInfiniteQuery({
+    ...chatQueries.list(chatroomId),
+  });
 
   // 메시지 수신 콜백을 useCallback으로 메모이제이션
   const handleMessageReceived = useCallback((message: IReceivedChatMessage) => {
@@ -36,6 +42,12 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
       sendMessage(message, selectedAnimal);
     }
   };
+
+  useEffect(() => {
+    if (chatMessages) {
+      setMessages(chatMessages.pages.flatMap((page) => page.content));
+    }
+  }, [chatMessages]);
 
   return (
     <div className="w-full h-full bg-foreground/10 rounded-xl gap-3 p-3 overflow-y-auto">
