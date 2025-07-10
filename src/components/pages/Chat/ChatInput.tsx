@@ -7,11 +7,18 @@ import { ApiAnimalType } from "@/types/animal";
 
 const MAX_LENGTH = 30;
 
-export default function ChatInput() {
+interface IChatInput {
+  onSend: (message: string) => void;
+  selectedAnimal: ApiAnimalType;
+  setSelectedAnimal: (animal: ApiAnimalType) => void;
+}
+
+export default function ChatInput({
+  onSend,
+  selectedAnimal,
+  setSelectedAnimal,
+}: IChatInput) {
   const [value, setValue] = useState("");
-  const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
-    ApiAnimalType.CAT,
-  );
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
@@ -19,7 +26,7 @@ export default function ChatInput() {
 
   // TODO: 메시지 전송 로직 추가
   const handleSend = () => {
-    console.log(value);
+    onSend(value);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -43,7 +50,7 @@ export default function ChatInput() {
               value={value}
               onChange={handleChange}
               onKeyDown={handleKeyDown}
-              placeholder="메시지를 입력하세야옹..."
+              placeholder="여기서는 전부 친구다냥! 반모하자 우리~"
               className={cn(
                 "w-full h-full resize-none flex-1 text-sm rounded-sm px-1",
               )}
