@@ -50,7 +50,7 @@ export default function ChatInput({
               value={value}
               onChange={handleChange}
               onKeyDown={handleKeyDown}
-              placeholder="메시지를 입력하세야옹..."
+              placeholder="여기서는 전부 친구다냥! 반모하자 우리~"
               className={cn(
                 "w-full h-full resize-none flex-1 text-sm rounded-sm px-1",
               )}
