@@ -31,7 +31,7 @@ export default function ChatPage() {
         {/* <p className="text-base">현재 10/15마리 참여 중!</p> */}
       </div>
       <div className="flex-1 w-full overflow-y-hidden">
-        <ChatContainer />
+        <ChatContainer chatroomId={chatRoom?.id ?? 0} />
       </div>
     </div>
   );
