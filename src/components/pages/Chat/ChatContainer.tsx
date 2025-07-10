@@ -6,7 +6,8 @@ import useTokenStore from "@/store/useTokenStore";
 import { IReceivedChatMessage } from "@/api/types/chat";
 import { useState, useCallback, useEffect } from "react";
 import { chatQueries } from "@/api/queries/chatQueries";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { userQueries } from "@/api/queries/userQueries";
 
 interface IChatContainer {
   chatroomId: number;
@@ -20,6 +21,7 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
 
   const { token } = useTokenStore();
 
+  const { data: userIdData } = useQuery({ ...userQueries.userId() });
   const { data: chatMessages } = useInfiniteQuery({
     ...chatQueries.list(chatroomId),
   });
@@ -57,11 +59,11 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
           <ChatMessage
             key={`${message.senderId}-${index}`}
             userId={message.senderId}
-            profileImageUrl="/logo.svg"
-            nickname="미야옹"
-            align={message.senderId === 5 ? "right" : "left"}
+            profileImageUrl={message.senderProfileImage}
+            nickname={message.senderNickname}
+            align={message.senderId === userIdData?.userId ? "right" : "left"}
             message={message.message}
-            animalType={ApiAnimalType.CAT}
+            animalType={message.animalType}
             createdAt={message.timestamp}
           />
         ))}

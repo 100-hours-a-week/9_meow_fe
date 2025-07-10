@@ -8,8 +8,8 @@ export interface IChatRoom {
 export interface IReceivedChatMessage {
   chatroomId: number;
   senderId: number;
-  profileImageUrl?: string;
-  nickname?: string;
+  senderNickname: string;
+  senderProfileImage: string;
   animalType: ApiAnimalType;
   message: string;
   timestamp: string;
