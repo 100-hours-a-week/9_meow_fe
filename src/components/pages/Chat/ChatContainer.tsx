@@ -3,7 +3,7 @@ import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 import { useWebSocket } from "@/hooks/common/useWebSocket";
 import useTokenStore from "@/store/useTokenStore";
-import { IChatMessage } from "@/api/types/chat";
+import { IReceivedChatMessage } from "@/api/types/chat";
 import { useState, useCallback } from "react";
 
 interface IChatContainer {
@@ -11,7 +11,7 @@ interface IChatContainer {
 }
 
 export default function ChatContainer({ chatroomId }: IChatContainer) {
-  const [messages, setMessages] = useState<IChatMessage[]>([]);
+  const [messages, setMessages] = useState<IReceivedChatMessage[]>([]);
   const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
     ApiAnimalType.CAT,
   );
@@ -19,7 +19,7 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
   const { token } = useTokenStore();
 
   // 메시지 수신 콜백을 useCallback으로 메모이제이션
-  const handleMessageReceived = useCallback((message: IChatMessage) => {
+  const handleMessageReceived = useCallback((message: IReceivedChatMessage) => {
     setMessages((prevMessages) => [...prevMessages, message]);
   }, []);
 

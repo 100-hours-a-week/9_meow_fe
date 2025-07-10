@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Client, IMessage } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import { IChatMessage } from "@/api/types/chat";
+import { IReceivedChatMessage } from "@/api/types/chat";
 
 interface UseWebSocketProps {
   chatroomId: number;
   token: string;
-  onMessageReceived: (message: IChatMessage) => void;
+  onMessageReceived: (message: IReceivedChatMessage) => void;
 }
 
 export const useWebSocket = ({
@@ -53,7 +53,7 @@ export const useWebSocket = ({
         console.log("메시지 수신: ", message);
 
         try {
-          const chatMessage: IChatMessage = JSON.parse(message.body);
+          const chatMessage: IReceivedChatMessage = JSON.parse(message.body);
           onMessageReceived(chatMessage);
         } catch (error) {
           console.error("메시지 파싱 오류:", error);

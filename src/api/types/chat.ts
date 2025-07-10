@@ -5,7 +5,7 @@ export interface IChatRoom {
   title: string;
 }
 
-export interface IChatMessage {
+export interface IReceivedChatMessage {
   chatroomId: number;
   senderId: number;
   profileImageUrl?: string;
