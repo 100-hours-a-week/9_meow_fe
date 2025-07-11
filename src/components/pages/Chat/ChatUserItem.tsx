@@ -36,7 +36,7 @@ export default function ChatUserItem({
           !profileImageUrl && "bg-foreground",
         )}
       >
-        <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
+        <AvatarImage src={profileImageUrl ?? "/logo.png"} />
         <AvatarFallback>미야옹</AvatarFallback>
       </Avatar>
       <div className="flex flex-col text-sm min-w-0 flex-1">

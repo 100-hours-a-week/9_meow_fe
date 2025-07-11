@@ -22,7 +22,7 @@ export default function MemberInfoSummary({
           profileImageUrl ?? "bg-foreground",
         )}
       >
-        <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
+        <AvatarImage src={profileImageUrl ?? "/logo.png"} />
         <AvatarFallback>미야옹</AvatarFallback>
       </Avatar>
       <div className="flex flex-col items-center gap-0">

@@ -50,7 +50,7 @@ export default function UserItem({
             size === "sm" && "size-5 border-muted-foreground",
           )}
         >
-          <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
+          <AvatarImage src={profileImageUrl ?? "/logo.png"} />
           <AvatarFallback>미야옹</AvatarFallback>
         </Avatar>
         {size === "default" && (
