@@ -79,7 +79,7 @@ export default function NavigationBar({
           )}
         >
           <AvatarImage
-            src={token ? profileImage?.profileImageUrl : "/logo.svg"}
+            src={token ? profileImage?.profileImageUrl : "/logo.png"}
           />
           <AvatarFallback>미야옹</AvatarFallback>
         </Avatar>,
