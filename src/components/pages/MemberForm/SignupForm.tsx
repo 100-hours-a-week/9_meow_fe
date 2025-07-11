@@ -99,13 +99,18 @@ export default function SignupForm() {
         setAnimal={handleAnimalChange}
       />
       <div className="flex gap-10 w-full justify-center">
-        <Button variant="primarySolid" onClick={handleCancel}>
+        <Button
+          variant="primarySolid"
+          onClick={handleCancel}
+          aria-label="취소하기"
+        >
           취소냥
         </Button>
         <Button
           variant="secondarySolid"
           disabled={isSubmitDisabled}
           onClick={handleSignup}
+          aria-label="제출하기"
         >
           {isSignupPending || isLoginPending
             ? "잠시만 기다려 달라옹..."

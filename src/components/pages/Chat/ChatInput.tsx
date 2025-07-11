@@ -65,6 +65,7 @@ export default function ChatInput({
           variant="ghost"
           className="p-0"
           disabled={value.length > MAX_LENGTH || value.trim().length === 0}
+          aria-label="메시지 전송"
         >
           <SendIcon className="size-6 fill-foreground" />
         </Button>

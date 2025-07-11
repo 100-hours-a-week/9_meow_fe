@@ -79,7 +79,12 @@ export default function EventSubmitForm() {
       </label>
       {error && <p className="text-xs text-destructive">{error}</p>}
       <div className="flex flex-row gap-2">
-        <Button variant="primarySolid" size="sm" onClick={handleCancel}>
+        <Button
+          variant="primarySolid"
+          size="sm"
+          onClick={handleCancel}
+          aria-label="취소하기"
+        >
           취소냥
         </Button>
         <Button
@@ -87,6 +92,7 @@ export default function EventSubmitForm() {
           size="sm"
           onClick={handleSubmit}
           disabled={!selectedImage}
+          aria-label="제출하기"
         >
           £ 준비되면 누르라냥!
         </Button>

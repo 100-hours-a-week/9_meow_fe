@@ -75,6 +75,7 @@ function ProfileImageSelection({
               size="sm"
               className="absolute right-0 bottom-0"
               onClick={() => setIsAIModalOpen(true)}
+              aria-label="닮은 냥이 / 멍이 찾기"
             >
               닮은 냥이 / 멍이 찾기
             </Button>

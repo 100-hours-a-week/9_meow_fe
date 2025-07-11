@@ -90,6 +90,7 @@ export default function CommentInput({ postId }: ICommentInput) {
           disabled={
             value.length > MAX_LENGTH || value.trim().length === 0 || isPending
           }
+          aria-label="댓글 전송"
         >
           <SendIcon className="size-6 fill-foreground" />
         </Button>

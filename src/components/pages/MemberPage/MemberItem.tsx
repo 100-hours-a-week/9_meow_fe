@@ -16,6 +16,7 @@ export default function MemberItem({ userInfo }: IMemberItem) {
       onClick={() => {
         navigate(`/member/${userInfo.userId}`);
       }}
+      aria-label="회원 페이지로 이동"
     >
       <UserItem {...userInfo} />
     </Button>

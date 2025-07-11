@@ -37,6 +37,7 @@ function EventPostFooter({
         onClick={() => {
           vote(postId);
         }}
+        aria-label={`투표하기 (현재 ${likeCount}표)`}
       >
         <PawIcon className={cn(dark ? "fill-background" : "fill-foreground")} />
         <p

@@ -39,6 +39,7 @@ export default function EventTop3() {
           variant="secondaryOutline"
           size="sm"
           className="text-background border-background hover:bg-background hover:text-foreground"
+          aria-label="재연결"
         >
           <RefreshCw className="w-4 h-4 mr-2" />
           재연결

@@ -22,6 +22,7 @@ export default function Background({
                   "_blank",
                 );
               }}
+              aria-label="문의하기"
             >
               <AskIcon className="size-12 fill-foreground" />
             </Button>
@@ -34,6 +35,7 @@ export default function Background({
                   "_blank",
                 );
               }}
+              aria-label="공식 인스타그램 계정 바로가기"
             >
               <InstagramIcon className="size-10 fill-foreground" />
             </Button>

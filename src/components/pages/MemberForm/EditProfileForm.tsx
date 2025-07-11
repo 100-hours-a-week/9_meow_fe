@@ -111,18 +111,27 @@ export default function EditProfileForm() {
         setAnimal={handleAnimalChange}
       />
       <div className="flex gap-10 w-full justify-center">
-        <Button variant="primarySolid" onClick={handleCancel}>
+        <Button
+          variant="primarySolid"
+          onClick={handleCancel}
+          aria-label="취소하기"
+        >
           취소냥
         </Button>
         <Button
           variant="secondarySolid"
           disabled={isSubmitDisabled}
           onClick={handleSubmit}
+          aria-label="제출하기"
         >
           다 적으면 누르라냥
         </Button>
       </div>
-      <Button variant="link" onClick={handleDeleteProfile}>
+      <Button
+        variant="link"
+        onClick={handleDeleteProfile}
+        aria-label="탈퇴하기"
+      >
         탈퇴할거냥
       </Button>
     </div>

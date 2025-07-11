@@ -66,13 +66,18 @@ export default function CreatePostForm() {
         setEmotion={setSelectedEmotion}
       />
       <div className="flex gap-2 w-full justify-end">
-        <Button variant="primarySolid" onClick={handleCancel}>
+        <Button
+          variant="primarySolid"
+          onClick={handleCancel}
+          aria-label="취소하기"
+        >
           취소냥
         </Button>
         <Button
           variant="secondarySolid"
           disabled={isPending || isSubmitDisabled || isUploading}
           onClick={handlePostSubmit}
+          aria-label="제출하기"
         >
           {isPending || isUploading
             ? "잠시만 기다려주세옹"

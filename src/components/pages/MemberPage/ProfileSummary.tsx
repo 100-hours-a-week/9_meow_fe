@@ -69,6 +69,7 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
           size="icon"
           onClick={handleLogout}
           className="absolute top-3 right-3"
+          aria-label="로그아웃"
         >
           <LogoutIcon className="size-5 fill-foreground" />
         </Button>
@@ -79,6 +80,7 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
             variant="primarySolid"
             className="w-36 text-lg"
             onClick={() => navigate("/mypage/edit")}
+            aria-label="프로필 편집"
           >
             프로필 편집
           </Button>
@@ -93,6 +95,7 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
                 follow();
               }
             }}
+            aria-label={profileInfo?.following ? "팔로우 취소" : "팔로우"}
           >
             {profileInfo?.following ? "팔로잉" : "팔로우"}
           </Button>
@@ -101,6 +104,7 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
           variant="primarySolid"
           className="w-36 text-lg"
           onClick={handleShareClick}
+          aria-label="프로필 공유"
         >
           프로필 공유
         </Button>
