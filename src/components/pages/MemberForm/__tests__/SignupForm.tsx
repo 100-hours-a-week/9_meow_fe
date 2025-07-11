@@ -7,6 +7,40 @@ import useKakaoIdStore from "@/store/useKakaoIdStore";
 import useTokenStore from "@/store/useTokenStore";
 import { loginQueries } from "@/api/queries/loginQueries";
 
+// Mock the API instances
+jest.mock("@/api/instance/aiDefaultInstance", () => ({
+  __esModule: true,
+  default: {
+    interceptors: {
+      request: {
+        use: jest.fn(),
+      },
+    },
+  },
+}));
+
+jest.mock("@/api/instance/authInstance", () => ({
+  __esModule: true,
+  default: {
+    interceptors: {
+      request: {
+        use: jest.fn(),
+      },
+    },
+  },
+}));
+
+jest.mock("@/api/instance/defaultInstance", () => ({
+  __esModule: true,
+  default: {
+    interceptors: {
+      request: {
+        use: jest.fn(),
+      },
+    },
+  },
+}));
+
 // Mock the API-related modules
 jest.mock("@/api/queries/signupQueries", () => ({
   signupQueries: {
@@ -30,6 +64,11 @@ jest.mock("@/api/queries/loginQueries", () => ({
 // Mock the hooks and modules
 jest.mock("@tanstack/react-query", () => ({
   useMutation: jest.fn(),
+}));
+
+// Mock the image API
+jest.mock("@/api/image", () => ({
+  uploadImageToS3: jest.fn(),
 }));
 
 // Mock the stores
