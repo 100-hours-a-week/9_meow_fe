@@ -93,6 +93,7 @@ export default function NavigationBar({
           >
             <AvatarImage
               src={token ? profileImage?.profileImageUrl : "/logo.png"}
+              alt="프로필 이미지"
             />
             <AvatarFallback>미야옹</AvatarFallback>
           </Avatar>
