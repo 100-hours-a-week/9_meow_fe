@@ -22,6 +22,7 @@ function renderBanner({
             <Button
               variant="primarySolid"
               onClick={() => navigate(`/event/submit/${eventPeriodData.week}`)}
+              aria-label="신청하러 가기"
             >
               ♤ 신청하러 가기 ♤
             </Button>
@@ -39,6 +40,7 @@ function renderBanner({
               onClick={() => {
                 navigate(`/event/vote/${eventPeriodData.week}`);
               }}
+              aria-label="신청한 사진 보러 가기"
             >
               ♧ 신청한 사진 보러 가기 ♧
             </Button>
@@ -54,6 +56,7 @@ function renderBanner({
             <Button
               variant="secondarySolid"
               onClick={() => navigate(`/event/vote/${eventPeriodData.week}`)}
+              aria-label="투표하러 가기"
             >
               ♧ 투표하러 가기 ♧
             </Button>

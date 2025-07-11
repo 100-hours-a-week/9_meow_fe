@@ -76,6 +76,7 @@ export default function AISelectModal({
             size="sm"
             onClick={handleClose}
             className="text-muted-foreground hover:text-foreground text-2xl"
+            aria-label="닫기"
           >
             ✕
           </Button>
@@ -150,13 +151,14 @@ export default function AISelectModal({
         )}
 
         <div className="flex justify-end gap-2 pt-4">
-          <Button variant="primarySolid" onClick={onClose}>
+          <Button variant="primarySolid" onClick={onClose} aria-label="취소하기">
             취소냥
           </Button>
           <Button
             variant="secondarySolid"
             onClick={handleConfirm}
             disabled={!selectedAIImageUrl}
+            aria-label="완료하기"
           >
             £완료하면 누르라냥!
           </Button>
