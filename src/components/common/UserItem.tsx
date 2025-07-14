@@ -1,7 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { ApiAnimalType } from "@/types/animal";
-import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
 import { useNavigate } from "react-router-dom";
 
 export interface IUserItem {
@@ -67,7 +66,7 @@ export default function UserItem({
           </div>
         )}
       </div>
-      <div className="flex flex-col text-sm min-w-0 flex-1">
+      <div className="flex flex-col items-start text-sm min-w-0 flex-1">
         <p
           className={cn(
             "text-orange-950 text-sm text-ellipsis overflow-hidden whitespace-nowrap",
@@ -78,15 +77,16 @@ export default function UserItem({
           {nickname}
         </p>
         {size === "sm" && (
-          <p
+          <div
             className={cn(
-              "text-orange-950/30 text-xs text-ellipsis overflow-hidden whitespace-nowrap",
-              size === "sm" && "text-[10px]",
-              dark ? "text-background" : "text-muted-foreground",
+              "text-[8px] text-foreground px-1 rounded-sm flex flex-row items-center gap-1 ",
+              animalType === ApiAnimalType.CAT
+                ? "bg-rose-300"
+                : "bg-orange-300",
             )}
           >
-            {convertAnimalTypeToDisplay(animalType)}
-          </p>
+            {animalType.toLocaleUpperCase()}
+          </div>
         )}
       </div>
     </div>
