@@ -46,45 +46,47 @@ function DetailPostPage() {
       <div className="w-full flex flex-col gap-4 items-center">
         {data && (
           <>
-            <PostCard.Header
-              userInfo={{
-                userId: data.userId,
-                nickname: data.nickname,
-                profileImageUrl: data.profileImageUrl,
-                animalType: data.postType,
-              }}
-              isMyPost={data.myPost}
-              postId={Number(postId)}
-            />
-            {data.imageUrls.length > 0 && (
-              <ImageCarousel images={data.imageUrls} />
-            )}
-            {data.imageUrls.length > 0 && (
-              <PostCard.Footer
+            <PostCard postId={Number(postId)}>
+              <PostCard.Header
+                userInfo={{
+                  userId: data.userId,
+                  nickname: data.nickname,
+                  profileImageUrl: data.profileImageUrl,
+                  animalType: data.postType,
+                }}
+                isMyPost={data.myPost}
                 postId={Number(postId)}
-                didLike={data.liked}
-                likeCount={data.likeCount}
-                commentCount={data.commentCount}
-                timestamp={new Date(data.createdAt)}
-                emotion={data.emotion}
-                animalType={data.postType}
               />
-            )}
-            <PostCard.Content
-              thumbnailUrl={null}
-              content={data.transformedContent}
-            />
-            {data.imageUrls.length === 0 && (
-              <PostCard.Footer
-                postId={Number(postId)}
-                didLike={data.liked}
-                likeCount={data.likeCount}
-                commentCount={data.commentCount}
-                timestamp={new Date(data.createdAt)}
-                emotion={data.emotion}
-                animalType={data.postType}
+              {data.imageUrls.length > 0 && (
+                <ImageCarousel images={data.imageUrls} />
+              )}
+              {data.imageUrls.length > 0 && (
+                <PostCard.Footer
+                  postId={Number(postId)}
+                  didLike={data.liked}
+                  likeCount={data.likeCount}
+                  commentCount={data.commentCount}
+                  timestamp={new Date(data.createdAt)}
+                  emotion={data.emotion}
+                  animalType={data.postType}
+                />
+              )}
+              <PostCard.Content
+                thumbnailUrl={null}
+                content={data.transformedContent}
               />
-            )}
+              {data.imageUrls.length === 0 && (
+                <PostCard.Footer
+                  postId={Number(postId)}
+                  didLike={data.liked}
+                  likeCount={data.likeCount}
+                  commentCount={data.commentCount}
+                  timestamp={new Date(data.createdAt)}
+                  emotion={data.emotion}
+                  animalType={data.postType}
+                />
+              )}
+            </PostCard>
           </>
         )}
       </div>
