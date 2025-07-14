@@ -137,6 +137,7 @@ export default function MemberPage({ scrollContainerRef }: IMemberPage) {
             commentCount: post.commentCount,
             timestamp: new Date(post.createdAt),
             emotion: post.emotion,
+            animalType: post.postType,
           };
           return (
             <div

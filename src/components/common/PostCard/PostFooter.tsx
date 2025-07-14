@@ -5,10 +5,10 @@ import { convertEmotionTypeToDisplay } from "@/utils/convertEmotion";
 import { convertTimestamp } from "@/utils/convertTimestamp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useLocation } from "react-router-dom";
-import CatOutlinedIcon from "@/assets/icon/cat-outlined.svg?react";
-import CatFilledIcon from "@/assets/icon/cat-filled.svg?react";
 import CommentIcon from "@/assets/icon/comment.svg?react";
 import ShareIcon from "@/assets/icon/share.svg?react";
+import { Cat, Dog } from "lucide-react";
+import { ApiAnimalType } from "@/types/animal";
 
 export interface IPostFooter {
   postId: number;
@@ -17,6 +17,7 @@ export interface IPostFooter {
   commentCount: number;
   timestamp: Date;
   emotion: ApiEmotion;
+  animalType: ApiAnimalType;
 }
 
 export default function PostFooter({
@@ -26,6 +27,7 @@ export default function PostFooter({
   commentCount,
   timestamp,
   emotion,
+  animalType,
 }: IPostFooter) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -73,9 +75,15 @@ export default function PostFooter({
           className="size-6 p-1"
         >
           {didLike ? (
-            <CatFilledIcon className="fill-foreground" />
+            animalType === ApiAnimalType.CAT ? (
+              <Cat className="fill-foreground stroke-background stroke-2 size-5" />
+            ) : (
+              <Dog className="fill-foreground stroke-background stroke-2 size-5" />
+            )
+          ) : animalType === ApiAnimalType.CAT ? (
+            <Cat className="stroke-foreground" />
           ) : (
-            <CatOutlinedIcon className="fill-foreground" />
+            <Dog className="stroke-foreground" />
           )}
         </Button>
         <p>{likeCount}</p>

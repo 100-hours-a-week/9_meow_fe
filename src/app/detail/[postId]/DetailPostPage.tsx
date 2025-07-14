@@ -67,6 +67,7 @@ function DetailPostPage() {
                 commentCount={data.commentCount}
                 timestamp={new Date(data.createdAt)}
                 emotion={data.emotion}
+                animalType={data.postType}
               />
             )}
             <PostCard.Content
@@ -81,6 +82,7 @@ function DetailPostPage() {
                 commentCount={data.commentCount}
                 timestamp={new Date(data.createdAt)}
                 emotion={data.emotion}
+                animalType={data.postType}
               />
             )}
           </>
