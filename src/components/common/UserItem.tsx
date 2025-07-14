@@ -38,16 +38,28 @@ export default function UserItem({
       )}
       onClick={disabled ? undefined : handleClick}
     >
-      <Avatar
+      <div
         className={cn(
-          "border border-muted-foreground flex-shrink-0",
-          !profileImageUrl && (dark ? "bg-background" : "bg-foreground"),
-          size === "sm" && "size-5",
+          "flex flex-col items-center relative",
+          size === "default" && "overflow-visible pb-3",
         )}
       >
-        <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
-        <AvatarFallback>미야옹</AvatarFallback>
-      </Avatar>
+        <Avatar
+          className={cn(
+            "border border-foreground flex-shrink-0",
+            !profileImageUrl && (dark ? "bg-background" : "bg-foreground"),
+            size === "sm" && "size-5 border-muted-foreground",
+          )}
+        >
+          <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
+          <AvatarFallback>미야옹</AvatarFallback>
+        </Avatar>
+        {size === "default" && (
+          <div className="text-xs text-background bg-foreground px-1 rounded-sm absolute bottom-0">
+            {animalType.toLocaleUpperCase()}
+          </div>
+        )}
+      </div>
       <div className="flex flex-col text-sm min-w-0 flex-1">
         <p
           className={cn(
@@ -58,15 +70,17 @@ export default function UserItem({
         >
           {nickname}
         </p>
-        <p
-          className={cn(
-            "text-orange-950/30 text-xs text-ellipsis overflow-hidden whitespace-nowrap",
-            size === "sm" && "text-[10px]",
-            dark ? "text-background" : "text-muted-foreground",
-          )}
-        >
-          {convertAnimalTypeToDisplay(animalType)}
-        </p>
+        {size === "sm" && (
+          <p
+            className={cn(
+              "text-orange-950/30 text-xs text-ellipsis overflow-hidden whitespace-nowrap",
+              size === "sm" && "text-[10px]",
+              dark ? "text-background" : "text-muted-foreground",
+            )}
+          >
+            {convertAnimalTypeToDisplay(animalType)}
+          </p>
+        )}
       </div>
     </div>
   );
