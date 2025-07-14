@@ -10,10 +10,10 @@ export enum ApiEmotion {
 
 // UI에서 표시되는 감정 enum
 export enum DisplayEmotion {
-  HAPPY = "☺️행복",
-  CURIOUS = "🤔호기심",
-  SAD = "😢슬픔",
-  GRUMPY = "😠까칠",
-  ANGRY = "😡화남",
+  HAPPY = "행복",
+  CURIOUS = "호기심",
+  SAD = "슬픔",
+  GRUMPY = "까칠",
+  ANGRY = "화남",
   NORMAL = "선택 없음",
 }
