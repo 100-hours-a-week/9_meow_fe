@@ -1,7 +1,6 @@
 import { postQueries } from "@/api/queries/postQueries";
 import { Button } from "@/components/ui/button";
 import { ApiEmotion } from "@/types/Emotion";
-import { convertEmotionTypeToDisplay } from "@/utils/convertEmotion";
 import { convertTimestamp } from "@/utils/convertTimestamp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -102,9 +101,11 @@ export default function PostFooter({
       </div>
       <div className="flex flex-row items-center gap-2 text-muted-foreground text-xs">
         <p>{convertTimestamp(timestamp)}</p>
-        {emotion !== ApiEmotion.NORMAL && (
-          <p> / {convertEmotionTypeToDisplay(emotion)}</p>
-        )}
+        <img
+          src={`/icon/emotion/${emotion}.png`}
+          alt="emotion"
+          className="w-4"
+        />
       </div>
     </div>
   );
