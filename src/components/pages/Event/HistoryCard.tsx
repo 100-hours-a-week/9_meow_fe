@@ -22,7 +22,7 @@ function EventHistoryCard({
 
   return (
     <div
-      className="flex flex-row justify-between rounded-xl border border-muted-foreground p-2 shadow-md"
+      className="flex flex-row justify-between rounded-xl border border-muted-foreground p-2 shadow-md bg-background"
       onClick={() => {
         navigate(`/event/${eventWeek}`);
       }}
