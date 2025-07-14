@@ -46,7 +46,7 @@ export default function UserItem({
       >
         <Avatar
           className={cn(
-            "border border-foreground flex-shrink-0",
+            "border flex-shrink-0 border-foreground",
             !profileImageUrl && (dark ? "bg-background" : "bg-foreground"),
             size === "sm" && "size-5 border-muted-foreground",
           )}
@@ -55,7 +55,14 @@ export default function UserItem({
           <AvatarFallback>미야옹</AvatarFallback>
         </Avatar>
         {size === "default" && (
-          <div className="text-xs text-background bg-foreground px-1 rounded-sm absolute bottom-0">
+          <div
+            className={cn(
+              "text-xs text-foreground px-1 rounded-sm absolute bottom-0 flex flex-row items-center gap-1",
+              animalType === ApiAnimalType.CAT
+                ? "bg-rose-300"
+                : "bg-orange-300",
+            )}
+          >
             {animalType.toLocaleUpperCase()}
           </div>
         )}
