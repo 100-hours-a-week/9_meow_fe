@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import SendIcon from "@/assets/icon/send.svg?react";
-import SelectAnimalType from "../MemberForm/SelectAnimalType";
+import SelectAnimalType from "./SelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
 
 const MAX_LENGTH = 30;
