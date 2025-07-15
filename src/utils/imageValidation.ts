@@ -1,6 +1,6 @@
 import { ValidationReturnType } from "@/types/ValidationReturnType";
 
-const RESTRICTED_EXTENSIONS = [".heic", ".gif", ".webp"];
+const RESTRICTED_EXTENSIONS = [".heic", ".gif"];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export const validateImageFile = (file: File): ValidationReturnType => {
@@ -10,7 +10,7 @@ export const validateImageFile = (file: File): ValidationReturnType => {
   if (RESTRICTED_EXTENSIONS.includes(fileExtension)) {
     return {
       isValid: false,
-      message: `HEIC, GIF, WEBP 형식은 지원하지 않는다냥`,
+      message: `HEIC, GIF 형식은 지원하지 않는다냥`,
     };
   }
 
