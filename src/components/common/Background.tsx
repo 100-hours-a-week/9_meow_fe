@@ -43,7 +43,14 @@ export default function Background({
           <div className="h-full flex flex-col text-foreground font-bold text-2xl text-right justify-end">
             <h1 className="text-7xl">미야옹</h1>
             <p className="text-foreground text-3xl">우리만의 동물 시점 SNS</p>
-            <img src="/realize_logo.png" alt="귀여운 고양이" className="w-60" />
+            <picture>
+              <source srcSet="/realize_logo.webp" type="image/webp" />
+              <img
+                src="/realize_logo.png"
+                alt="귀여운 고양이"
+                className="w-60"
+              />
+            </picture>
           </div>
         </div>
       </div>
