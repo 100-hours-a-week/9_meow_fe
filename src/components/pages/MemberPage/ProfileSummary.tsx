@@ -57,7 +57,7 @@ export default function ProfileSummary({ userId }: IProfileSummary) {
   };
 
   return (
-    <div className="relative w-full flex flex-col gap-4 items-center">
+    <div className="relative w-full flex flex-col gap-4 items-center bg-background">
       <MemberInfoSummary
         profileImageUrl={profileInfo?.profileImageUrl}
         nickname={profileInfo?.nickname ?? ""}
