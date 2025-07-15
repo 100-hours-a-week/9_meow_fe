@@ -50,23 +50,23 @@ export default function NavigationBar({
   };
 
   return (
-    <div className="flex justify-between items-center border-t border-border/30 px-5 py-1 fixed bottom-0 w-full bg-background max-w-[430px] mx-auto">
+    <div className="flex justify-between items-center border-t border-border/30 px-5 py-1 fixed bottom-0 w-full bg-[#caebef] max-w-[430px] mx-auto">
       {renderIconButton(
         "/",
-        <HomeIcon className="stroke-secondary-active size-6" />,
+        <HomeIcon className="stroke-foreground size-6" />,
         () => handleScrollToTop({ pathname: "/" }),
       )}
       {renderIconButton(
         "/event",
-        <PartyPopper className="stroke-secondary-active size-6" />,
+        <PartyPopper className="stroke-foreground size-6" />,
       )}
       {renderIconButton(
         "/create",
-        <PlusIcon className="stroke-secondary-active size-6" />,
+        <PlusIcon className="stroke-foreground size-6" />,
       )}
       {renderIconButton(
         "/chat",
-        <MessageCircleIcon className="stroke-secondary-active size-6" />,
+        <MessageCircleIcon className="stroke-foreground size-6" />,
       )}
       {renderIconButton(
         token

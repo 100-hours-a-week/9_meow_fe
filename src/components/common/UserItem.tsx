@@ -57,7 +57,9 @@ export default function UserItem({
           <div
             className={cn(
               "text-xs text-background px-1 rounded-sm absolute bottom-0 flex flex-row items-center gap-1 border border-foreground",
-              animalType === ApiAnimalType.CAT ? "bg-primary" : "bg-secondary",
+              animalType === ApiAnimalType.CAT
+                ? "bg-rose-300"
+                : "bg-orange-300",
             )}
           >
             {animalType.toLocaleUpperCase()}
@@ -78,7 +80,9 @@ export default function UserItem({
           <div
             className={cn(
               "text-[8px] text-background px-1 rounded-sm flex flex-row items-center gap-1 border border-foreground",
-              animalType === ApiAnimalType.CAT ? "bg-primary" : "bg-secondary",
+              animalType === ApiAnimalType.CAT
+                ? "bg-rose-300"
+                : "bg-orange-300",
             )}
           >
             {animalType.toLocaleUpperCase()}
