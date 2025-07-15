@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
-import SelectAnimalType from "./SelectAnimalType";
+import SignupSelectAnimalType from "./SignupSelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
@@ -11,8 +11,6 @@ import useTokenStore from "@/store/useTokenStore";
 import { signupQueries } from "@/api/queries/signupQueries";
 import { loginQueries } from "@/api/queries/loginQueries";
 import { imageQueries } from "@/api/queries/ImageQueries";
-
-const animals = [ApiAnimalType.CAT, ApiAnimalType.DOG];
 
 export default function SignupForm() {
   const navigate = useNavigate();
@@ -94,10 +92,9 @@ export default function SignupForm() {
         setNicknameValue={setNicknameValue}
         setIsNicknameDuplicate={setIsNicknameDuplicate}
       />
-      <SelectAnimalType
+      <SignupSelectAnimalType
         titleText="어떤 동물이냐옹"
         isRequired={true}
-        animals={animals}
         selectedAnimal={selectedAnimal}
         setAnimal={handleAnimalChange}
       />

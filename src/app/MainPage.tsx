@@ -128,6 +128,7 @@ export default function MainPage({ scrollContainerRef }: IMainPage) {
             commentCount: post.commentCount,
             timestamp: new Date(post.createdAt),
             emotion: post.emotion,
+            animalType: post.postType,
           };
 
           return (

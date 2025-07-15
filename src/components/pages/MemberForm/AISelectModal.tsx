@@ -82,7 +82,7 @@ export default function AISelectModal({
         </div>
 
         <p className="text-foreground text-xl">
-          너의 사진을 올려봐라 냥! 내가 고양이 사진 골라준다옹
+          너의 사진을 올려봐라 냥! 내가 프로필 사진 추천해준다옹
         </p>
 
         <div className="flex flex-col gap-1 items-center w-full max-w-[400px]">

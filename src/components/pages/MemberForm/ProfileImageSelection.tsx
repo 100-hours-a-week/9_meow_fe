@@ -51,7 +51,7 @@ function ProfileImageSelection({
         )}
         <div className="flex gap-3 items-center">
           <div className="flex flex-col items-center gap-2">
-            <label className="flex items-center justify-center w-[100px] h-[100px] bg-muted-foreground border border-foreground/30 rounded-full cursor-pointer overflow-hidden">
+            <label className="flex items-center justify-center w-[100px] h-[100px] bg-background border border-foreground/30 rounded-full cursor-pointer overflow-hidden">
               {previewUrl ? (
                 <img
                   src={previewUrl}
@@ -60,7 +60,7 @@ function ProfileImageSelection({
                 />
               ) : (
                 <div className="flex flex-col items-center gap-2">
-                  <span className="text-2xl text-background">+</span>
+                  <span className="text-2xl text-muted-foreground">+</span>
                 </div>
               )}
               <input

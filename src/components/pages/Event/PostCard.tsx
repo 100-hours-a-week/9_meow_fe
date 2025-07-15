@@ -29,7 +29,9 @@ function EventPostCard({
     <div
       className={cn(
         `relative w-[100px] md:w-[120px] flex flex-col gap-1`,
-        dark && "text-background",
+        dark
+          ? "text-background bg-none"
+          : "text-foreground bg-background rounded-xl shadow-sm",
       )}
     >
       <ImageBox src={postImageUrl} rank={rank} />

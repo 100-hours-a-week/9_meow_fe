@@ -31,7 +31,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Background>
-          <div className="relative w-full flex flex-col bg-background max-w-[430px] mx-auto outline outline-foreground/20 shadow-xl overflow-y-hidden">
+          <div className="relative w-full flex flex-col bg-[#f7ecdc] max-w-[430px] mx-auto outline outline-foreground/20 shadow-xl overflow-y-hidden">
             <Header />
             <div
               ref={scrollContainerRef}
@@ -52,7 +52,9 @@ function App() {
                 <Route path="/mypage/edit" element={<ProfileEditPage />} />
                 <Route
                   path="/member/:userId"
-                  element={<MemberPage scrollContainerRef={scrollContainerRef} />}
+                  element={
+                    <MemberPage scrollContainerRef={scrollContainerRef} />
+                  }
                 />
                 <Route
                   path="/member/:userId/follower"

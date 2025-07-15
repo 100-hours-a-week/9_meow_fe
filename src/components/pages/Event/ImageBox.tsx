@@ -26,7 +26,7 @@ function ImageBox({ src, rank, className }: IImageBox) {
   return (
     <div
       className={cn(
-        "relative flex flex-col gap-1 w-[100px] md:w-[120px] h-[100px] md:h-[120px] shadow-sm md:shadow-md",
+        "relative flex flex-col gap-1 w-[100px] md:w-[120px] h-[100px] md:h-[120px]",
         className,
       )}
     >

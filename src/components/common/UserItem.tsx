@@ -1,7 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { ApiAnimalType } from "@/types/animal";
-import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
 import { useNavigate } from "react-router-dom";
 
 export interface IUserItem {
@@ -38,17 +37,36 @@ export default function UserItem({
       )}
       onClick={disabled ? undefined : handleClick}
     >
-      <Avatar
+      <div
         className={cn(
-          "border border-muted-foreground flex-shrink-0",
-          !profileImageUrl && (dark ? "bg-background" : "bg-foreground"),
-          size === "sm" && "size-5",
+          "flex flex-col items-center relative",
+          size === "default" && "overflow-visible pb-3",
         )}
       >
-        <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
-        <AvatarFallback>미야옹</AvatarFallback>
-      </Avatar>
-      <div className="flex flex-col text-sm min-w-0 flex-1">
+        <Avatar
+          className={cn(
+            "border flex-shrink-0 border-foreground",
+            !profileImageUrl && (dark ? "bg-background" : "bg-foreground"),
+            size === "sm" && "size-5 border-muted-foreground",
+          )}
+        >
+          <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
+          <AvatarFallback>미야옹</AvatarFallback>
+        </Avatar>
+        {size === "default" && (
+          <div
+            className={cn(
+              "text-xs text-foreground px-1 rounded-sm absolute bottom-0 flex flex-row items-center gap-1",
+              animalType === ApiAnimalType.CAT
+                ? "bg-rose-300"
+                : "bg-orange-300",
+            )}
+          >
+            {animalType.toLocaleUpperCase()}
+          </div>
+        )}
+      </div>
+      <div className="flex flex-col items-start text-sm min-w-0 flex-1">
         <p
           className={cn(
             "text-orange-950 text-sm text-ellipsis overflow-hidden whitespace-nowrap",
@@ -58,15 +76,18 @@ export default function UserItem({
         >
           {nickname}
         </p>
-        <p
-          className={cn(
-            "text-orange-950/30 text-xs text-ellipsis overflow-hidden whitespace-nowrap",
-            size === "sm" && "text-[10px]",
-            dark ? "text-background" : "text-muted-foreground",
-          )}
-        >
-          {convertAnimalTypeToDisplay(animalType)}
-        </p>
+        {size === "sm" && (
+          <div
+            className={cn(
+              "text-[8px] text-foreground px-1 rounded-sm flex flex-row items-center gap-1 ",
+              animalType === ApiAnimalType.CAT
+                ? "bg-rose-300"
+                : "bg-orange-300",
+            )}
+          >
+            {animalType.toLocaleUpperCase()}
+          </div>
+        )}
       </div>
     </div>
   );

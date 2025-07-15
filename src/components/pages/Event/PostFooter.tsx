@@ -27,7 +27,7 @@ function EventPostFooter({
   });
 
   return (
-    <div className="flex flex-row justify-between">
+    <div className="flex flex-row justify-between px-1 items-center">
       <UserItem {...userInfo} size="sm" dark={dark} disabled={isVoteTime} />
       <Button
         variant="ghost"
