@@ -5,6 +5,7 @@ import { signupQueries } from "@/api/queries/signupQueries";
 import useKakaoIdStore from "@/store/useKakaoIdStore";
 import useTokenStore from "@/store/useTokenStore";
 import { loginQueries } from "@/api/queries/loginQueries";
+import userEvent from "@testing-library/user-event";
 
 // Mock the API instances
 jest.mock("@/api/instance/aiDefaultInstance", () => ({
@@ -78,6 +79,7 @@ jest.mock("react-router-dom", () => ({
 }));
 
 describe("SignupForm", () => {
+  const user = userEvent.setup();
   const mockSetKakaoId = jest.fn();
   const mockSetToken = jest.fn();
 
@@ -94,7 +96,7 @@ describe("SignupForm", () => {
     }));
   });
 
-  it("should disable button when 회원가입 isPending", () => {
+  it("should disable button when 회원가입 isPending", async () => {
     // given
     (useMutation as jest.Mock).mockImplementation((options) => {
       // signup mutation인 경우 isPending
@@ -127,7 +129,7 @@ describe("SignupForm", () => {
     expect(submitButton).toBeDisabled();
   });
 
-  it("should disable button when 로그인 isPending", () => {
+  it("should disable button when 로그인 isPending", async () => {
     // given
     (useMutation as jest.Mock).mockImplementation((options) => {
       // login mutation인 경우 isPending
@@ -160,7 +162,7 @@ describe("SignupForm", () => {
     expect(submitButton).toBeDisabled();
   });
 
-  it("should disable button when 닉네임 중복 isPending", () => {
+  it("should disable button when 닉네임 중복 isPending", async () => {
     // given
     (useMutation as jest.Mock).mockImplementation((options) => {
       // checkNickname mutation인 경우 isPending
@@ -194,7 +196,7 @@ describe("SignupForm", () => {
     expect(submitButton).toBeDisabled();
   });
 
-  it("should disable button when 닉네임 중복인 경우", () => {
+  it("should disable button when 닉네임 중복인 경우", async () => {
     // given
     (useMutation as jest.Mock).mockImplementation((options) => {
       // checkNickname mutation인 경우
@@ -223,7 +225,7 @@ describe("SignupForm", () => {
     // when
     render(<SignupForm />);
     const nicknameInput = screen.getByRole("textbox");
-    fireEvent.change(nicknameInput, { target: { value: "test" } });
+    await user.type(nicknameInput, "test");
 
     // 닉네임 중복 체크 버튼 클릭
     const checkButton = screen.getByRole("button", { name: /중복 확인/i });
@@ -253,7 +255,7 @@ describe("SignupForm", () => {
     expect(submitButton).toBeDisabled();
   });
 
-  it("should disable button when 닉네임 중복 체크 안 된 경우", () => {
+  it("should disable button when 닉네임 중복 체크 안 된 경우", async () => {
     // given
     (useMutation as jest.Mock).mockReturnValue({
       mutate: jest.fn(),
@@ -263,7 +265,7 @@ describe("SignupForm", () => {
     // when
     render(<SignupForm />);
     const nicknameInput = screen.getByRole("textbox");
-    fireEvent.change(nicknameInput, { target: { value: "test" } });
+    await user.type(nicknameInput, "test");
 
     // then
     const submitButton =
