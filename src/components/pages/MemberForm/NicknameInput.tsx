@@ -58,7 +58,7 @@ export default function NicknameInput({
       <div className="flex items-center w-full gap-3 h-10">
         <input
           className={cn(
-            "flex-1 h-full rounded-xl border-2 border-foreground/30 px-4 text-foreground text-lg placeholder:text-foreground/50 placeholder:opacity-70 focus:outline-none focus:ring-primary focus:border-primary",
+            "flex-1 h-full rounded-xl border-2 border-foreground/30 px-4 text-foreground text-lg placeholder:text-foreground/50 placeholder:opacity-70 focus:outline-none focus:ring-primary focus:border-primary bg-background",
             errorMessage &&
               "border-destructive ring-destructive focus:border-destructive focus:ring-destructive",
           )}
