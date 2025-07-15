@@ -40,7 +40,7 @@ export default function UserItem({
       <div
         className={cn(
           "flex flex-col items-center relative",
-          size === "default" && "overflow-visible pb-3",
+          size === "default" && "overflow-visible pb-3 pl-1",
         )}
       >
         <Avatar
@@ -56,7 +56,7 @@ export default function UserItem({
         {size === "default" && (
           <div
             className={cn(
-              "text-xs text-foreground px-1 rounded-sm absolute bottom-0 flex flex-row items-center gap-1",
+              "text-xs text-foreground px-1 rounded-sm absolute bottom-0 flex flex-row items-center gap-1 border border-foreground",
               animalType === ApiAnimalType.CAT
                 ? "bg-rose-300"
                 : "bg-orange-300",
@@ -79,7 +79,7 @@ export default function UserItem({
         {size === "sm" && (
           <div
             className={cn(
-              "text-[8px] text-foreground px-1 rounded-sm flex flex-row items-center gap-1 ",
+              "text-[8px] text-foreground px-1 rounded-sm flex flex-row items-center gap-1 border border-foreground",
               animalType === ApiAnimalType.CAT
                 ? "bg-rose-300"
                 : "bg-orange-300",
