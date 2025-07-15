@@ -15,7 +15,7 @@ function PostCard({ children, postId, onClick }: IPostCard) {
 
   return (
     <div
-      className="flex flex-col gap-2 rounded-2xl bg-background border border-foreground/30 pl-2.5 pr-2 pt-1 pb-1 shadow-sm w-full"
+      className="flex flex-col gap-1 rounded-xl bg-background border border-foreground/30 pl-2.5 pr-2 pt-1 pb-1 shadow-sm w-full"
       onClick={() => {
         onClick?.();
         navigate(`/detail/${postId}`);
