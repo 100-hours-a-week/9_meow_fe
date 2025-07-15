@@ -1,6 +1,6 @@
 import useTokenStore from "@/store/useTokenStore";
 import axios from "axios";
-import { postRefresh } from "../login";
+import { postReissue } from "../login";
 
 const baseURL = `${import.meta.env.VITE_API_URL}`;
 
@@ -34,17 +34,17 @@ authInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const response: { accessToken: string } = await postRefresh();
+        const response: { accessToken: string } = await postReissue();
         const newToken = response.accessToken;
         useTokenStore.getState().setToken(newToken);
 
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return authInstance(originalRequest);
-      } catch (refreshError) {
+      } catch (reissueError) {
         alert("토큰 갱신에 실패했다옹... 다시 로그인 해보라냥");
         window.location.href = "/login";
         useTokenStore.getState().clearToken();
-        return Promise.reject(refreshError);
+        return Promise.reject(reissueError);
       }
     }
 

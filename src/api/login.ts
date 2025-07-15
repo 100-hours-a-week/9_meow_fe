@@ -31,7 +31,7 @@ export const postLogin = async (kakaoId: number) => {
   return response.data;
 };
 
-export const postRefresh = async () => {
+export const postReissue = async () => {
   const response = await defaultInstance.post("/auth/refresh", null, {
     withCredentials: true,
   });
