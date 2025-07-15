@@ -12,7 +12,7 @@ describe("convertAnimalTypeToDisplay", () => {
     expect(convertAnimalTypeToDisplay("cat" as ApiAnimalType)).toBe(
       DisplayAnimalType.CAT,
     );
-    expect(convertAnimalTypeToDisplay(ApiAnimalType.CAT)).toBe("🐱 고양이");
+    expect(convertAnimalTypeToDisplay(ApiAnimalType.CAT)).toBe("고양이");
   });
   it("should return DOG display animal type", () => {
     expect(convertAnimalTypeToDisplay(ApiAnimalType.DOG)).toBe(
@@ -21,7 +21,7 @@ describe("convertAnimalTypeToDisplay", () => {
     expect(convertAnimalTypeToDisplay("dog" as ApiAnimalType)).toBe(
       DisplayAnimalType.DOG,
     );
-    expect(convertAnimalTypeToDisplay(ApiAnimalType.DOG)).toBe("🐶 강아지");
+    expect(convertAnimalTypeToDisplay(ApiAnimalType.DOG)).toBe("강아지");
   });
 });
 
@@ -30,7 +30,7 @@ describe("convertDisplayToAnimalType", () => {
     expect(convertDisplayToAnimalType(DisplayAnimalType.CAT)).toBe(
       ApiAnimalType.CAT,
     );
-    expect(convertDisplayToAnimalType("🐱 고양이" as DisplayAnimalType)).toBe(
+    expect(convertDisplayToAnimalType("고양이" as DisplayAnimalType)).toBe(
       ApiAnimalType.CAT,
     );
     expect(convertDisplayToAnimalType(DisplayAnimalType.CAT)).toBe("cat");
@@ -39,7 +39,7 @@ describe("convertDisplayToAnimalType", () => {
     expect(convertDisplayToAnimalType(DisplayAnimalType.DOG)).toBe(
       ApiAnimalType.DOG,
     );
-    expect(convertDisplayToAnimalType("🐶 강아지" as DisplayAnimalType)).toBe(
+    expect(convertDisplayToAnimalType("강아지" as DisplayAnimalType)).toBe(
       ApiAnimalType.DOG,
     );
     expect(convertDisplayToAnimalType(DisplayAnimalType.DOG)).toBe("dog");
