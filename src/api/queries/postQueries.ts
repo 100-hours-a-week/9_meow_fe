@@ -5,6 +5,7 @@ import {
   IPostEditInfoResponse,
   IPostEditResponse,
   IPostSummaryDataPagination,
+  IPostSummaryData,
 } from "@/api/types/post";
 import {
   deletePost,
@@ -68,22 +69,167 @@ export const postQueries = {
     onLikeSuccess,
     navigate,
     currentPath,
+    queryClient,
   }: {
     onLikeSuccess?: () => void;
     navigate: NavigateFunction;
     currentPath?: string;
+    queryClient: QueryClient;
   }) => ({
     mutationKey: [...postQueries.all(), "like"],
     mutationFn: ({ postId, isLiked }: { postId: number; isLiked: boolean }) =>
       postLikePost({ postId, isLiked }),
+    onMutate: async ({
+      postId,
+      isLiked,
+    }: {
+      postId: number;
+      isLiked: boolean;
+    }) => {
+      // 이전 쿼리 데이터를 저장하기 위해 쿼리 취소
+      await queryClient.cancelQueries({
+        queryKey: [...postQueries.all()],
+      });
+
+      // 이전 데이터를 저장
+      const previousData = {
+        list: queryClient.getQueriesData({
+          queryKey: [...postQueries.all(), "list"],
+        }),
+        detail: queryClient.getQueriesData({
+          queryKey: [...postQueries.all(), "detail", postId],
+        }),
+        userPostList: queryClient.getQueriesData({
+          queryKey: [...postQueries.all(), "userPostList"],
+        }),
+      };
+
+      // 낙관적 업데이트: 리스트 쿼리들 업데이트
+      queryClient.setQueriesData(
+        {
+          queryKey: [...postQueries.all(), "list"],
+        },
+        (oldData: { pages: IPostSummaryDataPagination[] } | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page: IPostSummaryDataPagination) => ({
+              ...page,
+              content: page.content.map((post: IPostSummaryData) =>
+                post.id === postId
+                  ? {
+                      ...post,
+                      liked: !isLiked,
+                      likeCount: isLiked
+                        ? post.likeCount - 1
+                        : post.likeCount + 1,
+                    }
+                  : post,
+              ),
+            })),
+          };
+        },
+      );
+
+      // 상세 페이지 쿼리 업데이트
+      queryClient.setQueriesData(
+        {
+          queryKey: [...postQueries.all(), "detail", postId],
+        },
+        (oldData: IPostDetailData | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            liked: !isLiked,
+            likeCount: isLiked ? oldData.likeCount - 1 : oldData.likeCount + 1,
+          };
+        },
+      );
+
+      // 사용자 포스트 리스트 쿼리들 업데이트
+      queryClient.setQueriesData(
+        {
+          queryKey: [...postQueries.all(), "userPostList"],
+        },
+        (oldData: { pages: IPostSummaryDataPagination[] } | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page: IPostSummaryDataPagination) => ({
+              ...page,
+              content: page.content.map((post: IPostSummaryData) =>
+                post.id === postId
+                  ? {
+                      ...post,
+                      liked: !isLiked,
+                      likeCount: isLiked
+                        ? post.likeCount - 1
+                        : post.likeCount + 1,
+                    }
+                  : post,
+              ),
+            })),
+          };
+        },
+      );
+
+      return { previousData };
+    },
     onSuccess: () => {
       // 좋아요 성공 시 posts 쿼리 데이터를 무효화하여 재요청
       onLikeSuccess?.();
     },
-    onError: createAuthErrorHandler(
-      { navigate, currentPath },
-      ALERT_MESSAGES.LIKE_FAILED,
-    ),
+    onError: (
+      err: AxiosError<IError>,
+      _variables: { postId: number; isLiked: boolean },
+      context: { previousData: unknown } | undefined,
+    ) => {
+      // 에러 발생 시 이전 데이터로 되돌리기
+      if (context?.previousData) {
+        const { previousData } = context;
+
+        // 리스트 쿼리 복원
+        (
+          previousData as { list: Array<{ queryKey: unknown; data: unknown }> }
+        ).list.forEach((query: { queryKey: unknown; data: unknown }) => {
+          if (query.queryKey) {
+            queryClient.setQueriesData(query.queryKey, query.data);
+          }
+        });
+
+        // 상세 페이지 쿼리 복원
+        (
+          previousData as {
+            detail: Array<{ queryKey: unknown; data: unknown }>;
+          }
+        ).detail.forEach((query: { queryKey: unknown; data: unknown }) => {
+          if (query.queryKey) {
+            queryClient.setQueriesData(query.queryKey, query.data);
+          }
+        });
+
+        // 사용자 포스트 리스트 쿼리 복원
+        (
+          previousData as {
+            userPostList: Array<{ queryKey: unknown; data: unknown }>;
+          }
+        ).userPostList.forEach(
+          (query: { queryKey: unknown; data: unknown }) => {
+            if (query.queryKey) {
+              queryClient.setQueriesData(query.queryKey, query.data);
+            }
+          },
+        );
+      }
+
+      createAuthErrorHandler(
+        { navigate, currentPath },
+        ALERT_MESSAGES.LIKE_FAILED,
+      )(err);
+    },
   }),
 
   delete: ({

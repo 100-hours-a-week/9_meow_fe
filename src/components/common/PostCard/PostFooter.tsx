@@ -41,6 +41,7 @@ export default function PostFooter({
       },
       navigate,
       currentPath: location.pathname + location.search,
+      queryClient,
     }),
   });
 
