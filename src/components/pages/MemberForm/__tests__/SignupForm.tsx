@@ -78,7 +78,7 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => jest.fn(),
 }));
 
-describe("SignupForm", () => {
+describe("SignupForm에서 버튼이 disabled 여야 한다", () => {
   const user = userEvent.setup();
   const mockSetKakaoId = jest.fn();
   const mockSetToken = jest.fn();
@@ -96,7 +96,7 @@ describe("SignupForm", () => {
     }));
   });
 
-  it("should disable button when 회원가입 isPending", async () => {
+  it("when 회원가입 isPending", async () => {
     // given
     (useMutation as jest.Mock).mockImplementation((options) => {
       // signup mutation인 경우 isPending
@@ -129,7 +129,7 @@ describe("SignupForm", () => {
     expect(submitButton).toBeDisabled();
   });
 
-  it("should disable button when 로그인 isPending", async () => {
+  it("when 로그인 isPending", async () => {
     // given
     (useMutation as jest.Mock).mockImplementation((options) => {
       // login mutation인 경우 isPending
@@ -162,7 +162,7 @@ describe("SignupForm", () => {
     expect(submitButton).toBeDisabled();
   });
 
-  it("should disable button when 닉네임 중복 isPending", async () => {
+  it("when 닉네임 중복 isPending", async () => {
     // given
     (useMutation as jest.Mock).mockImplementation((options) => {
       // checkNickname mutation인 경우 isPending
@@ -196,7 +196,7 @@ describe("SignupForm", () => {
     expect(submitButton).toBeDisabled();
   });
 
-  it("should disable button when 닉네임 중복인 경우", async () => {
+  it("when 닉네임 중복인 경우", async () => {
     // given
     (useMutation as jest.Mock).mockImplementation((options) => {
       // checkNickname mutation인 경우
@@ -238,7 +238,7 @@ describe("SignupForm", () => {
     expect(submitButton).toBeDisabled();
   });
 
-  it("should disable button when 닉네임 비어 있는 경우", () => {
+  it("when 닉네임 비어 있는 경우", () => {
     // given
     (useMutation as jest.Mock).mockReturnValue({
       mutate: jest.fn(),
@@ -255,7 +255,7 @@ describe("SignupForm", () => {
     expect(submitButton).toBeDisabled();
   });
 
-  it("should disable button when 닉네임 중복 체크 안 된 경우", async () => {
+  it("when 닉네임 중복 체크 안 된 경우", async () => {
     // given
     (useMutation as jest.Mock).mockReturnValue({
       mutate: jest.fn(),

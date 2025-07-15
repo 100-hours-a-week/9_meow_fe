@@ -57,14 +57,14 @@ const TestWrapper = () => {
   );
 };
 
-describe("NicknameInput", () => {
+describe("NicknameInput에 사용자가 입력했을 때", () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it("should call setNicknameValue when 사용자 입력", async () => {
+  it("setNicknameValue가 호출되어야 한다", async () => {
     // given
     renderWithQueryClient(<TestWrapper />);
 
@@ -76,8 +76,8 @@ describe("NicknameInput", () => {
     expect(input).toHaveValue("테스트");
   });
 
-  describe("중복 확인 버튼", () => {
-    it("should be disabled when 닉네임 없는 경우", () => {
+  describe("중복 확인 버튼이 disabled 여야 한다", () => {
+    it("when 닉네임 없는 경우", () => {
       // given
       renderWithQueryClient(<TestWrapper />);
 
@@ -86,7 +86,7 @@ describe("NicknameInput", () => {
       expect(button).toBeDisabled();
     });
 
-    it("should be disabled when 닉네임 너무 짧은 경우", async () => {
+    it("when 닉네임 너무 짧은 경우", async () => {
       // given
       renderWithQueryClient(<TestWrapper />);
 
@@ -99,7 +99,7 @@ describe("NicknameInput", () => {
       expect(button).toBeDisabled();
     });
 
-    it("should be disabled when 닉네임 너무 긴 경우", async () => {
+    it("when 닉네임 너무 긴 경우", async () => {
       // given
       renderWithQueryClient(<TestWrapper />);
 
@@ -115,7 +115,7 @@ describe("NicknameInput", () => {
       expect(button).toBeDisabled();
     });
 
-    it("should be disabled when 닉네임 이모지 포함할 경우", async () => {
+    it("when 닉네임 이모지 포함할 경우", async () => {
       // given
       renderWithQueryClient(<TestWrapper />);
 
@@ -127,8 +127,10 @@ describe("NicknameInput", () => {
       const button = screen.getByRole("button", { name: "중복 확인" });
       expect(button).toBeDisabled();
     });
+  });
 
-    it("should be enabled when 닉네임 유효한 경우", async () => {
+  describe("중복 확인 버튼이 enabled 여야 한다", () => {
+    it("when 닉네임 유효한 경우", async () => {
       // given
       renderWithQueryClient(<TestWrapper />);
 
@@ -142,8 +144,8 @@ describe("NicknameInput", () => {
     });
   });
 
-  describe("에러 메시지", () => {
-    it("should show when 닉네임 너무 짧은 경우", async () => {
+  describe("에러 메시지가 보여야 한다", () => {
+    it("when 닉네임 너무 짧은 경우", async () => {
       // given
       renderWithQueryClient(<TestWrapper />);
 
@@ -157,7 +159,7 @@ describe("NicknameInput", () => {
       ).toBeInTheDocument();
     });
 
-    it("should show when 이모지 포함한 경우", async () => {
+    it("when 이모지 포함한 경우", async () => {
       // given
       renderWithQueryClient(<TestWrapper />);
 
@@ -169,7 +171,7 @@ describe("NicknameInput", () => {
       expect(screen.getByText("이모지 없이 적어달라옹")).toBeInTheDocument();
     });
 
-    it("should show when 닉네임 너무 긴 경우", async () => {
+    it("when 닉네임 너무 긴 경우", async () => {
       // given
       renderWithQueryClient(<TestWrapper />);
 
@@ -186,7 +188,7 @@ describe("NicknameInput", () => {
       ).toBeInTheDocument();
     });
 
-    it("should not show when 닉네임 유효한 경우", async () => {
+    it("when 닉네임 유효한 경우", async () => {
       // given
       renderWithQueryClient(<TestWrapper />);
 
