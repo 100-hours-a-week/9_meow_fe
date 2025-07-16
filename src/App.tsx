@@ -31,7 +31,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Background>
-          <div className="relative w-full flex flex-col bg-[#f7ecdc] max-w-[430px] mx-auto outline outline-foreground/20 shadow-xl overflow-y-hidden">
+          <div className="relative w-full flex flex-col bg-gradient-to-br from-[#f3effd] via-[#f8eef9] to-[#f6e9fa] max-w-[430px] mx-auto outline outline-foreground/20 shadow-2xl overflow-y-hidden">
             <Header />
             <div
               ref={scrollContainerRef}
