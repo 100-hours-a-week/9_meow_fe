@@ -66,11 +66,13 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
   const handleSendMessage = (message: string) => {
     if (message.trim() && isConnected) {
       sendMessage(message, selectedAnimal);
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop =
+          scrollContainerRef.current.scrollHeight;
+      }
     }
   };
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
   const [isFetchingPrevious, setIsFetchingPrevious] = useState<boolean>(false);
@@ -151,7 +153,6 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
           ))}
           <div ref={lastElementRef} />
         </div>
-        <div ref={messagesEndRef} />
       </div>
       <ChatInput
         onSend={handleSendMessage}
