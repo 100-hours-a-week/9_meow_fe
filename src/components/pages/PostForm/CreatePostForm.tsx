@@ -1,14 +1,13 @@
-import { useState } from "react";
 import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
 import SelectEmotion from "./SelectEmotion";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useImageUpload } from "@/hooks/common/useImageUpload";
-import { ApiEmotion } from "@/types/Emotion";
 import { postQueries } from "@/api/queries/postQueries";
 import { useMutation } from "@tanstack/react-query";
 import { useHandleCancel } from "@/hooks/common/useHandleCancel";
+import { usePostFormState } from "@/hooks/post/usePostFormState";
 
 export default function CreatePostForm() {
   const navigate = useNavigate();
@@ -16,6 +15,14 @@ export default function CreatePostForm() {
   const { mutate: createPost, isPending } = useMutation({
     ...postQueries.create({ navigate }),
   });
+  const {
+    content,
+    selectedEmotion,
+    isSubmitDisabled,
+    setContent,
+    setSelectedEmotion,
+    setIsSubmitDisabled,
+  } = usePostFormState();
 
   const {
     selectedImages,
@@ -24,12 +31,6 @@ export default function CreatePostForm() {
     isUploading,
     uploadImagesToS3,
   } = useImageUpload();
-
-  const [content, setContent] = useState("");
-  const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
-    ApiEmotion.HAPPY,
-  );
-  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const handlePostSubmit = async () => {
     try {

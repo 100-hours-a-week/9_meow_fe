@@ -1,28 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
 import SelectEmotion from "./SelectEmotion";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useImageUpload } from "@/hooks/common/useImageUpload";
-import { ApiEmotion } from "@/types/Emotion";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { postQueries } from "@/api/queries/postQueries";
 import { useHandleCancel } from "@/hooks/common/useHandleCancel";
+import { usePostFormState } from "@/hooks/post/usePostFormState";
 
 export default function EditPostForm({ postId }: { postId: number }) {
   const navigate = useNavigate();
   const { handleCancel } = useHandleCancel({
     navigateTo: `/detail/${postId}`,
   });
-
-  const { data: postData } = useQuery({
-    ...postQueries.editInfo({ postId }),
-  });
-  const { mutate: editPost, isPending } = useMutation({
-    ...postQueries.edit({ postId, navigate }),
-  });
-
+  const {
+    content,
+    selectedEmotion,
+    isSubmitDisabled,
+    setContent,
+    setSelectedEmotion,
+    setIsSubmitDisabled,
+  } = usePostFormState();
   const {
     selectedImages,
     setSelectedImages,
@@ -31,11 +31,13 @@ export default function EditPostForm({ postId }: { postId: number }) {
     uploadImagesToS3,
     isUploading,
   } = useImageUpload();
-  const [content, setContent] = useState("");
-  const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
-    ApiEmotion.HAPPY,
-  );
-  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+
+  const { data: postData } = useQuery({
+    ...postQueries.editInfo({ postId }),
+  });
+  const { mutate: editPost, isPending } = useMutation({
+    ...postQueries.edit({ postId, navigate }),
+  });
 
   const handlePostSubmit = async () => {
     try {
