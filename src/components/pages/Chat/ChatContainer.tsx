@@ -53,19 +53,16 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
     threshold: 1.0,
   });
 
-  // 메시지 수신 콜백을 useCallback으로 메모이제이션
   const handleMessageReceived = useCallback((message: IReceivedChatMessage) => {
     setWebsocketMessages((prevMessages) => [message, ...prevMessages]);
   }, []);
 
-  // WebSocket 연결
   const { isConnected, sendMessage } = useWebSocket({
     chatroomId,
     token: token ?? "",
     onMessageReceived: handleMessageReceived,
   });
 
-  // 메시지 전송 함수
   const handleSendMessage = (message: string) => {
     if (message.trim() && isConnected) {
       sendMessage(message, selectedAnimal);
@@ -129,7 +126,6 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
     }
   }, [chatMessages, isFetchingNextPage, isFetchingPrevious, isInitialLoad]);
 
-  // 메시지가 로드된 후 스크롤을 맨 아래로 설정
   useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop =
@@ -141,7 +137,6 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
     <div className="w-full h-full bg-foreground/10 rounded-xl gap-3 p-3 flex flex-col pb-26">
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pb-2">
         <div className="w-full flex flex-col-reverse items-center justify-end gap-1">
-          {/* TODO: 메시지 불러오는 로직 추가 */}
           {websocketMessages.map((message, index) => (
             <ChatMessage
               key={`${message.senderId}-${index}`}
