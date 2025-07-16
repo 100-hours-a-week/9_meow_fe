@@ -2,19 +2,11 @@ import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
 import SelectEmotion from "./SelectEmotion";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { useImageUpload } from "@/hooks/common/useImageUpload";
-import { postQueries } from "@/api/queries/postQueries";
-import { useMutation } from "@tanstack/react-query";
 import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 import { usePostFormState } from "@/hooks/post/usePostFormState";
+import { usePostSubmit } from "@/hooks/post/usePostSubmit";
 
 export default function CreatePostForm() {
-  const navigate = useNavigate();
-  const { handleCancel } = useHandleCancel({ navigateTo: "/" });
-  const { mutate: createPost, isPending } = useMutation({
-    ...postQueries.create({ navigate }),
-  });
   const {
     content,
     selectedEmotion,
@@ -23,24 +15,15 @@ export default function CreatePostForm() {
     setSelectedEmotion,
     setIsSubmitDisabled,
   } = usePostFormState();
-
+  const { handleCancel } = useHandleCancel({ navigateTo: "/" });
   const {
     selectedImages,
     addImage,
     removeImage,
     isUploading,
-    uploadImagesToS3,
-  } = useImageUpload();
-
-  const handlePostSubmit = async () => {
-    try {
-      const imageUrls = await uploadImagesToS3();
-      createPost({ imageUrls, content, emotion: selectedEmotion });
-    } catch (error) {
-      console.error("포스트 생성 중 오류 발생:", error);
-      alert("포스트 생성에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
+    isCreatePending,
+    handlePostSubmit,
+  } = usePostSubmit({ postId: undefined });
 
   return (
     <div className="flex flex-col gap-4 items-center p-5 pb-16">
@@ -65,10 +48,10 @@ export default function CreatePostForm() {
         </Button>
         <Button
           variant="secondarySolid"
-          disabled={isPending || isSubmitDisabled || isUploading}
-          onClick={handlePostSubmit}
+          disabled={isCreatePending || isSubmitDisabled || isUploading}
+          onClick={() => handlePostSubmit(content, selectedEmotion)}
         >
-          {isPending || isUploading
+          {isCreatePending || isUploading
             ? "잠시만 기다려주세옹"
             : "다 적으면 누르라냥!"}
         </Button>
