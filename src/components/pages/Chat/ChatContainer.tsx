@@ -71,17 +71,16 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
   };
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const isInitialLoadRef = useRef<boolean>(true);
-  const isFetchingPreviousRef = useRef<boolean>(false);
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
+  const [isFetchingPrevious, setIsFetchingPrevious] = useState<boolean>(false);
 
   useEffect(() => {
     if (chatMessages) {
       const newMessages = chatMessages.pages.flatMap((page) => page.content);
 
       // 초기 로드인 경우
-      if (isInitialLoadRef.current) {
+      if (isInitialLoad) {
         setMessages(newMessages);
         setTimeout(() => {
           if (scrollContainerRef.current) {
@@ -89,18 +88,22 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
               scrollContainerRef.current.scrollHeight;
           }
         }, 0);
-        isInitialLoadRef.current = false;
+        setIsInitialLoad(false);
         return;
       }
 
-      // 이전 페이지를 불러오는 중인지 확인
-      if (isFetchingNextPage) {
-        isFetchingPreviousRef.current = true;
+      // 이전 페이지를 불러오는 중이거나 이전 페이지 로딩이 완료된 경우
+      if (isFetchingNextPage || isFetchingPrevious) {
+        if (isFetchingNextPage) {
+          setIsFetchingPrevious(true);
+        } else {
+          setIsFetchingPrevious(false);
+        }
+
+        setMessages(newMessages);
         const currentScrollTop = scrollContainerRef.current?.scrollTop ?? 0;
         const currentScrollHeight =
           scrollContainerRef.current?.scrollHeight ?? 0;
-
-        setMessages(newMessages);
 
         setTimeout(() => {
           if (scrollContainerRef.current) {
@@ -111,35 +114,15 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
           }
         }, 0);
       } else {
-        // 새로운 메시지가 추가된 경우 또는 이전 페이지 로딩이 완료된 경우
-        if (isFetchingPreviousRef.current) {
-          // 이전 페이지 로딩이 완료된 경우 스크롤 위치 유지
-          isFetchingPreviousRef.current = false;
-          const currentScrollTop = scrollContainerRef.current?.scrollTop ?? 0;
-          const currentScrollHeight =
-            scrollContainerRef.current?.scrollHeight ?? 0;
-
-          setMessages(newMessages);
-
-          setTimeout(() => {
-            if (scrollContainerRef.current) {
-              const newScrollHeight = scrollContainerRef.current.scrollHeight;
-              const heightDifference = newScrollHeight - currentScrollHeight;
-              scrollContainerRef.current.scrollTop =
-                currentScrollTop + heightDifference;
-            }
-          }, 0);
-        } else {
-          // 새로운 메시지가 추가된 경우 스크롤을 맨 아래로
-          setMessages(newMessages);
-          if (scrollContainerRef.current) {
-            scrollContainerRef.current.scrollTop =
-              scrollContainerRef.current.scrollHeight;
-          }
+        // 새로운 메시지가 추가된 경우 스크롤을 맨 아래로
+        setMessages(newMessages);
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop =
+            scrollContainerRef.current.scrollHeight;
         }
       }
     }
-  }, [chatMessages, isFetchingNextPage]);
+  }, [chatMessages, isFetchingNextPage, isFetchingPrevious, isInitialLoad]);
 
   // 메시지가 로드된 후 스크롤을 맨 아래로 설정
   useEffect(() => {
@@ -152,7 +135,7 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
   return (
     <div className="w-full h-full bg-foreground/10 rounded-xl gap-3 p-3 flex flex-col pb-26">
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pb-2">
-        <div className="w-full h-full flex flex-col-reverse items-center justify-end">
+        <div className="w-full flex flex-col-reverse items-center justify-end">
           {/* TODO: 메시지 불러오는 로직 추가 */}
           {messages.map((message, index) => (
             <ChatMessage
