@@ -1,13 +1,9 @@
 import React from "react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ApiAnimalType } from "@/types/animal";
 import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
-import { Label } from "@radix-ui/react-label";
 import { cn } from "@/lib/utils";
 
 interface ISelectAnimalType {
-  titleText?: string;
-  isRequired?: boolean;
   animals: ApiAnimalType[];
   selectedAnimal: ApiAnimalType;
   setAnimal: (animal: ApiAnimalType) => void;
@@ -15,8 +11,6 @@ interface ISelectAnimalType {
 }
 
 function SelectAnimalType({
-  titleText,
-  isRequired = false,
   animals,
   selectedAnimal,
   setAnimal,
@@ -33,32 +27,27 @@ function SelectAnimalType({
         size === "sm" && "gap-0",
       )}
     >
-      {titleText && (
-        <Label className="text-xl text-foreground font-bold flex items-center gap-1">
-          {titleText + " "}
-          {isRequired && <span className="text-destructive">*</span>}
-        </Label>
-      )}
-      <RadioGroup
-        value={selectedAnimal}
-        className={cn(
-          "flex flex-row gap-2 flex-wrap",
-          size === "sm" && "gap-1",
-        )}
-        onValueChange={handleAnimalChange}
-      >
-        {animals.map((animal, index) => (
-          <div key={animal} className="flex items-center space-x-2">
-            <RadioGroupItem value={animal} id={`${animal}-${index + 1}`} />
-            <Label
-              htmlFor={`r${index + 1}`}
-              className={cn("text-lg", size === "sm" && "text-sm")}
+      <div className="w-full flex flex-row justify-between gap-2 flex-wrap">
+        {animals.map((value) => {
+          const isSelected = selectedAnimal === value;
+          return (
+            <button
+              key={value}
+              type="button"
+              onClick={() => handleAnimalChange(value)}
+              className={cn(
+                "flex flex-col items-center justify-center py-2 rounded-lg border gap-2 flex-1 hover:cursor-pointer",
+                isSelected
+                  ? "border-foreground bg-background shadow-sm"
+                  : "border-foreground/30 bg-orange-100",
+                "transition-colors duration-150",
+              )}
             >
-              {convertAnimalTypeToDisplay(animal)}
-            </Label>
-          </div>
-        ))}
-      </RadioGroup>
+              <p className="text-xs">{convertAnimalTypeToDisplay(value)}</p>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
