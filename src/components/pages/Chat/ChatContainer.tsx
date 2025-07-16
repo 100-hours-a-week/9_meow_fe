@@ -66,18 +66,15 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
   const handleSendMessage = (message: string) => {
     if (message.trim() && isConnected) {
       sendMessage(message, selectedAnimal);
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   useEffect(() => {
     if (chatMessages) {
