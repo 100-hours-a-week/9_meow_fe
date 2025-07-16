@@ -52,7 +52,7 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
 
   // 메시지 수신 콜백을 useCallback으로 메모이제이션
   const handleMessageReceived = useCallback((message: IReceivedChatMessage) => {
-    setMessages((prevMessages) => [...prevMessages, message]);
+    setMessages((prevMessages) => [message, ...prevMessages]);
   }, []);
 
   // WebSocket 연결
@@ -72,21 +72,87 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const isInitialLoadRef = useRef<boolean>(true);
+  const isFetchingPreviousRef = useRef<boolean>(false);
 
   useEffect(() => {
     if (chatMessages) {
-      setMessages(chatMessages.pages.flatMap((page) => page.content).reverse());
+      const newMessages = chatMessages.pages.flatMap((page) => page.content);
+
+      // 초기 로드인 경우
+      if (isInitialLoadRef.current) {
+        setMessages(newMessages);
+        setTimeout(() => {
+          if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop =
+              scrollContainerRef.current.scrollHeight;
+          }
+        }, 0);
+        isInitialLoadRef.current = false;
+        return;
+      }
+
+      // 이전 페이지를 불러오는 중인지 확인
+      if (isFetchingNextPage) {
+        isFetchingPreviousRef.current = true;
+        const currentScrollTop = scrollContainerRef.current?.scrollTop ?? 0;
+        const currentScrollHeight =
+          scrollContainerRef.current?.scrollHeight ?? 0;
+
+        setMessages(newMessages);
+
+        setTimeout(() => {
+          if (scrollContainerRef.current) {
+            const newScrollHeight = scrollContainerRef.current.scrollHeight;
+            const heightDifference = newScrollHeight - currentScrollHeight;
+            scrollContainerRef.current.scrollTop =
+              currentScrollTop + heightDifference;
+          }
+        }, 0);
+      } else {
+        // 새로운 메시지가 추가된 경우 또는 이전 페이지 로딩이 완료된 경우
+        if (isFetchingPreviousRef.current) {
+          // 이전 페이지 로딩이 완료된 경우 스크롤 위치 유지
+          isFetchingPreviousRef.current = false;
+          const currentScrollTop = scrollContainerRef.current?.scrollTop ?? 0;
+          const currentScrollHeight =
+            scrollContainerRef.current?.scrollHeight ?? 0;
+
+          setMessages(newMessages);
+
+          setTimeout(() => {
+            if (scrollContainerRef.current) {
+              const newScrollHeight = scrollContainerRef.current.scrollHeight;
+              const heightDifference = newScrollHeight - currentScrollHeight;
+              scrollContainerRef.current.scrollTop =
+                currentScrollTop + heightDifference;
+            }
+          }, 0);
+        } else {
+          // 새로운 메시지가 추가된 경우 스크롤을 맨 아래로
+          setMessages(newMessages);
+          if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop =
+              scrollContainerRef.current.scrollHeight;
+          }
+        }
+      }
     }
-  }, [chatMessages]);
+  }, [chatMessages, isFetchingNextPage]);
+
+  // 메시지가 로드된 후 스크롤을 맨 아래로 설정
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop =
+        scrollContainerRef.current.scrollHeight;
+    }
+  }, []);
 
   return (
     <div className="w-full h-full bg-foreground/10 rounded-xl gap-3 p-3 flex flex-col pb-26">
-      <div className="flex-1 overflow-y-auto pb-2">
-        <div className="w-full flex flex-col items-center justify-end">
-          <div ref={lastElementRef} />
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pb-2">
+        <div className="w-full h-full flex flex-col-reverse items-center justify-end">
           {/* TODO: 메시지 불러오는 로직 추가 */}
           {messages.map((message, index) => (
             <ChatMessage
@@ -100,8 +166,9 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
               createdAt={message.timestamp}
             />
           ))}
-          <div ref={messagesEndRef} />
+          <div ref={lastElementRef} />
         </div>
+        <div ref={messagesEndRef} />
       </div>
       <ChatInput
         onSend={handleSendMessage}
