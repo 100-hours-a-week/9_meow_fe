@@ -21,7 +21,7 @@ export interface IChatMessageDataPagination {
   totalPages: number;
   totalElements: number;
   pageSize: number;
-  isLast: boolean;
+  last: boolean;
 }
 
 export interface IChatMessageData {

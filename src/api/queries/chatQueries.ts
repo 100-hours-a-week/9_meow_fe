@@ -17,9 +17,9 @@ export const chatQueries = {
     infiniteQueryOptions<IChatMessageDataPagination, AxiosError<IError>>({
       queryKey: [...chatQueries.all(), "list"],
       queryFn: ({ pageParam }) =>
-        getChatMessageList({ chatroomId, page: pageParam as number, size: 10 }),
+        getChatMessageList({ chatroomId, page: pageParam as number, size: 20 }),
       getNextPageParam: (lastPage: IChatMessageDataPagination) => {
-        return lastPage.isLast ? undefined : lastPage.currentPage + 1;
+        return lastPage.last ? undefined : lastPage.currentPage + 1;
       },
       initialPageParam: 0,
     }),

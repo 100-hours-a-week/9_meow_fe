@@ -24,9 +24,9 @@ export default function ChatInput({
     setValue(e.target.value);
   };
 
-  // TODO: 메시지 전송 로직 추가
   const handleSend = () => {
     onSend(value);
+    setValue("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
