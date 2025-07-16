@@ -3,30 +3,23 @@ import { ApiAnimalType } from "@/types/animal";
 import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
 import { cn } from "@/lib/utils";
 
-interface ISelectAnimalType {
+interface IChatSelectAnimalType {
   animals: ApiAnimalType[];
   selectedAnimal: ApiAnimalType;
   setAnimal: (animal: ApiAnimalType) => void;
-  size?: "default" | "sm";
 }
 
-function SelectAnimalType({
+function ChatSelectAnimalType({
   animals,
   selectedAnimal,
   setAnimal,
-  size = "default",
-}: ISelectAnimalType) {
+}: IChatSelectAnimalType) {
   const handleAnimalChange = (value: ApiAnimalType) => {
     setAnimal(value);
   };
 
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-1 w-full max-w-[400px]",
-        size === "sm" && "gap-0",
-      )}
-    >
+    <div className={cn("flex flex-col gap-1 w-full max-w-[400px]")}>
       <div className="w-full flex flex-row justify-between gap-2 flex-wrap">
         {animals.map((value) => {
           const isSelected = selectedAnimal === value;
@@ -52,4 +45,4 @@ function SelectAnimalType({
   );
 }
 
-export default React.memo(SelectAnimalType);
+export default React.memo(ChatSelectAnimalType);

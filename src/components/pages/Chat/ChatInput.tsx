@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import SendIcon from "@/assets/icon/send.svg?react";
-import SelectAnimalType from "./SelectAnimalType";
+import ChatSelectAnimalType from "./ChatSelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
 
 const MAX_LENGTH = 30;
@@ -76,7 +76,7 @@ export default function ChatInput({
           </span>
         </div>
       </div>
-      <SelectAnimalType
+      <ChatSelectAnimalType
         animals={[
           ApiAnimalType.CAT,
           ApiAnimalType.DOG,
@@ -86,7 +86,6 @@ export default function ChatInput({
         ]}
         selectedAnimal={selectedAnimal}
         setAnimal={setSelectedAnimal}
-        size="sm"
       />
     </div>
   );
