@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
+import { LazyImage } from "@/components/common";
 
 type TRank = "1st" | "2nd" | "3rd" | "none";
 
@@ -32,7 +33,11 @@ function ImageBox({ src, rank, className }: IImageBox) {
     >
       <div className="absolute top-1 left-1 w-[20px]">{renderBadge(rank)}</div>
       <div className="w-full h-full rounded-lg overflow-hidden border border-muted-foreground">
-        <img src={src} alt="postImage" className="w-full h-full object-cover" />
+        <LazyImage
+          src={src}
+          alt="postImage"
+          className="w-full h-full object-cover"
+        />
       </div>
     </div>
   );

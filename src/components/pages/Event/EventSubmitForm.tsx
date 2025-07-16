@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { LazyImage } from "@/components/common";
 
 export default function EventSubmitForm() {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ export default function EventSubmitForm() {
         )}
       >
         {previewUrl ? (
-          <img
+          <LazyImage
             src={previewUrl}
             alt="Profile preview"
             className="w-full h-full object-cover"

@@ -7,6 +7,7 @@ import { userQueries } from "@/api/queries/userQueries";
 import { imageQueries } from "@/api/queries/ImageQueries";
 import { Loader2 } from "lucide-react";
 import { ApiAnimalType } from "@/types/animal";
+import { LazyImage } from "@/components/common";
 
 interface AISelectModalProps {
   isOpen: boolean;
@@ -89,7 +90,7 @@ export default function AISelectModal({
         <div className="flex flex-col gap-1 items-center w-full max-w-[400px]">
           <label className="flex items-center justify-center w-[100px] h-[100px] bg-muted-foreground border border-foreground/30 rounded-full cursor-pointer overflow-hidden">
             {previewUrl ? (
-              <img
+              <LazyImage
                 src={previewUrl}
                 alt="Profile preview"
                 className="w-full h-full object-cover"
@@ -133,7 +134,7 @@ export default function AISelectModal({
                     }`}
                     onClick={() => handleAIImageSelect(imageUrl)}
                   >
-                    <img
+                    <LazyImage
                       src={imageUrl}
                       alt="AI Generated Image"
                       className="w-[80px] h-[80px] object-cover"
@@ -151,7 +152,11 @@ export default function AISelectModal({
         )}
 
         <div className="flex justify-end gap-2 pt-4">
-          <Button variant="primarySolid" onClick={onClose} aria-label="취소하기">
+          <Button
+            variant="primarySolid"
+            onClick={onClose}
+            aria-label="취소하기"
+          >
             취소냥
           </Button>
           <Button
