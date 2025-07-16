@@ -4,7 +4,7 @@ import SockJS from "sockjs-client";
 import { IReceivedChatMessage } from "@/api/types/chat";
 
 interface UseWebSocketProps {
-  chatroomId: number;
+  chatroomId?: number;
   token: string;
   onMessageReceived: (message: IReceivedChatMessage) => void;
 }
@@ -19,6 +19,8 @@ export const useWebSocket = ({
   const clientRef = useRef<Client | null>(null);
 
   useEffect(() => {
+    if (!chatroomId) return;
+
     // WebSocket 연결 설정
     const client = new Client({
       // SockJS를 사용한 WebSocket 연결

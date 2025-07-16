@@ -10,7 +10,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { userQueries } from "@/api/queries/userQueries";
 
 interface IChatContainer {
-  chatroomId: number;
+  chatroomId?: number;
 }
 
 export default function ChatContainer({ chatroomId }: IChatContainer) {
@@ -23,7 +23,8 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
 
   const { data: userIdData } = useQuery({ ...userQueries.userId() });
   const { data: chatMessages } = useInfiniteQuery({
-    ...chatQueries.list(chatroomId),
+    ...chatQueries.list(chatroomId ?? 0),
+    enabled: !!chatroomId,
   });
 
   // 메시지 수신 콜백을 useCallback으로 메모이제이션
