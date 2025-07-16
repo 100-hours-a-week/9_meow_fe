@@ -8,6 +8,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { chatQueries } from "@/api/queries/chatQueries";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { userQueries } from "@/api/queries/userQueries";
+import { useObserver } from "@/hooks/common/useObserver";
 
 interface IChatContainer {
   chatroomId?: number;
@@ -22,9 +23,31 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
   const { token } = useTokenStore();
 
   const { data: userIdData } = useQuery({ ...userQueries.userId() });
-  const { data: chatMessages } = useInfiniteQuery({
+  const {
+    data: chatMessages,
+    hasNextPage,
+    isPending,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
     ...chatQueries.list(chatroomId ?? 0),
     enabled: !!chatroomId,
+  });
+
+  const lastElementRef = useRef<HTMLDivElement | null>(null);
+  useObserver({
+    target: lastElementRef as React.RefObject<HTMLElement>,
+    onIntersect: ([entry]) => {
+      if (
+        entry.isIntersecting &&
+        hasNextPage &&
+        !isPending &&
+        !isFetchingNextPage
+      ) {
+        fetchNextPage();
+      }
+    },
+    threshold: 1.0,
   });
 
   // 메시지 수신 콜백을 useCallback으로 메모이제이션
@@ -58,7 +81,7 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
 
   useEffect(() => {
     if (chatMessages) {
-      setMessages(chatMessages.pages.flatMap((page) => page.content));
+      setMessages(chatMessages.pages.flatMap((page) => page.content).reverse());
     }
   }, [chatMessages]);
 
@@ -66,6 +89,7 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
     <div className="w-full h-full bg-foreground/10 rounded-xl gap-3 p-3 flex flex-col pb-26">
       <div className="flex-1 overflow-y-auto pb-2">
         <div className="w-full flex flex-col items-center justify-end">
+          <div ref={lastElementRef} />
           {/* TODO: 메시지 불러오는 로직 추가 */}
           {messages.map((message, index) => (
             <ChatMessage
