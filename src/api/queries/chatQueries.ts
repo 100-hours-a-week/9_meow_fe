@@ -19,7 +19,7 @@ export const chatQueries = {
       queryFn: ({ pageParam }) =>
         getChatMessageList({ chatroomId, page: pageParam as number, size: 10 }),
       getNextPageParam: (lastPage: IChatMessageDataPagination) => {
-        return lastPage.isLast ? undefined : lastPage.currentPage + 1;
+        return lastPage.last ? undefined : lastPage.currentPage + 1;
       },
       initialPageParam: 0,
     }),
