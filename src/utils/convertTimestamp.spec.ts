@@ -38,8 +38,8 @@ describe("convertTimestamp", () => {
     expect(convertTimestamp(oldDate)).toBe("2024년 3월 1일");
   });
 
-  it("should return '0분 전' for future dates", () => {
+  it("should return '방금 전' for future dates", () => {
     const futureDate = new Date("2024-03-21T12:00:00");
-    expect(convertTimestamp(futureDate)).toBe("0분 전");
+    expect(convertTimestamp(futureDate)).toBe("방금 전");
   });
 });
