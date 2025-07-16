@@ -11,11 +11,15 @@ import useTokenStore from "@/store/useTokenStore";
 import { signupQueries } from "@/api/queries/signupQueries";
 import { loginQueries } from "@/api/queries/loginQueries";
 import { imageQueries } from "@/api/queries/ImageQueries";
+import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 
 export default function SignupForm() {
   const navigate = useNavigate();
   const { kakaoId, setKakaoId } = useKakaoIdStore();
   const { token, setToken } = useTokenStore();
+  const { handleCancel } = useHandleCancel({
+    navigateTo: "/login",
+  });
 
   const { mutate: login, isPending: isLoginPending } = useMutation({
     ...loginQueries.login({ setToken, navigate, redirectPath: null }),
@@ -39,15 +43,6 @@ export default function SignupForm() {
   const handleAnimalChange = useCallback((animal: ApiAnimalType) => {
     setSelectedAnimal(animal);
   }, []);
-
-  const handleCancel = () => {
-    const answer = window.confirm(
-      "취소하면 작성한 내용이 사라지는데, 그래도 취소하겠냥?",
-    );
-    if (answer) {
-      navigate(`/login`);
-    }
-  };
 
   const handleSignup = async () => {
     if (!kakaoId) {

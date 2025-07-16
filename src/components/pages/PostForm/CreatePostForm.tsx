@@ -8,9 +8,11 @@ import { useImageUpload } from "@/hooks/common/useImageUpload";
 import { ApiEmotion } from "@/types/Emotion";
 import { postQueries } from "@/api/queries/postQueries";
 import { useMutation } from "@tanstack/react-query";
+import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 
 export default function CreatePostForm() {
   const navigate = useNavigate();
+  const { handleCancel } = useHandleCancel({ navigateTo: "/" });
   const { mutate: createPost, isPending } = useMutation({
     ...postQueries.create({ navigate }),
   });
@@ -28,15 +30,6 @@ export default function CreatePostForm() {
     ApiEmotion.HAPPY,
   );
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-
-  const handleCancel = () => {
-    const answer = window.confirm(
-      "취소하면 작성한 내용이 사라져요. 그래도 취소하겠냥?",
-    );
-    if (answer) {
-      navigate("/");
-    }
-  };
 
   const handlePostSubmit = async () => {
     try {

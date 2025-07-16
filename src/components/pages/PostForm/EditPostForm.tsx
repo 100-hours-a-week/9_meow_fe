@@ -8,9 +8,13 @@ import { useImageUpload } from "@/hooks/common/useImageUpload";
 import { ApiEmotion } from "@/types/Emotion";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { postQueries } from "@/api/queries/postQueries";
+import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 
 export default function EditPostForm({ postId }: { postId: number }) {
   const navigate = useNavigate();
+  const { handleCancel } = useHandleCancel({
+    navigateTo: `/detail/${postId}`,
+  });
 
   const { data: postData } = useQuery({
     ...postQueries.editInfo({ postId }),
@@ -32,15 +36,6 @@ export default function EditPostForm({ postId }: { postId: number }) {
     ApiEmotion.HAPPY,
   );
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-
-  const handleCancel = () => {
-    const answer = window.confirm(
-      "취소하면 작성한 내용이 사라지는데, 그래도 취소하겠냥?",
-    );
-    if (answer) {
-      navigate(`/detail/${postId}`);
-    }
-  };
 
   const handlePostSubmit = async () => {
     try {

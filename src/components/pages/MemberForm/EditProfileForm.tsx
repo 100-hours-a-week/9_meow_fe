@@ -8,10 +8,14 @@ import { userQueries } from "@/api/queries/userQueries";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { imageQueries } from "@/api/queries/ImageQueries";
+import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 
 export default function EditProfileForm() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { handleCancel } = useHandleCancel({
+    navigateTo: "/mypage/redirect",
+  });
 
   const [initialImage, setInitialImage] = useState<string>("");
   const [selectedImage, setSelectedImage] = useState<File | string | null>(
@@ -54,15 +58,6 @@ export default function EditProfileForm() {
   const handleAnimalChange = useCallback((animal: ApiAnimalType) => {
     setSelectedAnimal(animal);
   }, []);
-
-  const handleCancel = () => {
-    const answer = window.confirm(
-      "취소하면 작성한 내용이 사라지는데, 그래도 취소하겠냥?",
-    );
-    if (answer) {
-      navigate(`/mypage/redirect`);
-    }
-  };
 
   const handleSubmit = async () => {
     try {

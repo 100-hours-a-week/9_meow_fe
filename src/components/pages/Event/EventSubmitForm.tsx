@@ -1,6 +1,7 @@
 import { eventQueries } from "@/api/queries/eventQueries";
 import { imageQueries } from "@/api/queries/ImageQueries";
 import { Button } from "@/components/ui/button";
+import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 import { useImagePreview } from "@/hooks/common/useImagePreview";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
@@ -9,6 +10,14 @@ import { useNavigate } from "react-router-dom";
 
 export default function EventSubmitForm() {
   const navigate = useNavigate();
+  const { handleCancel } = useHandleCancel({
+    navigateTo: "/event",
+    onCancel: () => {
+      setSelectedImage(null);
+      createPreview(null);
+    },
+  });
+
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { previewUrl, error, createPreview } = useImagePreview({
     initialImage: selectedImage,
@@ -26,16 +35,6 @@ export default function EventSubmitForm() {
     if (file) {
       setSelectedImage(file);
       createPreview(file);
-    }
-  };
-
-  const handleCancel = () => {
-    if (
-      window.confirm("취소하면 작성한 내용이 사라진다옹. 그래도 취소하겠냥?")
-    ) {
-      setSelectedImage(null);
-      createPreview(null);
-      navigate("/event");
     }
   };
 
