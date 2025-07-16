@@ -1,6 +1,6 @@
-import { Button } from "../ui/button";
-import AskIcon from "@/assets/icon/ask.svg?react";
-import InstagramIcon from "@/assets/icon/instagram.svg?react";
+// import { Button } from "../ui/button";
+// import AskIcon from "@/assets/icon/ask.svg?react";
+// import InstagramIcon from "@/assets/icon/instagram.svg?react";
 
 export default function Background({
   children,
@@ -8,9 +8,14 @@ export default function Background({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-dvh overflow-hidden bg-gradient-to-br from-white via-[#fcefdc] to-[#f9e8cb] bg-length-[400%_400%] animate-gradient-move">
+    <div className="relative flex h-dvh overflow-hidden bg-gradient-to-b from-[#fff7f0] via-[#fcefdc] to-[#f9e8cb]">
+      <img
+        src="/Background.png"
+        alt="배경화면"
+        className="w-full h-full absolute bottom-0 left-0 opacity-50"
+      />
       {children}
-      <div className="w-[300px] flex-shrink-0 relative hidden md:block bg-transparent mr-auto">
+      {/* <div className="w-[300px] flex-shrink-0 relative hidden md:block bg-transparent mr-auto">
         <div className="flex flex-col items-end justify-center h-full p-6">
           <div className="flex flex-row gap-5 items-center">
             <Button
@@ -44,7 +49,7 @@ export default function Background({
             <img src="/realize_logo.png" alt="귀여운 고양이" className="w-60" />
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
