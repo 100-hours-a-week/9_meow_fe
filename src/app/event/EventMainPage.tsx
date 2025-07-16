@@ -4,6 +4,7 @@ import { EventHistoryCard, EventTimer, RecentPodium } from "@/components/pages";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { LazyImage } from "@/components/common";
 
 function renderBanner({
   eventPeriodData,
@@ -102,7 +103,7 @@ export default function EventMainPage() {
           <div className="flex flex-row gap-5 justify-center">
             {recentPostData?.map((image, index) => (
               <div key={index} className="flex flex-row gap-2 ">
-                <img
+                <LazyImage
                   src={image}
                   alt="recent post"
                   className="w-24 h-24 object-cover rounded-lg border border-muted-foreground"
