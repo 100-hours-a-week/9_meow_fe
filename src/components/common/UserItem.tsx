@@ -48,6 +48,8 @@ export default function UserItem({
             "border flex-shrink-0 border-foreground",
             !profileImageUrl && (dark ? "bg-background" : "bg-foreground"),
             size === "sm" && "size-5 border-muted-foreground",
+            animalType === ApiAnimalType.CAT && "border-primary",
+            animalType === ApiAnimalType.DOG && "border-secondary",
           )}
         >
           <AvatarImage src={profileImageUrl ?? "/logo.svg"} />
@@ -56,10 +58,8 @@ export default function UserItem({
         {size === "default" && (
           <div
             className={cn(
-              "text-xs text-foreground px-1 rounded-sm absolute bottom-0 flex flex-row items-center gap-1 border border-foreground",
-              animalType === ApiAnimalType.CAT
-                ? "bg-rose-300"
-                : "bg-orange-300",
+              "text-xs text-background px-1 rounded-sm absolute bottom-0 flex flex-row items-center gap-1",
+              animalType === ApiAnimalType.CAT ? "bg-primary" : "bg-secondary",
             )}
           >
             {animalType.toLocaleUpperCase()}
@@ -79,10 +79,8 @@ export default function UserItem({
         {size === "sm" && (
           <div
             className={cn(
-              "text-[8px] text-foreground px-1 rounded-sm flex flex-row items-center gap-1 border border-foreground",
-              animalType === ApiAnimalType.CAT
-                ? "bg-rose-300"
-                : "bg-orange-300",
+              "text-[8px] text-background px-1 rounded-sm flex flex-row items-center gap-1",
+              animalType === ApiAnimalType.CAT ? "bg-primary" : "bg-secondary",
             )}
           >
             {animalType.toLocaleUpperCase()}
