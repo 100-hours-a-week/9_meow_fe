@@ -33,3 +33,8 @@ export interface IChatMessageData {
   message: string;
   timestamp: string;
 }
+
+export interface IChatParticipantCount {
+  chatroomId: number;
+  participantCount: number;
+}
