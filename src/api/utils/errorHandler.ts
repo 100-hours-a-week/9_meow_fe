@@ -19,6 +19,8 @@ export const ALERT_MESSAGES = {
   POST_DELETE_FAILED: "게시글 삭제에 실패했다옹... 잠시 후 다시 시도해보라냥",
   POST_EDIT_FAILED: "게시글 수정에 실패했다옹... 잠시 후 다시 시도해보라냥",
   SIGNUP_FAILED: "회원가입에 실패했다옹... 잠시 후 다시 시도해보라냥",
+  AI_PROFILE_IMAGE_FAILED:
+    "AI 프로필 이미지 추천에 실패했다옹... 잠시 후 다시 시도해보라냥",
 } as const;
 
 export interface ErrorHandlerOptions {

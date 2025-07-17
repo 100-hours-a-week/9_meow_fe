@@ -1,3 +1,4 @@
+import React from "react";
 import { IUserItem } from "@/components/common/UserItem";
 import EventPostFooter from "./PostFooter";
 import ImageBox from "./ImageBox";
@@ -15,7 +16,7 @@ export interface IEventPostCard {
   isVoteTime?: boolean;
 }
 
-export default function EventPostCard({
+function EventPostCard({
   postId,
   postImageUrl,
   userInfo,
@@ -28,7 +29,9 @@ export default function EventPostCard({
     <div
       className={cn(
         `relative w-[100px] md:w-[120px] flex flex-col gap-1`,
-        dark && "text-background",
+        dark
+          ? "text-background bg-none"
+          : "text-foreground bg-background rounded-xl shadow-sm",
       )}
     >
       <ImageBox src={postImageUrl} rank={rank} />
@@ -42,3 +45,5 @@ export default function EventPostCard({
     </div>
   );
 }
+
+export default React.memo(EventPostCard);

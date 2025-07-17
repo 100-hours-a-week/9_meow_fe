@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
-import SelectAnimalType from "./SelectAnimalType";
+import SignupSelectAnimalType from "./SignupSelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
 import { Button } from "@/components/ui/button";
 import { userQueries } from "@/api/queries/userQueries";
@@ -14,7 +14,9 @@ export default function EditProfileForm() {
   const queryClient = useQueryClient();
 
   const [initialImage, setInitialImage] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | string | null>(
+    null,
+  );
   const [nicknameValue, setNicknameValue] = useState<string>("");
   const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
     ApiAnimalType.CAT,
@@ -49,6 +51,10 @@ export default function EditProfileForm() {
     (isNicknameChanged && isNicknameDuplicate) ||
     (!isNicknameChanged && !isAnimalChanged && !isImageChanged);
 
+  const handleAnimalChange = useCallback((animal: ApiAnimalType) => {
+    setSelectedAnimal(animal);
+  }, []);
+
   const handleCancel = () => {
     const answer = window.confirm(
       "취소하면 작성한 내용이 사라지는데, 그래도 취소하겠냥?",
@@ -63,7 +69,7 @@ export default function EditProfileForm() {
       const imageUrl =
         selectedImage instanceof File
           ? await uploadImageToS3(selectedImage)
-          : (initialImage ?? undefined);
+          : ((selectedImage || initialImage) ?? undefined);
 
       editProfile({
         nickname: nicknameValue,
@@ -90,6 +96,7 @@ export default function EditProfileForm() {
         initialImage={initialImage ?? undefined}
         selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
+        userAnimal={selectedAnimal}
       />
       <NicknameInput
         isRequired={true}
@@ -97,12 +104,11 @@ export default function EditProfileForm() {
         setNicknameValue={setNicknameValue}
         setIsNicknameDuplicate={setIsNicknameDuplicate}
       />
-      <SelectAnimalType
+      <SignupSelectAnimalType
         titleText="어떤 동물이냐옹"
         isRequired={true}
-        animals={[ApiAnimalType.CAT, ApiAnimalType.DOG]}
         selectedAnimal={selectedAnimal}
-        setAnimal={setSelectedAnimal}
+        setAnimal={handleAnimalChange}
       />
       <div className="flex gap-10 w-full justify-center">
         <Button variant="primarySolid" onClick={handleCancel}>

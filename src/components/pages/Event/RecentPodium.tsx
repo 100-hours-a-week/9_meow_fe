@@ -1,3 +1,4 @@
+import React from "react";
 import { convertTimestampToDate } from "@/utils/convertTimestamp";
 import ImageBox from "./ImageBox";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +11,7 @@ interface IRecentPodium {
   imageUrls: string[];
 }
 
-export default function RecentPodium({
+function RecentPodium({
   title,
   subject,
   eventWeek,
@@ -21,7 +22,7 @@ export default function RecentPodium({
 
   return (
     <div
-      className="flex flex-col items-center justify-between rounded-xl border border-muted-foreground gap-4 py-3 shadow-lg"
+      className="flex flex-col items-center justify-between rounded-xl border border-muted-foreground gap-4 py-3 shadow-lg bg-background"
       onClick={() => {
         navigate(`/event/${eventWeek}`);
       }}
@@ -61,3 +62,5 @@ export default function RecentPodium({
     </div>
   );
 }
+
+export default React.memo(RecentPodium);

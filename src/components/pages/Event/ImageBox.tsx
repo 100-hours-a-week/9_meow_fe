@@ -1,3 +1,4 @@
+import React from "react";
 import { cn } from "@/lib/utils";
 
 type TRank = "1st" | "2nd" | "3rd" | "none";
@@ -21,11 +22,11 @@ function renderBadge(rank: TRank) {
   }
 }
 
-export default function ImageBox({ src, rank, className }: IImageBox) {
+function ImageBox({ src, rank, className }: IImageBox) {
   return (
     <div
       className={cn(
-        "relative flex flex-col gap-1 w-[100px] md:w-[120px] h-[100px] md:h-[120px] shadow-sm md:shadow-md",
+        "relative flex flex-col gap-1 w-[100px] md:w-[120px] h-[100px] md:h-[120px]",
         className,
       )}
     >
@@ -36,3 +37,5 @@ export default function ImageBox({ src, rank, className }: IImageBox) {
     </div>
   );
 }
+
+export default React.memo(ImageBox);

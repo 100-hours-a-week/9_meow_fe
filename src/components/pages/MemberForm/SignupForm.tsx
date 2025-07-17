@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
-import SelectAnimalType from "./SelectAnimalType";
+import SignupSelectAnimalType from "./SignupSelectAnimalType";
 import { ApiAnimalType } from "@/types/animal";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
@@ -27,12 +27,18 @@ export default function SignupForm() {
     ...imageQueries.uploadImageToS3(),
   });
 
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | string | null>(
+    null,
+  );
   const [nicknameValue, setNicknameValue] = useState<string>("");
   const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
     ApiAnimalType.CAT,
   );
   const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
+
+  const handleAnimalChange = useCallback((animal: ApiAnimalType) => {
+    setSelectedAnimal(animal);
+  }, []);
 
   const handleCancel = () => {
     const answer = window.confirm(
@@ -86,12 +92,11 @@ export default function SignupForm() {
         setNicknameValue={setNicknameValue}
         setIsNicknameDuplicate={setIsNicknameDuplicate}
       />
-      <SelectAnimalType
+      <SignupSelectAnimalType
         titleText="어떤 동물이냐옹"
         isRequired={true}
-        animals={[ApiAnimalType.CAT, ApiAnimalType.DOG]}
         selectedAnimal={selectedAnimal}
-        setAnimal={setSelectedAnimal}
+        setAnimal={handleAnimalChange}
       />
       <div className="flex gap-10 w-full justify-center">
         <Button variant="primarySolid" onClick={handleCancel}>

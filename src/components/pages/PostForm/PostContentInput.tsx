@@ -1,3 +1,4 @@
+import React from "react";
 import { cn } from "@/lib/utils";
 
 const MAX_LENGTH = 200;
@@ -9,7 +10,7 @@ interface IPostContentInput {
   setIsSubmitDisabled: (isSubmitDisabled: boolean) => void;
 }
 
-export default function PostContentInput({
+function PostContentInput({
   content,
   setContent,
   setIsSubmitDisabled,
@@ -25,7 +26,7 @@ export default function PostContentInput({
   return (
     <div className="w-full flex flex-col gap-2">
       <textarea
-        className="w-full h-[150px] resize-none outline-foreground border border-foreground/30 rounded-2xl p-2"
+        className="w-full h-[150px] resize-none outline-foreground border border-foreground/30 rounded-2xl p-2 bg-orange-100 shadow-sm"
         placeholder="글을 입력하세야옹"
         value={content}
         onChange={handleChange}
@@ -43,3 +44,5 @@ export default function PostContentInput({
     </div>
   );
 }
+
+export default React.memo(PostContentInput);

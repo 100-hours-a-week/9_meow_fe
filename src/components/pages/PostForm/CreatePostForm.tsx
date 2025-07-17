@@ -25,7 +25,7 @@ export default function CreatePostForm() {
 
   const [content, setContent] = useState("");
   const [selectedEmotion, setSelectedEmotion] = useState<ApiEmotion>(
-    ApiEmotion.NORMAL,
+    ApiEmotion.HAPPY,
   );
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 

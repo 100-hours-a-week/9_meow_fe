@@ -46,3 +46,9 @@ export interface IFollowerDataPagination {
   pageSize: number;
   last: boolean;
 }
+
+export interface IPostAiProfileImageResponse {
+  status_code: number;
+  message: string;
+  data: string[];
+}

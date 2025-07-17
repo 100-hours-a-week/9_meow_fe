@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { imageQueries } from "@/api/queries/ImageQueries";
 import { validateImageFile } from "@/utils/imageValidation";
@@ -15,12 +15,11 @@ export const useImageUpload = () => {
     ...imageQueries.uploadImageToS3(),
   });
 
-  const addImage = async (file: File) => {
+  const addImage = useCallback(async (file: File) => {
     const { isValid, message } = validateImageFile(file);
     if (!isValid) {
       throw new Error(message);
     }
-
     const newImage = await new Promise<IPreviewImage>((resolve) => {
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
@@ -33,15 +32,15 @@ export const useImageUpload = () => {
     });
 
     setSelectedImages((prev) => [...prev, newImage]);
-  };
+  }, []);
 
-  const removeImage = (index: number) => {
+  const removeImage = useCallback((index: number) => {
     setSelectedImages((prev) => {
       const newImages = [...prev];
       newImages.splice(index, 1);
       return newImages;
     });
-  };
+  }, []);
 
   const uploadImagesToS3 = async (): Promise<string[]> => {
     if (selectedImages.length === 0) return [];

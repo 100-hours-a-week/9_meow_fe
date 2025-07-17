@@ -1,3 +1,4 @@
+import React from "react";
 import { convertTimestampToDate } from "@/utils/convertTimestamp";
 import ImageBox from "./ImageBox";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +11,7 @@ interface IEventHistoryCard {
   imageUrls: string[];
 }
 
-export default function EventHistoryCard({
+function EventHistoryCard({
   title,
   subject,
   eventWeek,
@@ -21,7 +22,7 @@ export default function EventHistoryCard({
 
   return (
     <div
-      className="flex flex-row justify-between rounded-xl border border-muted-foreground p-2 shadow-md"
+      className="flex flex-row justify-between rounded-xl border border-muted-foreground p-2 shadow-md bg-background"
       onClick={() => {
         navigate(`/event/${eventWeek}`);
       }}
@@ -61,3 +62,5 @@ export default function EventHistoryCard({
     </div>
   );
 }
+
+export default React.memo(EventHistoryCard);

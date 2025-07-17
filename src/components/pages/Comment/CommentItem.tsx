@@ -13,8 +13,8 @@ export default function CommentItem({
   content,
 }: ICommentItem) {
   return (
-    <div className="flex flex-row gap-5 w-full justify-start items-center border-b border-muted-foreground/20 px-2 py-1 break-all">
-      <UserItem {...userInfo} />
+    <div className="flex flex-row gap-5 w-full justify-start items-start border-b border-muted-foreground/20 px-2 py-1 break-all">
+      <UserItem {...userInfo} size="sm" />
       <div className="text-sm flex-1 text-foreground">{content}</div>
       <div className="text-xs text-muted-foreground self-start">
         {convertTimestamp(timestamp)}

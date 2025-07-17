@@ -1,3 +1,5 @@
+import { ApiAnimalType } from "@/types/animal";
+import aiDefaultInstance from "./instance/aiDefaultInstance";
 import authInstance from "./instance/authInstance";
 import defaultInstance from "./instance/defaultInstance";
 import {
@@ -92,5 +94,19 @@ export const getFollowingList = async ({
     `/users/${userId}/followings`,
     { params: { page, size } },
   );
+  return response.data;
+};
+
+export const postAiProfileImage = async ({
+  image_url,
+  animal_type,
+}: {
+  image_url: string;
+  animal_type: ApiAnimalType;
+}) => {
+  const response = await aiDefaultInstance.post("/search", {
+    image_url,
+    animal_type,
+  });
   return response.data;
 };

@@ -46,48 +46,52 @@ function DetailPostPage() {
       <div className="w-full flex flex-col gap-4 items-center">
         {data && (
           <>
-            <PostCard.Header
-              userInfo={{
-                userId: data.userId,
-                nickname: data.nickname,
-                profileImageUrl: data.profileImageUrl,
-                animalType: data.postType,
-              }}
-              isMyPost={data.myPost}
-              postId={Number(postId)}
-            />
-            {data.imageUrls.length > 0 && (
-              <ImageCarousel images={data.imageUrls} />
-            )}
-            {data.imageUrls.length > 0 && (
-              <PostCard.Footer
+            <PostCard postId={Number(postId)}>
+              <PostCard.Header
+                userInfo={{
+                  userId: data.userId,
+                  nickname: data.nickname,
+                  profileImageUrl: data.profileImageUrl,
+                  animalType: data.postType,
+                }}
+                isMyPost={data.myPost}
                 postId={Number(postId)}
-                didLike={data.liked}
-                likeCount={data.likeCount}
-                commentCount={data.commentCount}
-                timestamp={new Date(data.createdAt)}
-                emotion={data.emotion}
               />
-            )}
-            <PostCard.Content
-              thumbnailUrl={null}
-              content={data.transformedContent}
-            />
-            {data.imageUrls.length === 0 && (
-              <PostCard.Footer
-                postId={Number(postId)}
-                didLike={data.liked}
-                likeCount={data.likeCount}
-                commentCount={data.commentCount}
-                timestamp={new Date(data.createdAt)}
-                emotion={data.emotion}
+              {data.imageUrls.length > 0 && (
+                <ImageCarousel images={data.imageUrls} />
+              )}
+              {data.imageUrls.length > 0 && (
+                <PostCard.Footer
+                  postId={Number(postId)}
+                  didLike={data.liked}
+                  likeCount={data.likeCount}
+                  commentCount={data.commentCount}
+                  timestamp={new Date(data.createdAt)}
+                  emotion={data.emotion}
+                  animalType={data.postType}
+                />
+              )}
+              <PostCard.Content
+                thumbnailUrl={null}
+                content={data.transformedContent}
               />
-            )}
+              {data.imageUrls.length === 0 && (
+                <PostCard.Footer
+                  postId={Number(postId)}
+                  didLike={data.liked}
+                  likeCount={data.likeCount}
+                  commentCount={data.commentCount}
+                  timestamp={new Date(data.createdAt)}
+                  emotion={data.emotion}
+                  animalType={data.postType}
+                />
+              )}
+            </PostCard>
           </>
         )}
       </div>
       <div className="w-full flex flex-col gap-4 items-center flex-1 justify-between">
-        <div className="w-full flex flex-col gap-4 pb-16">
+        <div className="w-full flex flex-col gap-0 pb-22">
           {commentData?.pages.map((page) =>
             page.content.map((comment) => (
               <CommentItem
