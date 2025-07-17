@@ -64,7 +64,7 @@ export default function PostFooter({
   };
 
   return (
-    <div className="flex flex-row justify-between items-center text-xs w-full">
+    <div className="flex flex-row justify-between items-center text-xs w-full border-t border-foreground/10 pt-1">
       <div className="flex flex-row items-center gap-2">
         <Button
           variant="ghost"

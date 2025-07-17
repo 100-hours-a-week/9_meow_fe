@@ -47,16 +47,29 @@ export default function ChatMessage({
         </div>
         <div
           className={cn(
-            "flex flex-col gap-0",
+            "flex flex-row gap-1",
             align === "right" ? "items-end" : "items-start",
           )}
         >
-          <p className="text-sm">
-            {convertChatAnimalTypeToShortDisplay(animalType)}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {convertTimestamp(new Date(createdAt))}
-          </p>
+          {align === "right" ? (
+            <div className="flex flex-row gap-1">
+              <p className="text-xs text-muted-foreground">
+                {convertTimestamp(new Date(createdAt))}
+              </p>
+              <p className="text-sm">
+                {convertChatAnimalTypeToShortDisplay(animalType)}
+              </p>
+            </div>
+          ) : (
+            <div className="flex flex-row gap-1">
+              <p className="text-sm">
+                {convertChatAnimalTypeToShortDisplay(animalType)}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {convertTimestamp(new Date(createdAt))}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

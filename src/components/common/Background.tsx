@@ -8,7 +8,7 @@ export default function Background({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-dvh overflow-hidden bg-gradient-to-b from-[#fff7f0] via-[#fcefdc] to-[#f9e8cb]">
+    <div className="flex h-dvh overflow-hidden bg-gradient-to-br from-white via-[#fcefdc] to-[#f9e8cb] bg-length-[400%_400%] animate-gradient-move">
       {children}
       <div className="w-[300px] flex-shrink-0 relative hidden md:block bg-transparent mr-auto">
         <div className="flex flex-col items-end justify-center h-full p-6">

@@ -20,7 +20,7 @@ export default function ImageCarousel({ images }: IImageCarousel) {
 
   return (
     <Carousel
-      className="w-full max-w-xs"
+      className="w-full max-w-xs pb-2"
       setApi={(api) => {
         if (api) {
           api.on("select", () => {
