@@ -12,9 +12,13 @@ import { useObserver } from "@/hooks/common/useObserver";
 
 interface IChatContainer {
   chatroomId?: number;
+  handleParticipantCountUpdate: (count: number) => void;
 }
 
-export default function ChatContainer({ chatroomId }: IChatContainer) {
+export default function ChatContainer({
+  chatroomId,
+  handleParticipantCountUpdate,
+}: IChatContainer) {
   const [websocketMessages, setWebsocketMessages] = useState<
     IReceivedChatMessage[]
   >([]);
@@ -61,6 +65,7 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
     chatroomId,
     token: token ?? "",
     onMessageReceived: handleMessageReceived,
+    onParticipantCountUpdate: handleParticipantCountUpdate,
   });
 
   const handleSendMessage = (message: string) => {
