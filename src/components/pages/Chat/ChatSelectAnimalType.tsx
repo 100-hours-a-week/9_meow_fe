@@ -19,7 +19,7 @@ function ChatSelectAnimalType({
   };
 
   return (
-    <div className={cn("flex flex-col gap-1 w-full max-w-[400px]")}>
+    <div className="flex flex-col gap-1 w-full">
       <div className="w-full flex flex-row justify-between gap-2 flex-wrap">
         {animals.map((value) => {
           const isSelected = selectedAnimal === value;
@@ -29,7 +29,7 @@ function ChatSelectAnimalType({
               type="button"
               onClick={() => handleAnimalChange(value)}
               className={cn(
-                "flex flex-col items-center justify-center py-2 rounded-lg border gap-2 flex-1 hover:cursor-pointer",
+                "flex flex-col items-center justify-center py-1 rounded-lg border gap-2 flex-1 hover:cursor-pointer",
                 isSelected
                   ? "border-foreground bg-background shadow-sm"
                   : "border-foreground/30 bg-orange-100",
