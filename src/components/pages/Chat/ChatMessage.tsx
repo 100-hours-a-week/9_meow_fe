@@ -8,7 +8,7 @@ interface IChatMessage {
   userId: number;
   profileImageUrl?: string;
   nickname: string;
-  align?: "left" | "right";
+  isMyMessage: boolean;
   message: string;
   animalType: ApiAnimalType;
   createdAt: string;
@@ -18,7 +18,7 @@ export default function ChatMessage({
   userId,
   profileImageUrl,
   nickname,
-  align = "left",
+  isMyMessage = false,
   message,
   animalType,
   createdAt,
@@ -27,31 +27,38 @@ export default function ChatMessage({
     <div
       className={cn(
         "w-full flex flex-col gap-0",
-        align === "right" ? "items-end" : "items-start",
+        isMyMessage ? "items-end" : "items-start",
       )}
     >
       <ChatUserItem
         userId={userId}
         profileImageUrl={profileImageUrl}
         nickname={nickname}
-        align={align}
+        align={isMyMessage ? "right" : "left"}
       />
       <div
         className={cn(
           "flex items-end gap-2",
-          align === "right" ? "flex-row-reverse pr-5" : "flex-row pl-5",
+          isMyMessage ? "flex-row-reverse pr-5" : "flex-row pl-5",
         )}
       >
-        <div className="bg-foreground rounded-sm p-1 max-w-[180px]">
-          <p className="text-sm text-background">{message}</p>
+        <div
+          className={cn(
+            "rounded-sm p-1 max-w-[180px]",
+            isMyMessage
+              ? "bg-foreground text-background"
+              : "bg-background text-foreground",
+          )}
+        >
+          <p className="text-sm">{message}</p>
         </div>
         <div
           className={cn(
             "flex flex-row gap-1",
-            align === "right" ? "items-end" : "items-start",
+            isMyMessage ? "items-end" : "items-start",
           )}
         >
-          {align === "right" ? (
+          {isMyMessage ? (
             <div className="flex flex-row gap-1">
               <p className="text-xs text-muted-foreground">
                 {convertTimestamp(new Date(createdAt))}

@@ -150,9 +150,7 @@ export default function ChatContainer({
                 userId={message.senderId}
                 profileImageUrl={message.senderProfileImage}
                 nickname={message.senderNickname}
-                align={
-                  message.senderId === userIdData?.userId ? "right" : "left"
-                }
+                isMyMessage={message.senderId === userIdData?.userId}
                 message={message.message}
                 animalType={message.animalType}
                 createdAt={message.timestamp}
@@ -171,9 +169,7 @@ export default function ChatContainer({
                 userId={message.senderId}
                 profileImageUrl={message.senderProfileImage}
                 nickname={message.senderNickname}
-                align={
-                  message.senderId === userIdData?.userId ? "right" : "left"
-                }
+                isMyMessage={message.senderId === userIdData?.userId}
                 message={message.message}
                 animalType={message.animalType}
                 createdAt={message.timestamp}
