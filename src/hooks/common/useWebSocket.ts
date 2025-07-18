@@ -1,18 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { Client, IMessage } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import { IReceivedChatMessage } from "@/api/types/chat";
+import { IChatParticipantCount, IReceivedChatMessage } from "@/api/types/chat";
 
 interface UseWebSocketProps {
   chatroomId?: number;
   token: string;
   onMessageReceived: (message: IReceivedChatMessage) => void;
+  onParticipantCountUpdate: (count: number) => void;
 }
 
 export const useWebSocket = ({
   chatroomId,
   token,
   onMessageReceived,
+  onParticipantCountUpdate,
 }: UseWebSocketProps) => {
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,30 +54,18 @@ export const useWebSocket = ({
 
       // 채팅 메시지 구독
       client.subscribe(`/sub/chatroom.${chatroomId}`, (message: IMessage) => {
-        console.log("메시지 수신: ", message);
-
-        try {
-          const chatMessage: IReceivedChatMessage = JSON.parse(message.body);
-          onMessageReceived(chatMessage);
-        } catch (error) {
-          console.error("메시지 파싱 오류:", error);
-        }
+        const chatMessage: IReceivedChatMessage = JSON.parse(message.body);
+        onMessageReceived(chatMessage);
       });
 
-      // TODO: 참여자 수 업데이트 구독
-      //   if (onParticipantCountUpdate) {
-      //     client.subscribe(
-      //       `/sub/chatroom.${chatroomId}.count`,
-      //       (message: IMessage) => {
-      //         try {
-      //           const count = parseInt(message.body);
-      //           onParticipantCountUpdate(count);
-      //         } catch (error) {
-      //           console.error("참여자 수 파싱 오류:", error);
-      //         }
-      //       },
-      //     );
-      //   }
+      // 참여자 수 구독
+      client.subscribe(
+        `/sub/chatroom.${chatroomId}.participants`,
+        (message: IMessage) => {
+          const count: IChatParticipantCount = JSON.parse(message.body);
+          onParticipantCountUpdate(count.participantCount);
+        },
+      );
     };
 
     // 연결 실패 시 콜백

@@ -12,9 +12,13 @@ import { useObserver } from "@/hooks/common/useObserver";
 
 interface IChatContainer {
   chatroomId?: number;
+  handleParticipantCountUpdate: (count: number) => void;
 }
 
-export default function ChatContainer({ chatroomId }: IChatContainer) {
+export default function ChatContainer({
+  chatroomId,
+  handleParticipantCountUpdate,
+}: IChatContainer) {
   const [websocketMessages, setWebsocketMessages] = useState<
     IReceivedChatMessage[]
   >([]);
@@ -61,6 +65,7 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
     chatroomId,
     token: token ?? "",
     onMessageReceived: handleMessageReceived,
+    onParticipantCountUpdate: handleParticipantCountUpdate,
   });
 
   const handleSendMessage = (message: string) => {
@@ -137,30 +142,36 @@ export default function ChatContainer({ chatroomId }: IChatContainer) {
     <div className="w-full h-full bg-foreground/10 rounded-xl gap-3 p-3 flex flex-col pb-26">
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pb-2">
         <div className="w-full flex flex-col-reverse items-center justify-end gap-1">
-          {websocketMessages.map((message, index) => (
-            <ChatMessage
-              key={`${message.senderId}-${index}`}
-              userId={message.senderId}
-              profileImageUrl={message.senderProfileImage}
-              nickname={message.senderNickname}
-              align={message.senderId === userIdData?.userId ? "right" : "left"}
-              message={message.message}
-              animalType={message.animalType}
-              createdAt={message.timestamp}
-            />
-          ))}
-          {messages.map((message, index) => (
-            <ChatMessage
-              key={`${message.senderId}-${index}`}
-              userId={message.senderId}
-              profileImageUrl={message.senderProfileImage}
-              nickname={message.senderNickname}
-              align={message.senderId === userIdData?.userId ? "right" : "left"}
-              message={message.message}
-              animalType={message.animalType}
-              createdAt={message.timestamp}
-            />
-          ))}
+          {websocketMessages.map(
+            (message, index) =>
+              message.type === "message" && (
+                <ChatMessage
+                  key={`${message.senderId}-${index}`}
+                  userId={message.senderId}
+                  profileImageUrl={message.senderProfileImage}
+                  nickname={message.senderNickname}
+                  isMyMessage={message.senderId === userIdData?.userId}
+                  message={message.message}
+                  animalType={message.animalType}
+                  createdAt={message.timestamp}
+                />
+              ),
+          )}
+          {messages.map(
+            (message, index) =>
+              message.type === "message" && (
+                <ChatMessage
+                  key={`${message.senderId}-${index}`}
+                  userId={message.senderId}
+                  profileImageUrl={message.senderProfileImage}
+                  nickname={message.senderNickname}
+                  isMyMessage={message.senderId === userIdData?.userId}
+                  message={message.message}
+                  animalType={message.animalType}
+                  createdAt={message.timestamp}
+                />
+              ),
+          )}
           <div ref={lastElementRef} />
         </div>
       </div>
