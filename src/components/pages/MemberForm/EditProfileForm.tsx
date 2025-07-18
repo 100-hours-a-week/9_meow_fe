@@ -3,16 +3,11 @@ import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SignupSelectAnimalType from "./SignupSelectAnimalType";
 import { Button } from "@/components/ui/button";
-import { userQueries } from "@/api/queries/userQueries";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import { imageQueries } from "@/api/queries/ImageQueries";
 import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 import { useProfileFormState } from "@/hooks/user/useProfileFormState";
+import { useEditProfile } from "@/hooks/user/useEditProfile";
 
 export default function EditProfileForm() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const {
     selectedImage,
     setSelectedImage,
@@ -29,19 +24,8 @@ export default function EditProfileForm() {
   const { handleCancel } = useHandleCancel({
     navigateTo: "/mypage/redirect",
   });
-
-  const { data: editProfileInfo } = useQuery({
-    ...userQueries.editProfileInfo(),
-  });
-  const { mutateAsync: uploadImageToS3 } = useMutation({
-    ...imageQueries.uploadImageToS3(),
-  });
-  const { mutate: editProfile } = useMutation({
-    ...userQueries.editProfile({ navigate, queryClient }),
-  });
-  const { mutate: deleteProfile } = useMutation({
-    ...userQueries.deleteProfile({ navigate }),
-  });
+  const { editProfileInfo, handleSubmit, handleDeleteProfile } =
+    useEditProfile();
 
   useEffect(() => {
     if (editProfileInfo) {
@@ -57,30 +41,6 @@ export default function EditProfileForm() {
   const isSubmitDisabled =
     (isNicknameChanged && isNicknameDuplicate) ||
     (!isNicknameChanged && !isAnimalChanged && !isImageChanged);
-
-  const handleSubmit = async () => {
-    try {
-      const imageUrl =
-        selectedImage instanceof File
-          ? await uploadImageToS3(selectedImage)
-          : ((selectedImage || initialImage) ?? undefined);
-
-      editProfile({
-        nickname: nicknameValue,
-        profileImageUrl: imageUrl,
-        postType: selectedAnimal,
-      });
-    } catch (error) {
-      alert("프로필 수정에 실패했다옹");
-      console.error(error);
-    }
-  };
-
-  const handleDeleteProfile = () => {
-    if (window.confirm("정말 탈퇴할거냥?")) {
-      deleteProfile();
-    }
-  };
 
   return (
     <div className="flex flex-col gap-4 items-center pt-8 m-3 pb-16">
@@ -111,7 +71,14 @@ export default function EditProfileForm() {
         <Button
           variant="secondarySolid"
           disabled={isSubmitDisabled}
-          onClick={handleSubmit}
+          onClick={() =>
+            handleSubmit({
+              nickname: nicknameValue,
+              animalType: selectedAnimal,
+              selectedImage,
+              initialImage,
+            })
+          }
         >
           다 적으면 누르라냥
         </Button>
