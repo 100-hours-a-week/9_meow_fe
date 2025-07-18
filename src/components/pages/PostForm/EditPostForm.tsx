@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
 import SelectEmotion from "./SelectEmotion";
-import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { postQueries } from "@/api/queries/postQueries";
 import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 import { usePostFormState } from "@/hooks/post/usePostFormState";
 import { usePostSubmit } from "@/hooks/post/usePostSubmit";
+import { FormActionButtons } from "@/components/common";
 
 export default function EditPostForm({ postId }: { postId: number }) {
   const {
@@ -72,18 +72,12 @@ export default function EditPostForm({ postId }: { postId: number }) {
         selectedEmotion={selectedEmotion}
         setEmotion={setSelectedEmotion}
       />
-      <div className="flex gap-2 w-full justify-end">
-        <Button variant="primarySolid" onClick={handleCancel}>
-          취소냥
-        </Button>
-        <Button
-          variant="secondarySolid"
-          disabled={isSubmitDisabled || isEditPending || isUploading}
-          onClick={() => handleEditPostSubmit(content, selectedEmotion)}
-        >
-          다 적으면 누르라냥!
-        </Button>
-      </div>
+      <FormActionButtons
+        disabled={isSubmitDisabled || isEditPending || isUploading}
+        isPending={isEditPending || isUploading}
+        handleSubmit={() => handleEditPostSubmit(content, selectedEmotion)}
+        handleCancel={handleCancel}
+      />
     </div>
   );
 }

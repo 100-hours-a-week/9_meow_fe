@@ -12,11 +12,11 @@ export const useEditProfile = () => {
     ...userQueries.editProfileInfo(),
   });
 
-  const { mutateAsync: uploadImageToS3 } = useMutation({
+  const { mutateAsync: uploadImageToS3, isPending: isUploading } = useMutation({
     ...imageQueries.uploadImageToS3(),
   });
 
-  const { mutate: editProfile } = useMutation({
+  const { mutate: editProfile, isPending: isEditProfilePending } = useMutation({
     ...userQueries.editProfile({ navigate, queryClient }),
   });
 
@@ -61,6 +61,8 @@ export const useEditProfile = () => {
   return {
     editProfileInfo,
     handleSubmit,
+    isEditProfilePending,
+    isUploading,
     handleDeleteProfile,
   };
 };

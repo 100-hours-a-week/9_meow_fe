@@ -1,10 +1,10 @@
 import ImageInput from "./ImageInput";
 import PostContentInput from "./PostContentInput";
 import SelectEmotion from "./SelectEmotion";
-import { Button } from "@/components/ui/button";
 import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 import { usePostFormState } from "@/hooks/post/usePostFormState";
 import { usePostSubmit } from "@/hooks/post/usePostSubmit";
+import { FormActionButtons } from "@/components/common";
 
 export default function CreatePostForm() {
   const {
@@ -42,20 +42,12 @@ export default function CreatePostForm() {
         selectedEmotion={selectedEmotion}
         setEmotion={setSelectedEmotion}
       />
-      <div className="flex gap-2 w-full justify-end">
-        <Button variant="primarySolid" onClick={handleCancel}>
-          취소냥
-        </Button>
-        <Button
-          variant="secondarySolid"
-          disabled={isCreatePending || isSubmitDisabled || isUploading}
-          onClick={() => handlePostSubmit(content, selectedEmotion)}
-        >
-          {isCreatePending || isUploading
-            ? "잠시만 기다려주세옹"
-            : "다 적으면 누르라냥!"}
-        </Button>
-      </div>
+      <FormActionButtons
+        disabled={isCreatePending || isSubmitDisabled || isUploading}
+        isPending={isCreatePending || isUploading}
+        handleSubmit={() => handlePostSubmit(content, selectedEmotion)}
+        handleCancel={handleCancel}
+      />
     </div>
   );
 }

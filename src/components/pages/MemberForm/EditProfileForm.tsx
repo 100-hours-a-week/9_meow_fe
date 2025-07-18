@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 import { useProfileFormState } from "@/hooks/user/useProfileFormState";
 import { useEditProfile } from "@/hooks/user/useEditProfile";
+import { FormActionButtons } from "@/components/common";
 
 export default function EditProfileForm() {
   const {
@@ -24,8 +25,13 @@ export default function EditProfileForm() {
   const { handleCancel } = useHandleCancel({
     navigateTo: "/mypage/redirect",
   });
-  const { editProfileInfo, handleSubmit, handleDeleteProfile } =
-    useEditProfile();
+  const {
+    editProfileInfo,
+    handleSubmit,
+    handleDeleteProfile,
+    isEditProfilePending,
+    isUploading,
+  } = useEditProfile();
 
   useEffect(() => {
     if (editProfileInfo) {
@@ -64,25 +70,19 @@ export default function EditProfileForm() {
         selectedAnimal={selectedAnimal}
         setAnimal={handleAnimalChange}
       />
-      <div className="flex gap-10 w-full justify-center">
-        <Button variant="primarySolid" onClick={handleCancel}>
-          취소냥
-        </Button>
-        <Button
-          variant="secondarySolid"
-          disabled={isSubmitDisabled}
-          onClick={() =>
-            handleSubmit({
-              nickname: nicknameValue,
-              animalType: selectedAnimal,
-              selectedImage,
-              initialImage,
-            })
-          }
-        >
-          다 적으면 누르라냥
-        </Button>
-      </div>
+      <FormActionButtons
+        disabled={isSubmitDisabled || isUploading}
+        isPending={isEditProfilePending || isUploading}
+        handleSubmit={() =>
+          handleSubmit({
+            nickname: nicknameValue,
+            animalType: selectedAnimal,
+            selectedImage,
+            initialImage,
+          })
+        }
+        handleCancel={handleCancel}
+      />
       <Button variant="link" onClick={handleDeleteProfile}>
         탈퇴할거냥
       </Button>

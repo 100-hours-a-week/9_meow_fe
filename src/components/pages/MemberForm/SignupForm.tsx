@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SignupSelectAnimalType from "./SignupSelectAnimalType";
-import { Button } from "@/components/ui/button";
 import useTokenStore from "@/store/useTokenStore";
 import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 import { useProfileFormState } from "@/hooks/user/useProfileFormState";
 import { useSignup } from "@/hooks/user/useSignup";
+import { FormActionButtons } from "@/components/common";
 
 export default function SignupForm() {
   const navigate = useNavigate();
@@ -60,26 +60,18 @@ export default function SignupForm() {
         selectedAnimal={selectedAnimal}
         setAnimal={handleAnimalChange}
       />
-      <div className="flex gap-10 w-full justify-center">
-        <Button variant="primarySolid" onClick={handleCancel}>
-          취소냥
-        </Button>
-        <Button
-          variant="secondarySolid"
-          disabled={isSubmitDisabled}
-          onClick={() =>
-            handleSignup({
-              nickname: nicknameValue,
-              animalType: selectedAnimal,
-              selectedImage,
-            })
-          }
-        >
-          {isSignupPending || isLoginPending
-            ? "잠시만 기다려 달라옹..."
-            : "다 적으면 누르라냥!"}
-        </Button>
-      </div>
+      <FormActionButtons
+        disabled={isSubmitDisabled}
+        isPending={isSignupPending || isLoginPending}
+        handleSubmit={() =>
+          handleSignup({
+            nickname: nicknameValue,
+            animalType: selectedAnimal,
+            selectedImage,
+          })
+        }
+        handleCancel={handleCancel}
+      />
     </div>
   );
 }

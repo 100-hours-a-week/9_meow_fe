@@ -7,6 +7,7 @@ import { userQueries } from "@/api/queries/userQueries";
 import { imageQueries } from "@/api/queries/ImageQueries";
 import { Loader2 } from "lucide-react";
 import { ApiAnimalType } from "@/types/animal";
+import { FormActionButtons } from "@/components/common";
 
 interface AISelectModalProps {
   isOpen: boolean;
@@ -149,18 +150,12 @@ export default function AISelectModal({
           )
         )}
 
-        <div className="flex justify-end gap-2 pt-4">
-          <Button variant="primarySolid" onClick={onClose}>
-            취소냥
-          </Button>
-          <Button
-            variant="secondarySolid"
-            onClick={handleConfirm}
-            disabled={!selectedAIImageUrl}
-          >
-            £완료하면 누르라냥!
-          </Button>
-        </div>
+        <FormActionButtons
+          disabled={!selectedAIImageUrl}
+          isPending={false}
+          handleSubmit={handleConfirm}
+          handleCancel={handleClose}
+        />
       </div>
     </Modal>
   );

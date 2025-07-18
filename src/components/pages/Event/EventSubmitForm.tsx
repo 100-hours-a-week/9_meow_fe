@@ -1,6 +1,6 @@
 import { eventQueries } from "@/api/queries/eventQueries";
 import { imageQueries } from "@/api/queries/ImageQueries";
-import { Button } from "@/components/ui/button";
+import { FormActionButtons } from "@/components/common";
 import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 import { useImagePreview } from "@/hooks/common/useImagePreview";
 import { cn } from "@/utils/lib/utils";
@@ -77,19 +77,12 @@ export default function EventSubmitForm() {
         />
       </label>
       {error && <p className="text-xs text-destructive">{error}</p>}
-      <div className="flex flex-row gap-2">
-        <Button variant="primarySolid" size="sm" onClick={handleCancel}>
-          취소냥
-        </Button>
-        <Button
-          variant="secondarySolid"
-          size="sm"
-          onClick={handleSubmit}
-          disabled={!selectedImage}
-        >
-          £ 준비되면 누르라냥!
-        </Button>
-      </div>
+      <FormActionButtons
+        disabled={!selectedImage}
+        isPending={false}
+        handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
+      />
     </div>
   );
 }
