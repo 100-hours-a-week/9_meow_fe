@@ -142,36 +142,30 @@ export default function ChatContainer({
     <div className="w-full h-full bg-foreground/10 rounded-xl gap-3 p-3 flex flex-col pb-26">
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pb-2">
         <div className="w-full flex flex-col-reverse items-center justify-end gap-1">
-          {websocketMessages.map(
-            (message, index) =>
-              message.type === "message" && (
-                <ChatMessage
-                  key={`${message.senderId}-${index}`}
-                  userId={message.senderId}
-                  profileImageUrl={message.senderProfileImage}
-                  nickname={message.senderNickname}
-                  isMyMessage={message.senderId === userIdData?.userId}
-                  message={message.message}
-                  animalType={message.animalType}
-                  createdAt={message.timestamp}
-                />
-              ),
-          )}
-          {messages.map(
-            (message, index) =>
-              message.type === "message" && (
-                <ChatMessage
-                  key={`${message.senderId}-${index}`}
-                  userId={message.senderId}
-                  profileImageUrl={message.senderProfileImage}
-                  nickname={message.senderNickname}
-                  isMyMessage={message.senderId === userIdData?.userId}
-                  message={message.message}
-                  animalType={message.animalType}
-                  createdAt={message.timestamp}
-                />
-              ),
-          )}
+          {websocketMessages.map((message, index) => (
+            <ChatMessage
+              key={`${message.senderId}-${index}`}
+              userId={message.senderId}
+              profileImageUrl={message.senderProfileImage}
+              nickname={message.senderNickname}
+              isMyMessage={message.senderId === userIdData?.userId}
+              message={message.message}
+              animalType={message.animalType}
+              createdAt={message.timestamp}
+            />
+          ))}
+          {messages.map((message, index) => (
+            <ChatMessage
+              key={`${message.senderId}-${index}`}
+              userId={message.senderId}
+              profileImageUrl={message.senderProfileImage}
+              nickname={message.senderNickname}
+              isMyMessage={message.senderId === userIdData?.userId}
+              message={message.message}
+              animalType={message.animalType}
+              createdAt={message.timestamp}
+            />
+          ))}
           <div ref={lastElementRef} />
         </div>
       </div>
