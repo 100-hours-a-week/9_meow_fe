@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/lib/utils";
 
 type TRank = "1st" | "2nd" | "3rd" | "none";
 

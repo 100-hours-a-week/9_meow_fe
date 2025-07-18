@@ -1,6 +1,6 @@
 import { ApiAnimalType } from "@/types/animal";
 import ChatUserItem from "./ChatUserItem";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/lib/utils";
 import { convertChatAnimalTypeToShortDisplay } from "@/utils/convertAnimal";
 import { convertTimestamp } from "@/utils/convertTimestamp";
 

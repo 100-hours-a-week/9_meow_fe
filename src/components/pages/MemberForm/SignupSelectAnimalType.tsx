@@ -2,7 +2,7 @@ import React from "react";
 import { ApiAnimalType } from "@/types/animal";
 import { convertAnimalTypeToDisplay } from "@/utils/convertAnimal";
 import { Label } from "@radix-ui/react-label";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/lib/utils";
 
 interface ISignupSelectAnimalType {
   titleText?: string;

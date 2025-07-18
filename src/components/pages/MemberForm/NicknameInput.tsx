@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/lib/utils";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { signupQueries } from "@/api/queries/signupQueries";

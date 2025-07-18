@@ -3,7 +3,7 @@ import { UserItem } from "@/components/common";
 import { IUserItem } from "@/components/common/UserItem";
 import { Button } from "@/components/ui/button";
 import PawIcon from "@/assets/icon/paw.svg?react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/lib/utils";
 import { eventQueries } from "@/api/queries/eventQueries";
 import { useMutation } from "@tanstack/react-query";
 

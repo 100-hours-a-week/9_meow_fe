@@ -1,6 +1,6 @@
 import React from "react";
 import { ApiEmotion } from "@/types/Emotion";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/lib/utils";
 import { convertEmotionTypeToDisplay } from "@/utils/convertEmotion";
 
 interface ISelectEmotion {

@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/lib/utils";
 
 const MAX_LENGTH = 200;
 const MIN_LENGTH = 5;

@@ -1,7 +1,7 @@
 import { userQueries } from "@/api/queries/userQueries";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/lib/utils";
 import useTokenStore from "@/store/useTokenStore";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useLocation } from "react-router-dom";

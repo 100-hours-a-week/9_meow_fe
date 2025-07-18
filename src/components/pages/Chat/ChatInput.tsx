@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/lib/utils";
 import React, { useState } from "react";
 import SendIcon from "@/assets/icon/send.svg?react";
 import ChatSelectAnimalType from "./ChatSelectAnimalType";

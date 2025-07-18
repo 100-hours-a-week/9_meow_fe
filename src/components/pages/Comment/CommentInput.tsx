@@ -1,7 +1,7 @@
 import { commentQueries } from "@/api/queries/commentQueries";
 import { postQueries } from "@/api/queries/postQueries";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";

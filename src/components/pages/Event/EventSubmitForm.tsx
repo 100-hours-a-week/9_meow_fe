@@ -3,7 +3,7 @@ import { imageQueries } from "@/api/queries/ImageQueries";
 import { Button } from "@/components/ui/button";
 import { useHandleCancel } from "@/hooks/common/useHandleCancel";
 import { useImagePreview } from "@/hooks/common/useImagePreview";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
