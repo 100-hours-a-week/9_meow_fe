@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEventVoteCountSSE } from "@/hooks/event/useEventVoteCountSSE";
-import { useTimer } from "@/hooks/useTimer";
+import { useTimer } from "@/hooks/event/useTimer";
 
 export default function EventVotePage() {
   const { eventId } = useParams();

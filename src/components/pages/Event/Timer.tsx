@@ -1,6 +1,6 @@
 import { eventQueries } from "@/api/queries/eventQueries";
 import { useQueryClient } from "@tanstack/react-query";
-import { useTimer } from "@/hooks/useTimer";
+import { useTimer } from "@/hooks/event/useTimer";
 
 interface IEventTimer {
   title: string;
