@@ -13,6 +13,7 @@ export interface IReceivedChatMessage {
   animalType: ApiAnimalType;
   message: string;
   timestamp: string;
+  type: "message" | "enter" | "exit";
 }
 
 export interface IChatMessageDataPagination {
@@ -31,6 +32,7 @@ export interface IChatMessageData {
   senderProfileImage: string;
   animalType: ApiAnimalType;
   message: string;
+  type: "message" | "enter" | "exit";
   timestamp: string;
 }
 

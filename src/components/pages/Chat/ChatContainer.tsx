@@ -9,6 +9,7 @@ import { chatQueries } from "@/api/queries/chatQueries";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { userQueries } from "@/api/queries/userQueries";
 import { useObserver } from "@/hooks/common/useObserver";
+import ChatEntryMessage from "./ChatEntryMessage";
 
 interface IChatContainer {
   chatroomId?: number;
@@ -142,30 +143,48 @@ export default function ChatContainer({
     <div className="w-full h-full bg-foreground/10 rounded-xl gap-3 p-3 flex flex-col pb-26">
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pb-2">
         <div className="w-full flex flex-col-reverse items-center justify-end gap-1">
-          {websocketMessages.map((message, index) => (
-            <ChatMessage
-              key={`${message.senderId}-${index}`}
-              userId={message.senderId}
-              profileImageUrl={message.senderProfileImage}
-              nickname={message.senderNickname}
-              align={message.senderId === userIdData?.userId ? "right" : "left"}
-              message={message.message}
-              animalType={message.animalType}
-              createdAt={message.timestamp}
-            />
-          ))}
-          {messages.map((message, index) => (
-            <ChatMessage
-              key={`${message.senderId}-${index}`}
-              userId={message.senderId}
-              profileImageUrl={message.senderProfileImage}
-              nickname={message.senderNickname}
-              align={message.senderId === userIdData?.userId ? "right" : "left"}
-              message={message.message}
-              animalType={message.animalType}
-              createdAt={message.timestamp}
-            />
-          ))}
+          {websocketMessages.map((message, index) =>
+            message.type === "message" ? (
+              <ChatMessage
+                key={`${message.senderId}-${index}`}
+                userId={message.senderId}
+                profileImageUrl={message.senderProfileImage}
+                nickname={message.senderNickname}
+                align={
+                  message.senderId === userIdData?.userId ? "right" : "left"
+                }
+                message={message.message}
+                animalType={message.animalType}
+                createdAt={message.timestamp}
+              />
+            ) : (
+              <ChatEntryMessage
+                key={`${message.chatroomId}-${index}`}
+                message={message.message}
+              />
+            ),
+          )}
+          {messages.map((message, index) =>
+            message.type === "message" ? (
+              <ChatMessage
+                key={`${message.senderId}-${index}`}
+                userId={message.senderId}
+                profileImageUrl={message.senderProfileImage}
+                nickname={message.senderNickname}
+                align={
+                  message.senderId === userIdData?.userId ? "right" : "left"
+                }
+                message={message.message}
+                animalType={message.animalType}
+                createdAt={message.timestamp}
+              />
+            ) : (
+              <ChatEntryMessage
+                key={`${message.chatroomId}-${index}`}
+                message={message.message}
+              />
+            ),
+          )}
           <div ref={lastElementRef} />
         </div>
       </div>
