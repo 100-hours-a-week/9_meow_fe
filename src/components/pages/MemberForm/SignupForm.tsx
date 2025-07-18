@@ -1,9 +1,8 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NicknameInput from "./NicknameInput";
 import ProfileImageSelection from "./ProfileImageSelection";
 import SignupSelectAnimalType from "./SignupSelectAnimalType";
-import { ApiAnimalType } from "@/types/animal";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import useKakaoIdStore from "@/store/useKakaoIdStore";
@@ -12,11 +11,23 @@ import { signupQueries } from "@/api/queries/signupQueries";
 import { loginQueries } from "@/api/queries/loginQueries";
 import { imageQueries } from "@/api/queries/ImageQueries";
 import { useHandleCancel } from "@/hooks/common/useHandleCancel";
+import { useProfileFormState } from "@/hooks/user/useProfileFormState";
 
 export default function SignupForm() {
   const navigate = useNavigate();
   const { kakaoId, setKakaoId } = useKakaoIdStore();
   const { token, setToken } = useTokenStore();
+  const {
+    selectedImage,
+    setSelectedImage,
+    nicknameValue,
+    setNicknameValue,
+    selectedAnimal,
+    isNicknameDuplicate,
+    setIsNicknameDuplicate,
+    handleAnimalChange,
+  } = useProfileFormState();
+
   const { handleCancel } = useHandleCancel({
     navigateTo: "/login",
   });
@@ -30,19 +41,6 @@ export default function SignupForm() {
   const { mutateAsync: uploadImageToS3 } = useMutation({
     ...imageQueries.uploadImageToS3(),
   });
-
-  const [selectedImage, setSelectedImage] = useState<File | string | null>(
-    null,
-  );
-  const [nicknameValue, setNicknameValue] = useState<string>("");
-  const [selectedAnimal, setSelectedAnimal] = useState<ApiAnimalType>(
-    ApiAnimalType.CAT,
-  );
-  const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true);
-
-  const handleAnimalChange = useCallback((animal: ApiAnimalType) => {
-    setSelectedAnimal(animal);
-  }, []);
 
   const handleSignup = async () => {
     if (!kakaoId) {
