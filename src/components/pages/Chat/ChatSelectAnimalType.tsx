@@ -31,8 +31,8 @@ function ChatSelectAnimalType({
               className={cn(
                 "flex flex-col items-center justify-center py-1 rounded-lg border gap-2 flex-1 hover:cursor-pointer",
                 isSelected
-                  ? "border-foreground bg-background shadow-sm"
-                  : "border-foreground/30 bg-orange-100",
+                  ? "border-foreground bg-orange-100 shadow-sm"
+                  : "border-foreground/30 bg-background",
                 "transition-colors duration-150",
               )}
             >
