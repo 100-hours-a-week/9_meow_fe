@@ -42,7 +42,7 @@ export default function ChatInput({
   };
 
   return (
-    <div className="w-[90%] flex flex-col gap-1 bg-orange-100 rounded-lg py-2 px-2 fixed bottom-16 max-w-[400px] sm:mx-auto shadow-lg border border-foreground/20">
+    <div className="w-[90%] flex flex-col gap-1 bg-background rounded-lg py-2 px-2 fixed bottom-16 max-w-[400px] sm:mx-auto shadow-lg border border-foreground/20">
       <div className="w-full flex flex-row gap-2 items-end">
         <textarea
           value={value}

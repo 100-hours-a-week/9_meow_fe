@@ -42,7 +42,7 @@ export default function ChatUserItem({
       <div className="flex flex-col text-sm min-w-0 flex-1">
         <p
           className={cn(
-            "text-orange-950 text-xs text-ellipsis overflow-hidden whitespace-nowrap",
+            "text-foreground text-xs text-ellipsis overflow-hidden whitespace-nowrap",
             "text-foreground",
           )}
         >
