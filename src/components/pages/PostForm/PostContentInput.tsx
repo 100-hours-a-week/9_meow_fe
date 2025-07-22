@@ -26,7 +26,7 @@ function PostContentInput({
   return (
     <div className="w-full flex flex-col gap-2">
       <textarea
-        className="w-full h-[150px] resize-none outline-foreground border border-foreground/30 rounded-2xl p-2 bg-orange-100 shadow-sm"
+        className="w-full h-[150px] resize-none outline-foreground border border-foreground/30 rounded-2xl p-2 bg-background shadow-sm"
         placeholder="글을 입력하세야옹"
         value={content}
         onChange={handleChange}

@@ -27,7 +27,7 @@ export default function MemberInfoSummary({
       </Avatar>
       <div className="flex flex-col items-center gap-0">
         <div className="text-2xl font-bold">{nickname}</div>
-        <div className="text-xl text-orange-950/50">
+        <div className="text-xl text-muted-foreground">
           {convertAnimalTypeToDisplay(animalType)}
         </div>
       </div>
