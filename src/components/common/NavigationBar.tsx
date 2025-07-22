@@ -24,8 +24,13 @@ function renderIconButton({
   ariaLabel?: string;
 }) {
   return (
-    <Link to={route} onClick={onClick} aria-label={ariaLabel}>
-      <Button variant="ghost" aria-label={ariaLabel}>
+    <Link
+      to={route}
+      onClick={onClick}
+      aria-label={ariaLabel}
+      className="size-10"
+    >
+      <Button variant="ghost" aria-label={ariaLabel} className="size-10">
         {icon}
       </Button>
     </Link>
