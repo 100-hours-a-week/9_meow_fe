@@ -58,6 +58,7 @@ export default function ContextMenu({ postId }: { postId: number }) {
         variant="ghost"
         size="icon"
         onClick={handleButtonClick}
+        aria-label="게시글 메뉴 열기"
       >
         <DotsVerticalIcon className="fill-foreground" />
       </Button>
@@ -79,6 +80,7 @@ export default function ContextMenu({ postId }: { postId: number }) {
                 navigate(`/edit/${postId}`);
                 setIsOpen(false);
               }}
+              aria-label="게시글 수정"
             >
               ¢ 수정하기
             </Button>
@@ -98,6 +100,7 @@ export default function ContextMenu({ postId }: { postId: number }) {
                   setIsOpen(false);
                 }
               }}
+              aria-label="게시글 삭제"
             >
               ♧ 삭제하기
             </Button>

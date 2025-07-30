@@ -4,6 +4,7 @@ import { Label } from "@radix-ui/react-label";
 import AISelectModal from "./AISelectModal";
 import { Button } from "@/components/ui/button";
 import { ApiAnimalType } from "@/types/animal";
+import { LazyImage } from "@/components/common";
 
 interface IProfileImageSelection {
   titleText?: string;
@@ -53,7 +54,7 @@ function ProfileImageSelection({
           <div className="flex flex-col items-center gap-2">
             <label className="flex items-center justify-center w-[100px] h-[100px] bg-background border border-foreground/30 rounded-full cursor-pointer overflow-hidden">
               {previewUrl ? (
-                <img
+                <LazyImage
                   src={previewUrl}
                   alt="Profile preview"
                   className="w-full h-full object-cover"
@@ -75,6 +76,7 @@ function ProfileImageSelection({
               size="sm"
               className="absolute right-0 bottom-0"
               onClick={() => setIsAIModalOpen(true)}
+              aria-label="닮은 냥이 / 멍이 찾기"
             >
               닮은 냥이 / 멍이 찾기
             </Button>

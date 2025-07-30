@@ -12,14 +12,27 @@ import {
   PlusIcon,
 } from "lucide-react";
 
-function renderIconButton(
-  route: string,
-  icon: React.ReactNode,
-  onClick?: () => void,
-) {
+function renderIconButton({
+  route,
+  icon,
+  onClick,
+  ariaLabel,
+}: {
+  route: string;
+  icon: React.ReactNode;
+  onClick?: () => void;
+  ariaLabel?: string;
+}) {
   return (
-    <Link to={route} onClick={onClick}>
-      <Button variant="ghost">{icon}</Button>
+    <Link
+      to={route}
+      onClick={onClick}
+      aria-label={ariaLabel}
+      className="size-10"
+    >
+      <Button variant="ghost" aria-label={ariaLabel} className="size-10">
+        {icon}
+      </Button>
     </Link>
   );
 }
@@ -51,39 +64,47 @@ export default function NavigationBar({
 
   return (
     <div className="flex justify-between items-center border-t border-border/30 px-5 py-1 fixed bottom-0 w-full bg-background max-w-[430px] mx-auto">
-      {renderIconButton(
-        "/",
-        <HomeIcon className="stroke-foreground size-6" />,
-        () => handleScrollToTop({ pathname: "/" }),
-      )}
-      {renderIconButton(
-        "/event",
-        <PartyPopper className="stroke-foreground size-6" />,
-      )}
-      {renderIconButton(
-        "/create",
-        <PlusIcon className="stroke-foreground size-6" />,
-      )}
-      {renderIconButton(
-        "/chat",
-        <MessageCircleIcon className="stroke-foreground size-6" />,
-      )}
-      {renderIconButton(
-        token
+      {renderIconButton({
+        route: "/",
+        icon: <HomeIcon className="stroke-foreground size-6" />,
+        onClick: () => handleScrollToTop({ pathname: "/" }),
+        ariaLabel: "홈으로 이동",
+      })}
+      {renderIconButton({
+        route: "/event",
+        icon: <PartyPopper className="stroke-foreground size-6" />,
+        ariaLabel: "이벤트 페이지로 이동",
+      })}
+      {renderIconButton({
+        route: "/create",
+        icon: <PlusIcon className="stroke-foreground size-6" />,
+        ariaLabel: "게시글 작성",
+      })}
+      {renderIconButton({
+        route: "/chat",
+        icon: <MessageCircleIcon className="stroke-foreground size-6" />,
+        ariaLabel: "채팅 페이지로 이동",
+      })}
+      {renderIconButton({
+        route: token
           ? "/mypage/redirect"
           : `/login?redirect=${encodeURIComponent(location.pathname)}`,
-        <Avatar
-          className={cn(
-            "border border-muted-foreground",
-            !token && "bg-foreground",
-          )}
-        >
-          <AvatarImage
-            src={token ? profileImage?.profileImageUrl : "/logo.svg"}
-          />
-          <AvatarFallback>미야옹</AvatarFallback>
-        </Avatar>,
-      )}
+        icon: (
+          <Avatar
+            className={cn(
+              "border border-muted-foreground",
+              !token && "bg-foreground",
+            )}
+          >
+            <AvatarImage
+              src={token ? profileImage?.profileImageUrl : "/logo.png"}
+              alt="프로필 이미지"
+            />
+            <AvatarFallback>미야옹</AvatarFallback>
+          </Avatar>
+        ),
+        ariaLabel: "프로필 페이지로 이동",
+      })}
     </div>
   );
 }
