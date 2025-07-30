@@ -56,6 +56,7 @@ function DetailPostPage() {
                 }}
                 isMyPost={data.myPost}
                 postId={Number(postId)}
+                isDetailPage={true}
               />
               {data.imageUrls.length > 0 && (
                 <ImageCarousel images={data.imageUrls} />
