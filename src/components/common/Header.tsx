@@ -9,7 +9,7 @@ export default function Header() {
         className="flex gap-2.5 items-center cursor-pointer"
         onClick={() => navigate("/")}
       >
-        <img src="/logo.svg" alt="logo" className="w-10" />
+        <img src="/logo.png" alt="logo" width={40} height={40} />
         <h1 className="text-2xl font-bold">미야옹</h1>
       </div>
       {/* TODO : 알림기능 추가되면 주석 해제!

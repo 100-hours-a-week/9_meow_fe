@@ -6,6 +6,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useState, useCallback } from "react";
+import { LazyImage } from "@/components/common";
 
 interface IImageCarousel {
   images: string[];
@@ -32,7 +33,7 @@ export default function ImageCarousel({ images }: IImageCarousel) {
       <CarouselContent>
         {images.map((image) => (
           <CarouselItem key={image}>
-            <img
+            <LazyImage
               src={image}
               alt="썸네일"
               className="w-[300px] h-[300px] rounded-lg object-cover"

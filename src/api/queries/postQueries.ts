@@ -89,9 +89,11 @@ export const postQueries = {
   delete: ({
     postId,
     queryClient,
+    navigateTo,
   }: {
     postId: number;
     queryClient: QueryClient;
+    navigateTo?: () => void;
   }) => ({
     mutationKey: [...postQueries.all(), "delete", postId],
     mutationFn: () => deletePost(postId),
@@ -102,6 +104,7 @@ export const postQueries = {
       queryClient.invalidateQueries({
         queryKey: [...postQueries.all(), "userPostList"],
       });
+      navigateTo?.();
     },
     onError: createDefaultErrorHandler(ALERT_MESSAGES.POST_DELETE_FAILED),
   }),

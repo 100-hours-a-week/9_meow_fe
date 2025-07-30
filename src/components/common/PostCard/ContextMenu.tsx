@@ -6,14 +6,28 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postQueries } from "@/api/queries/postQueries";
 import DotsVerticalIcon from "@/assets/icon/dots-vertical.svg?react";
 
-export default function ContextMenu({ postId }: { postId: number }) {
+export default function ContextMenu({
+  postId,
+  isDetailPage,
+}: {
+  postId: number;
+  isDetailPage: boolean;
+}) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { mutate: deletePost } = useMutation({
-    ...postQueries.delete({ postId, queryClient }),
+    ...postQueries.delete({
+      postId,
+      queryClient,
+      navigateTo: () => {
+        if (isDetailPage) {
+          navigate(-1);
+        }
+      },
+    }),
   });
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -58,6 +72,7 @@ export default function ContextMenu({ postId }: { postId: number }) {
         variant="ghost"
         size="icon"
         onClick={handleButtonClick}
+        aria-label="게시글 메뉴 열기"
       >
         <DotsVerticalIcon className="fill-foreground" />
       </Button>
@@ -79,6 +94,7 @@ export default function ContextMenu({ postId }: { postId: number }) {
                 navigate(`/edit/${postId}`);
                 setIsOpen(false);
               }}
+              aria-label="게시글 수정"
             >
               ¢ 수정하기
             </Button>
@@ -98,6 +114,7 @@ export default function ContextMenu({ postId }: { postId: number }) {
                   setIsOpen(false);
                 }
               }}
+              aria-label="게시글 삭제"
             >
               ♧ 삭제하기
             </Button>

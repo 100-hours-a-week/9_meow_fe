@@ -1,26 +1,42 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useRef } from "react";
-import MainPage from "./app/MainPage";
-import CreatePostPage from "./app/create/CreatePostPage";
-import DetailPostPage from "./app/detail/[postId]/DetailPostPage";
-import LoginPage from "./app/login/LoginPage";
-import SignupPage from "./app/signup/SignupPage";
-import NotFoundPage from "./app/not-found/NotFoundPage";
-import RedirectPage from "./app/redirect/RedirectPage";
-import PostEdit from "./app/edit/PostEdit";
-import MyPageRedirectPage from "./app/mypage/redirect/MyPageRedirectPage";
-import ProfileEditPage from "./app/mypage/edit/ProfileEditPage";
-import MemberPage from "./app/member/[userId]/MemberPage";
-import FollowerPage from "./app/member/[userId]/follower/FollowerPage";
-import FollowingPage from "./app/member/[userId]/following/FollowingPage";
-import EventMainPage from "./app/event/EventMainPage";
-import EventSubmitPage from "./app/event/submit/[eventId]/EventSubmitPage";
-import EventVotePage from "./app/event/vote/[eventId]/EventVotePage";
-import EventDetailPage from "./app/event/[eventId]/EventDetailPage";
+import { useRef, lazy, Suspense } from "react";
 import { Background, Header, NavigationBar } from "./components/common";
 import "./index.css";
-import ChatPage from "./app/chat/ChatPage";
+
+// Lazy load all page components
+const MainPage = lazy(() => import("./app/MainPage"));
+const CreatePostPage = lazy(() => import("./app/create/CreatePostPage"));
+const DetailPostPage = lazy(
+  () => import("./app/detail/[postId]/DetailPostPage"),
+);
+const LoginPage = lazy(() => import("./app/login/LoginPage"));
+const SignupPage = lazy(() => import("./app/signup/SignupPage"));
+const NotFoundPage = lazy(() => import("./app/not-found/NotFoundPage"));
+const RedirectPage = lazy(() => import("./app/redirect/RedirectPage"));
+const PostEdit = lazy(() => import("./app/edit/PostEdit"));
+const MyPageRedirectPage = lazy(
+  () => import("./app/mypage/redirect/MyPageRedirectPage"),
+);
+const ProfileEditPage = lazy(() => import("./app/mypage/edit/ProfileEditPage"));
+const MemberPage = lazy(() => import("./app/member/[userId]/MemberPage"));
+const FollowerPage = lazy(
+  () => import("./app/member/[userId]/follower/FollowerPage"),
+);
+const FollowingPage = lazy(
+  () => import("./app/member/[userId]/following/FollowingPage"),
+);
+const EventMainPage = lazy(() => import("./app/event/EventMainPage"));
+const EventSubmitPage = lazy(
+  () => import("./app/event/submit/[eventId]/EventSubmitPage"),
+);
+const EventVotePage = lazy(
+  () => import("./app/event/vote/[eventId]/EventVotePage"),
+);
+const EventDetailPage = lazy(
+  () => import("./app/event/[eventId]/EventDetailPage"),
+);
+const ChatPage = lazy(() => import("./app/chat/ChatPage"));
 
 const queryClient = new QueryClient();
 
@@ -37,49 +53,53 @@ function App() {
               ref={scrollContainerRef}
               className="flex-1 overflow-y-auto mb-12"
             >
-              <Routes>
-                <Route
-                  path="/"
-                  element={<MainPage scrollContainerRef={scrollContainerRef} />}
-                />
-                <Route path="/create" element={<CreatePostPage />} />
-                <Route path="/detail/:postId" element={<DetailPostPage />} />
-                <Route path="/edit/:postId" element={<PostEdit />} />
-                <Route
-                  path="/mypage/redirect"
-                  element={<MyPageRedirectPage />}
-                />
-                <Route path="/mypage/edit" element={<ProfileEditPage />} />
-                <Route
-                  path="/member/:userId"
-                  element={
-                    <MemberPage scrollContainerRef={scrollContainerRef} />
-                  }
-                />
-                <Route
-                  path="/member/:userId/follower"
-                  element={<FollowerPage />}
-                />
-                <Route
-                  path="/member/:userId/following"
-                  element={<FollowingPage />}
-                />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
-                <Route path="/redirect" element={<RedirectPage />} />
-                <Route path="/event" element={<EventMainPage />} />
-                <Route
-                  path="/event/submit/:eventId"
-                  element={<EventSubmitPage />}
-                />
-                <Route
-                  path="/event/vote/:eventId"
-                  element={<EventVotePage />}
-                />
-                <Route path="/event/:eventId" element={<EventDetailPage />} />
-                <Route path="/chat" element={<ChatPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
+              <Suspense fallback={<div>Loading...</div>}>
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <MainPage scrollContainerRef={scrollContainerRef} />
+                    }
+                  />
+                  <Route path="/create" element={<CreatePostPage />} />
+                  <Route path="/detail/:postId" element={<DetailPostPage />} />
+                  <Route path="/edit/:postId" element={<PostEdit />} />
+                  <Route
+                    path="/mypage/redirect"
+                    element={<MyPageRedirectPage />}
+                  />
+                  <Route path="/mypage/edit" element={<ProfileEditPage />} />
+                  <Route
+                    path="/member/:userId"
+                    element={
+                      <MemberPage scrollContainerRef={scrollContainerRef} />
+                    }
+                  />
+                  <Route
+                    path="/member/:userId/follower"
+                    element={<FollowerPage />}
+                  />
+                  <Route
+                    path="/member/:userId/following"
+                    element={<FollowingPage />}
+                  />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/signup" element={<SignupPage />} />
+                  <Route path="/redirect" element={<RedirectPage />} />
+                  <Route path="/event" element={<EventMainPage />} />
+                  <Route
+                    path="/event/submit/:eventId"
+                    element={<EventSubmitPage />}
+                  />
+                  <Route
+                    path="/event/vote/:eventId"
+                    element={<EventVotePage />}
+                  />
+                  <Route path="/event/:eventId" element={<EventDetailPage />} />
+                  <Route path="/chat" element={<ChatPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
             </div>
             <NavigationBar scrollContainerRef={scrollContainerRef} />
           </div>

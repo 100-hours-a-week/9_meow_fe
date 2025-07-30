@@ -72,6 +72,7 @@ export default function PostFooter({
           onClick={handleLikeClick}
           disabled={isPending}
           className="size-6 p-1"
+          aria-label={`좋아요 (현재 ${likeCount}개)`}
         >
           {didLike ? (
             animalType === ApiAnimalType.CAT ? (
@@ -86,7 +87,12 @@ export default function PostFooter({
           )}
         </Button>
         <p>{likeCount}</p>
-        <Button variant="ghost" size="icon" className="size-6 p-1">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="size-6 p-1"
+          aria-label={`댓글 보기 (현재 ${commentCount}개)`}
+        >
           <CommentIcon className="stroke-foreground" />
         </Button>
         <p>{commentCount}</p>
@@ -95,6 +101,7 @@ export default function PostFooter({
           size="icon"
           onClick={handleShareClick}
           className="size-6 p-1"
+          aria-label="공유하기"
         >
           <ShareIcon className="stroke-foreground" />
         </Button>

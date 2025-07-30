@@ -21,6 +21,7 @@ export default function ProfileInfo({
       <Button
         variant="ghost"
         className="flex flex-col items-center gap-0 w-16 h-full"
+        aria-label="게시글 목록"
       >
         <p className="text-base">{postCount}</p>
         <p className="text-xs text-foreground/50">Post</p>
@@ -31,6 +32,7 @@ export default function ProfileInfo({
         onClick={() => {
           navigate(`/member/${userId}/follower`);
         }}
+        aria-label="팔로워 목록"
       >
         <p className="text-base">{followerCount}</p>
         <p className="text-xs text-foreground/50">Follower</p>
@@ -41,6 +43,7 @@ export default function ProfileInfo({
         onClick={() => {
           navigate(`/member/${userId}/following`);
         }}
+        aria-label="팔로잉 목록"
       >
         <p className="text-base">{followingCount}</p>
         <p className="text-xs text-foreground/50">Following</p>

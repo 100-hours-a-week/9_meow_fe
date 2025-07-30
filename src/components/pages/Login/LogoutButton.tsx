@@ -12,6 +12,7 @@ export default function LogoutButton() {
         alert("로그아웃 되었다옹");
       }}
       className="text-base"
+      aria-label="로그아웃"
     >
       로그아웃
     </Button>

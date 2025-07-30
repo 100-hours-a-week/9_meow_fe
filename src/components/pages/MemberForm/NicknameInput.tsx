@@ -72,6 +72,7 @@ export default function NicknameInput({
           className="h-full px-5 rounded-xl text-foreground text-lg font-bold"
           onClick={handleCheckNickname}
           disabled={isPending || !validateNickname(nicknameValue).isValid}
+          aria-label="중복 확인"
         >
           {isPending ? "확인 중..." : "중복 확인"}
         </Button>

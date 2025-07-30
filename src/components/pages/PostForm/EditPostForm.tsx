@@ -84,13 +84,18 @@ export default function EditPostForm({ postId }: { postId: number }) {
         setEmotion={setSelectedEmotion}
       />
       <div className="flex gap-2 w-full justify-end">
-        <Button variant="primarySolid" onClick={handleCancel}>
+        <Button
+          variant="primarySolid"
+          onClick={handleCancel}
+          aria-label="취소하기"
+        >
           취소냥
         </Button>
         <Button
           variant="secondarySolid"
           disabled={isSubmitDisabled || isPending || isUploading}
           onClick={handlePostSubmit}
+          aria-label="제출하기"
         >
           다 적으면 누르라냥!
         </Button>

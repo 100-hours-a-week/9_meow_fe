@@ -22,6 +22,7 @@ export default function LoginButton({ redirectPath }: LoginButtonProps) {
         }
       }}
       className="relative"
+      aria-label="카카오 로그인"
     >
       <img src={KakaoLoginIcon} alt="카카오 로그인" />
       <div className="absolute top-0 left-0 w-full h-full hover:bg-amber-400/20 cursor-pointer rounded-[12px] z-5"></div>
